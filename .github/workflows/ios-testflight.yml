@@ -12,11 +12,17 @@ on:
 
 jobs:
   build-and-submit:
-    runs-on: macos-14
+    # React Native 0.81 / this Expo SDK's Podfile requires Xcode >= 16.1. macos-14's
+    # default Xcode (15.4) is too old and fails at `pod install`; macos-15 defaults to
+    # a current Xcode that satisfies this.
+    runs-on: macos-15
     timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app && xcodebuild -version
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
