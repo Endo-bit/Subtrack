@@ -37,6 +37,10 @@ jobs:
         run: eas build --platform ios --profile "${{ inputs.profile }}" --local --non-interactive --output ./build.ipa
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          # Baked into the JS bundle at build time (see utils/purchases.ts, utils/analytics.ts).
+          # Without these the app still builds, but the Pro paywall and analytics silently no-op.
+          EXPO_PUBLIC_REVENUECAT_IOS_KEY: ${{ secrets.EXPO_PUBLIC_REVENUECAT_IOS_KEY }}
+          EXPO_PUBLIC_POSTHOG_KEY: ${{ secrets.EXPO_PUBLIC_POSTHOG_KEY }}
 
       # Uploads the .ipa produced above to App Store Connect / TestFlight using the
       # App Store Connect API key already linked to this EAS project.
