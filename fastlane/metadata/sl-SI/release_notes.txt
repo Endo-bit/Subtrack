@@ -1,0 +1,5 @@
+Ta posodobitev odpravlja nekaj težav, o katerih ste nam poročali:
+
+- Opomniki zdaj ne prihajajo več večkrat za isto plačilo v vašem opomniškem oknu vsakič, ko dodate, odstranite ali spremenite paket naročnine
+- Domači zaslon zdaj prikazuje vsako prihajajoče plačilo v naslednjem tednu, ne le naslednjega, vsako s svojim števcem dni
+- Sprememba paketa naročnine zdaj samodejno izpolni trenutno ceno in pokaže, na katerem uradnem paketu ste

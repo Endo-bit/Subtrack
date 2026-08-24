@@ -1,0 +1,1 @@
+laskumuistutus,uusimismuistutus,toistuvat maksut,budjetointi,ilmainen kokeilujakso,gdpr,csv,alv

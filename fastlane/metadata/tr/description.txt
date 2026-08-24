@@ -1,0 +1,32 @@
+Unuttuğun abonelikler için para ödemeyi bırak.
+
+SubTrack tüm aboneliklerini tek bir yerde takip eder - yayın hizmetleri, yazılımlar, spor salonu üyelikleri ve daha fazlası - ve neyin tutmaya değer olduğunu tam olarak söyler.
+
+ABONELİK TEŞHİSİ
+Herhangi bir abonelik için hızlı bir kontrol yap: ne sıklıkla kullandığını, bir kopyasının olup olmadığını, fiyatının buna değip değmediğini. SubTrack onu puanlar ve tutmanı, gözden geçirmeni ya da iptal etmeni önerir - ardından her iptalden ne kadar tasarruf ettiğini takip eder.
+
+HİÇBİR ÖDEMEYİ KAÇIRMA
+Yaklaşan ödemeleri bir takvimde gör, ödeme yapılmadan önce hatırlatma al ve ücretsiz deneme süresi ücretliye dönüşmeden önce haberdar ol.
+
+HARCAMA ANALİZİ (Pro)
+Kategoriye göre dağılım, zaman içindeki harcama trendleri ve en yüksek maliyetli aboneliklerinin sıralaması - böylece paranın nereye gittiğini her zaman bilirsin.
+
+GİZLİLİK İÇİN TASARLANDI
+SubTrack her şeyi cihazında tutar. Hesap yok, bulut yok, kayıt yok. Abonelik verilerin telefonundan asla ayrılmaz - %100 yerel, tasarımı gereği GDPR dostu.
+
+AVRUPA İÇİN TASARLANDI
+Almanya ve Fransa için KDV dökümünü gör, aboneliklerini gerçek zamanlı döviz kurlarıyla birden fazla para biriminde takip et (Pro) ve istediğin zaman verilerini yedekle.
+
+GERİ KALAN HER ŞEY
+- Herhangi bir abonelik için özel logo ve fotoğraflar
+- CSV dışa aktarma
+- Yerel veri yedekleme ve geri yükleme
+- Pro; sınırsız abonelik takibi, sınırsız teşhis kontrolü, analitik, gerçek zamanlı döviz kurları, yedekleme ve özel logoların kilidini açar
+
+GİZLİLİK
+SubTrack giriş yapmanı istemez ve abonelik verilerini hiçbir sunucuyla senkronize etmez - her şey cihazında yerel olarak saklanır. Gizlilik Politikamıza ve Kullanım Koşullarımıza göz at:
+Gizlilik Politikası: https://legal-wheat-pi.vercel.app/privacy.html
+Kullanım Koşulları: https://legal-wheat-pi.vercel.app/terms.html
+
+TİCARİ MARKALAR
+Uygulamada gösterilen hizmet adları ve logoları (ör. yayın, müzik ve yazılım markaları) yalnızca kendi aboneliklerini tanımana yardımcı olmak amacıyla kullanılır ve ilgili sahiplerinin mülkiyetinde kalır. SubTrack bu şirketlerin hiçbiriyle bağlantılı değildir, onlar tarafından onaylanmaz veya desteklenmez. Hak sahibiyseniz ve bir adın veya logonun kaldırılmasını istiyorsanız cutedogstoryai@gmail.com adresinden bize e-posta gönderin, en kısa sürede hallederiz.

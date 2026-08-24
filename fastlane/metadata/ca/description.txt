@@ -1,0 +1,32 @@
+Deixa de pagar subscripcions que has oblidat.
+
+SubTrack fa un seguiment de totes les teves subscripcions en un sol lloc - streaming, programari, gimnàs i més - i et diu exactament què val la pena mantenir.
+
+DIAGNÒSTIC DE SUBSCRIPCIÓ
+Fes una revisió ràpida de qualsevol subscripció: amb quina freqüència l'utilitzes, si tens un duplicat, si el preu val la pena. SubTrack la puntua i et diu si mantenir-la, revisar-la o cancel·lar-la - després calcula quant has estalviat amb cada cancel·lació.
+
+NO ET PERDIS CAP CÀRREC
+Consulta els pròxims pagaments en un calendari, rep recordatoris abans que et cobrin i rep un avís abans que les proves gratuïtes passin a ser de pagament.
+
+ANÀLISI DE DESPESES (Pro)
+Desglossament per categoria, tendències de despesa al llarg del temps i les teves subscripcions més cares classificades - perquè sempre sàpigues on va el teu diner.
+
+PENSAT PER A LA PRIVACITAT
+SubTrack ho guarda tot al teu dispositiu. Sense compte, sense núvol, sense registre. Les teves dades de subscripció mai surten del telèfon - 100% local, pensat per complir el RGPD.
+
+FET PER A EUROPA
+Consulta el desglossament d'IVA per a Alemanya i França, fes un seguiment de subscripcions en diverses monedes amb tipus de canvi en temps real (Pro) i fes còpies de seguretat de les teves dades quan vulguis.
+
+TOTA LA RESTA
+- Logotips i fotos personalitzats per a qualsevol subscripció
+- Exportació a CSV
+- Còpia de seguretat i restauració local de dades
+- Pro desbloqueja subscripcions il·limitades, revisions de diagnòstic il·limitades, anàlisis, tipus de canvi en temps real, còpies de seguretat i logotips personalitzats
+
+PRIVACITAT
+SubTrack no et demana cap inici de sessió i no sincronitza les teves dades de subscripció amb cap servidor - es guarden localment al teu dispositiu. Consulta la nostra Política de Privacitat i les Condicions d'Ús:
+Política de Privacitat: https://legal-wheat-pi.vercel.app/privacy.html
+Condicions d'Ús: https://legal-wheat-pi.vercel.app/terms.html
+
+MARQUES REGISTRADES
+Els noms i logotips de serveis que apareixen a l'aplicació (p. ex. marques d'streaming, música i programari) s'utilitzen només per ajudar-te a identificar les teves pròpies subscripcions i continuen sent propietat dels seus respectius titulars. SubTrack no està afiliat, avalat ni patrocinat per cap d'aquestes empreses. Si ets titular de drets i vols que s'elimini un nom o logotip, escriu-nos a cutedogstoryai@gmail.com i ho gestionarem de seguida.

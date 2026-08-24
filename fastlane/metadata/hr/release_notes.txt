@@ -1,0 +1,5 @@
+Ova nadogradnja rješava nekoliko stvari o kojima ste nam javili:
+
+- Obavijesti s podsjetnikom više ne ponavljaju svako plaćanje unutar prozora podsjetnika svaki put kad dodate, uklonite ili promijenite plan pretplate
+- Početni zaslon sada označava sva nadolazeća plaćanja dospjela unutar tjedna, ne samo sljedeće, svako s vlastitim brojačem dana
+- Promjena plana pretplate sada unaprijed popunjava vašu trenutnu cijenu i pokazuje na kojem se službenom planu nalazite

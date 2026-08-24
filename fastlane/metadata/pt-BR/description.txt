@@ -1,0 +1,32 @@
+Pare de pagar por assinaturas que você esqueceu.
+
+O SubTrack acompanha todas as suas assinaturas em um só lugar - streaming, software, academia e muito mais - e mostra exatamente o que vale a pena manter.
+
+DIAGNÓSTICO DE ASSINATURA
+Faça uma checagem rápida em qualquer assinatura: com que frequência você usa, se é duplicada, se o preço vale a pena. O SubTrack dá uma nota e diz se você deve manter, revisar ou cancelar - depois mostra quanto você economizou com cada cancelamento.
+
+NUNCA PERCA UMA COBRANÇA
+Veja os próximos pagamentos em um calendário, receba lembretes antes de ser cobrado e seja avisado antes que os testes grátis virem pagos.
+
+ANÁLISE DE GASTOS (Pro)
+Divisão por categoria, tendências de gastos ao longo do tempo e suas assinaturas mais caras em um ranking - para você sempre saber para onde vai seu dinheiro.
+
+FEITO PARA PRIVACIDADE
+O SubTrack guarda tudo no seu aparelho. Sem conta, sem nuvem, sem cadastro. Seus dados de assinatura nunca saem do celular - 100% local, pensado para a LGPD.
+
+FEITO PARA A EUROPA
+Veja o detalhamento de IVA para Alemanha e França, acompanhe assinaturas em várias moedas com taxas de câmbio em tempo real (Pro) e faça backup dos seus dados quando quiser.
+
+TUDO O MAIS
+- Logotipos e fotos personalizados para qualquer assinatura
+- Exportação em CSV
+- Backup e restauração local de dados
+- O Pro libera assinaturas ilimitadas, checagens de diagnóstico ilimitadas, análises, taxas de câmbio em tempo real, backup e logotipos personalizados
+
+PRIVACIDADE
+O SubTrack não pede login e não sincroniza os dados das suas assinaturas com nenhum servidor - tudo fica salvo localmente no seu aparelho. Veja nossa Política de Privacidade e Termos de Uso:
+Política de Privacidade: https://legal-wheat-pi.vercel.app/privacy.html
+Termos de Uso: https://legal-wheat-pi.vercel.app/terms.html
+
+MARCAS REGISTRADAS
+Nomes e logotipos de serviços mostrados no app (por exemplo, marcas de streaming, música e software) são usados apenas para ajudar você a identificar suas próprias assinaturas e continuam sendo propriedade de seus respectivos donos. O SubTrack não é afiliado, endossado nem patrocinado por nenhuma dessas empresas. Se você é detentor de direitos e quer que um nome ou logotipo seja removido, envie um e-mail para cutedogstoryai@gmail.com e nós resolveremos rapidamente.

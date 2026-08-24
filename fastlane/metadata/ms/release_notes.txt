@@ -1,0 +1,5 @@
+Kemas kini ini membaiki beberapa perkara yang anda beritahu kami:
+
+- Notifikasi peringatan tidak lagi mengulangi setiap pembayaran dalam tetingkap peringatan anda setiap kali anda menambah, mengeluarkan, atau menukar pelan langganan
+- Skrin utama kini menandakan setiap pembayaran akan datang yang perlu dibayar dalam masa seminggu, bukan hanya yang seterusnya, masing-masing dengan kiraan harinya sendiri
+- Menukar pelan langganan kini pra-isi harga semasa anda dan menunjukkan pelan rasmi yang anda gunakan

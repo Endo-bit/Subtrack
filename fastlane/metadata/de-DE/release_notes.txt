@@ -1,0 +1,5 @@
+Dieses Update behebt ein paar Dinge, die du uns gemeldet hast:
+
+- Erinnerungsbenachrichtigungen wiederholen nicht mehr jede Zahlung in deinem Erinnerungszeitraum, wenn du ein Abo hinzufügst, entfernst oder dessen Tarif änderst
+- Der Startbildschirm zeigt jetzt jede anstehende Zahlung innerhalb der nächsten Woche an, nicht nur die nächste - jeweils mit eigener Tageszählung
+- Beim Ändern eines Abo-Tarifs wird jetzt dein aktueller Preis vorausgefüllt und angezeigt, welchen offiziellen Tarif du hast

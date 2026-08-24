@@ -1,0 +1,5 @@
+This update fixes a few things you told us about:
+
+- Reminder notifications no longer repeat every payment in your reminder window each time you add, remove, or change a subscription's plan
+- The home screen now flags every upcoming payment due within a week, not just the next one, each with its own day count
+- Changing a subscription's plan now pre-fills your current price and shows which official plan you're on

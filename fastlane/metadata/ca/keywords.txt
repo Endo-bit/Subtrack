@@ -1,0 +1,1 @@
+factures,recordatori renovació,pagaments recurrents,pressupost,alerta prova gratuïta,rgpd,csv,iva

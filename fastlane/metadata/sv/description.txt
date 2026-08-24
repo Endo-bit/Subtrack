@@ -1,0 +1,32 @@
+Sluta betala för prenumerationer du glömt bort.
+
+SubTrack håller koll på alla dina prenumerationer på ett ställe - streaming, mjukvara, gymmedlemskap och mer - och visar precis vad som är värt att behålla.
+
+PRENUMERATIONSDIAGNOS
+Gör en snabb koll på valfri prenumeration: hur ofta du använder den, om du har en dubblett, om priset är värt det. SubTrack ger den ett betyg och säger om du ska behålla, ompröva eller avsluta - och håller koll på hur mycket du sparat på varje uppsägning.
+
+MISSA ALDRIG EN DEBITERING
+Se kommande betalningar i en kalender, få påminnelser innan du debiteras, och bli notifierad innan gratis provperioder övergår till betalning.
+
+UTGIFTSANALYS (Pro)
+Uppdelning per kategori, utgiftstrender över tid och dina dyraste prenumerationer i rangordning - så du alltid vet vart dina pengar tar vägen.
+
+BYGGD FÖR INTEGRITET
+SubTrack sparar allt bara på din enhet. Inget konto, inget moln, ingen registrering. Din prenumerationsdata lämnar aldrig din telefon - 100% lokalt, GDPR-vänligt från grunden.
+
+GJORD FÖR EUROPA
+Se momsuppdelningar för Tyskland och Frankrike, spåra prenumerationer i flera valutor med realtidsväxelkurser (Pro), och säkerhetskopiera din data när du vill.
+
+ALLT ANNAT
+- Egna loggor och foton för alla prenumerationer
+- CSV-export
+- Lokal säkerhetskopiering och återställning av data
+- Pro låser upp obegränsad prenumerationsspårning, obegränsade diagnoskontroller, analys, realtidsväxelkurser, säkerhetskopiering och egna loggor
+
+INTEGRITET
+SubTrack ber aldrig om inloggning och synkar aldrig din prenumerationsdata till någon server - allt lagras lokalt på din enhet. Se vår integritetspolicy och våra användarvillkor:
+Integritetspolicy: https://legal-wheat-pi.vercel.app/privacy.html
+Användarvillkor: https://legal-wheat-pi.vercel.app/terms.html
+
+VARUMÄRKEN
+Namn och logotyper för tjänster som visas i appen (t.ex. streaming-, musik- och mjukvarumärken) används enbart för att hjälpa dig identifiera dina egna prenumerationer och förblir respektive ägares egendom. SubTrack är inte anslutet till, godkänt av eller sponsrat av något av dessa företag. Om du är rättighetsinnehavare och vill få ett namn eller en logotyp borttagen, maila oss på cutedogstoryai@gmail.com så tar vi hand om det omgående.

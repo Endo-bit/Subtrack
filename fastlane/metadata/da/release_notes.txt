@@ -1,0 +1,5 @@
+Denne opdatering retter et par ting, du fortalte os om:
+
+- Påmindelsesnotifikationer gentager ikke længere hver betaling i dit påmindelsesvindue, hver gang du tilføjer, fjerner eller ændrer et abonnements plan
+- Startskærmen markerer nu alle kommende betalinger, der forfalder inden for en uge, ikke kun den næste, hver med sin egen dagtæller
+- Ændring af et abonnements plan udfylder nu automatisk din nuværende pris og viser, hvilken officiel plan du er på

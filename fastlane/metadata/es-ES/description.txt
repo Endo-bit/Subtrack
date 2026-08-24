@@ -1,0 +1,32 @@
+Deja de pagar suscripciones que olvidaste.
+
+SubTrack reúne todas tus suscripciones en un solo lugar - streaming, software, gimnasio y más - y te dice cuáles realmente merecen la pena.
+
+DIAGNÓSTICO DE SUSCRIPCIÓN
+Una revisión rápida por suscripción: uso, duplicados, precio - para saber qué conservar y qué cancelar. SubTrack calcula una puntuación y te muestra cuánto has ahorrado con cada cancelación.
+
+NO TE PIERDAS NADA
+Calendario de todos los cobros, avisos antes de cada pago y notificaciones antes de que una prueba gratuita pase a ser de pago.
+
+ANÁLISIS DE GASTOS (Pro)
+Desglose por categoría, evolución del gasto en el tiempo y ranking de tus suscripciones más caras - para saber siempre a dónde va tu dinero.
+
+100 % PRIVADO
+SubTrack guarda todo en tu dispositivo. Sin cuenta, sin nube, sin registro. Tus datos nunca salen de tu teléfono - 100 % local, conforme al RGPD.
+
+PENSADO PARA EUROPA
+Desglose de IVA para Alemania y Francia, seguimiento de suscripciones en varias divisas con tipos de cambio en tiempo real (Pro), y copia de seguridad cuando quieras.
+
+Y ADEMÁS
+- Logos y fotos personalizados para cada suscripción
+- Exportación CSV
+- Copia de seguridad y restauración locales
+- Con Pro: suscripciones ilimitadas, diagnósticos ilimitados, análisis, tipos de cambio en tiempo real, copia de seguridad y logos personalizados
+
+PRIVACIDAD
+SubTrack no pide iniciar sesión ni sincroniza tus datos de suscripciones con ningún servidor: se guardan localmente en tu dispositivo. Consulta nuestra Política de Privacidad y nuestras Condiciones de Uso:
+Política de Privacidad: https://legal-wheat-pi.vercel.app/privacy.html
+Condiciones de Uso: https://legal-wheat-pi.vercel.app/terms.html
+
+MARCAS
+Los nombres de servicios y logotipos que aparecen en la app (marcas de streaming, música y software, por ejemplo) se usan únicamente para ayudarte a identificar tus propias suscripciones y siguen siendo propiedad de sus respectivos titulares. SubTrack no está afiliada, respaldada ni patrocinada por ninguna de estas empresas. Si eres titular de derechos y quieres que se elimine un nombre o logotipo, escríbenos a cutedogstoryai@gmail.com y nos encargaremos de ello lo antes posible.

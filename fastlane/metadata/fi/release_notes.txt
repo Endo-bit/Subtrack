@@ -1,0 +1,5 @@
+Tämä päivitys korjaa muutamia asioita, joista kerroit meille:
+
+- Muistutusilmoitukset eivät enää toista jokaista maksua muistutusikkunassasi joka kerta, kun lisäät, poistat tai muutat tilauksen suunnitelmaa
+- Etusivu merkitsee nyt kaikki viikon sisällä erääntyvät tulevat maksut, ei vain seuraavaa, kukin omalla päivälaskurillaan
+- Tilaussuunnitelman vaihtaminen esitäyttää nyt nykyisen hintasi ja näyttää, millä virallisella suunnitelmalla olet

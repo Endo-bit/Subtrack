@@ -1,0 +1,46 @@
+name: iOS TestFlight release
+
+# Manual trigger only — this uploads a real build to App Store Connect / TestFlight,
+# so it should never fire automatically on a push.
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'eas.json build profile to use'
+        required: false
+        default: 'production'
+
+jobs:
+  build-and-submit:
+    runs-on: macos-14
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install JS dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      # Runs the full EAS build (prebuild + Xcode archive/export) on this GitHub-hosted
+      # runner instead of Expo's cloud queue, so it does NOT consume EAS's monthly cloud
+      # build-minute quota. It still uses the iOS distribution certificate / provisioning
+      # profile already stored on the EAS project from the 1.0.0 release, so this must be
+      # run non-interactively — it will fail if those credentials aren't already saved
+      # server-side (see workflow README note).
+      - name: Build iOS locally via EAS
+        run: eas build --platform ios --profile "${{ inputs.profile }}" --local --non-interactive --output ./build.ipa
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      # Uploads the .ipa produced above to App Store Connect / TestFlight using the
+      # App Store Connect API key already linked to this EAS project.
+      - name: Submit to TestFlight
+        run: eas submit --platform ios --path ./build.ipa --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

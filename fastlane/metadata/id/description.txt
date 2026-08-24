@@ -1,0 +1,32 @@
+Berhenti membayar langganan yang sudah Anda lupakan.
+
+SubTrack melacak semua langganan Anda di satu tempat - streaming, software, keanggotaan gym, dan lainnya - dan memberi tahu Anda persis mana yang layak dipertahankan.
+
+DIAGNOSIS LANGGANAN
+Lakukan pemeriksaan cepat pada langganan apa pun: seberapa sering Anda menggunakannya, apakah Anda punya duplikat, apakah harganya sepadan. SubTrack memberi skor dan memberi tahu Anda untuk mempertahankan, meninjau, atau membatalkan - lalu melacak berapa banyak yang Anda hemat dari setiap pembatalan.
+
+JANGAN SAMPAI TERLEWAT TAGIHAN
+Lihat pembayaran mendatang di kalender, dapatkan pengingat sebelum Anda dikenai biaya, dan dapatkan notifikasi sebelum uji coba gratis berubah menjadi berbayar.
+
+ANALISIS PENGELUARAN (Pro)
+Rincian per kategori, tren pengeluaran dari waktu ke waktu, dan peringkat langganan Anda dengan biaya tertinggi - sehingga Anda selalu tahu ke mana uang Anda pergi.
+
+DIBANGUN UNTUK PRIVASI
+SubTrack menyimpan semuanya di perangkat Anda. Tanpa akun, tanpa cloud, tanpa pendaftaran. Data langganan Anda tidak pernah meninggalkan ponsel Anda - 100% lokal, dirancang ramah GDPR.
+
+DIBUAT UNTUK EROPA
+Lihat rincian PPN untuk Jerman dan Prancis, lacak langganan di berbagai mata uang dengan kurs nyata (Pro), dan cadangkan data Anda kapan pun Anda mau.
+
+LAINNYA
+- Logo dan foto khusus untuk setiap langganan
+- Ekspor CSV
+- Cadangan dan pemulihan data lokal
+- Pro membuka pelacakan langganan tanpa batas, pemeriksaan diagnosis tanpa batas, analitik, kurs nyata, cadangan data, dan logo khusus
+
+PRIVASI
+SubTrack tidak meminta login dan tidak menyinkronkan data langganan Anda ke server mana pun — data disimpan secara lokal di perangkat Anda. Lihat Kebijakan Privasi dan Ketentuan Penggunaan kami:
+Kebijakan Privasi: https://legal-wheat-pi.vercel.app/privacy.html
+Ketentuan Penggunaan: https://legal-wheat-pi.vercel.app/terms.html
+
+MEREK DAGANG
+Nama layanan dan logo yang ditampilkan di aplikasi (misalnya merek streaming, musik, dan software) hanya digunakan untuk membantu Anda mengidentifikasi langganan Anda sendiri dan tetap menjadi milik pemiliknya masing-masing. SubTrack tidak berafiliasi, didukung, atau disponsori oleh perusahaan mana pun tersebut. Jika Anda pemegang hak dan ingin nama atau logo dihapus, kirim email ke cutedogstoryai@gmail.com dan kami akan segera menanganinya.

@@ -1,0 +1,5 @@
+Bản cập nhật này khắc phục một vài điều bạn đã phản hồi với chúng tôi:
+
+- Thông báo nhắc nhở không còn lặp lại mỗi khoản thanh toán trong cửa sổ nhắc nhở mỗi khi bạn thêm, xóa, hoặc thay đổi gói của một đăng ký
+- Màn hình chính giờ đây đánh dấu mọi khoản thanh toán sắp tới đến hạn trong vòng một tuần, không chỉ khoản tiếp theo, mỗi khoản có số ngày đếm ngược riêng
+- Thay đổi gói đăng ký giờ đây tự động điền giá hiện tại của bạn và hiển thị bạn đang dùng gói chính thức nào

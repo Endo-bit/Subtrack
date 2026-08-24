@@ -1,0 +1,5 @@
+Aquesta actualització soluciona algunes coses que ens vau comentar:
+
+- Les notificacions de recordatori ja no repeteixen cada pagament dins la finestra de recordatori cada vegada que afegeixes, elimines o canvies el pla d'una subscripció
+- La pantalla d'inici ara mostra tots els pagaments propers en els pròxims set dies, no només el següent, cadascun amb el seu propi comptador de dies
+- Canviar el pla d'una subscripció ara emplena automàticament el preu actual i mostra en quin pla oficial et trobes

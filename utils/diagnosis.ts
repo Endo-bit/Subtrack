@@ -51,3 +51,22 @@ export function buildSession(sub: Subscription, answers: DiagnosisAnswers): Diag
   const score = diagnosisScore(answers);
   return { subscription: sub, answers, score };
 }
+
+/** A completed diagnosis, persisted so results can be revisited later. */
+export type DiagnosisRecord = {
+  subscriptionId: string;
+  subscriptionName: string;
+  score: number;
+  answers: DiagnosisAnswers;
+  createdAt: string;
+};
+
+export function toDiagnosisRecord(session: DiagnosisSession): DiagnosisRecord {
+  return {
+    subscriptionId: session.subscription.id,
+    subscriptionName: session.subscription.name,
+    score: session.score,
+    answers: session.answers,
+    createdAt: new Date().toISOString(),
+  };
+}

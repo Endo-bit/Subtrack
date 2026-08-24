@@ -1,0 +1,5 @@
+Denne oppdateringen fikser noen ting du fortalte oss om:
+
+- Påminnelsesvarsler gjentar ikke lenger hver betaling i påminnelsesvinduet ditt hver gang du legger til, fjerner eller endrer et abonnements plan
+- Hjemskjermen flagger nå alle kommende betalinger som forfaller innen en uke, ikke bare den neste, hver med sin egen dagteller
+- Å endre et abonnements plan fyller nå ut din nåværende pris på forhånd og viser hvilken offisiell plan du er på

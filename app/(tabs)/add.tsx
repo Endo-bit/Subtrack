@@ -202,6 +202,10 @@ export default function AddScreen() {
                 style={[styles.input, dark && styles.inputDark]}
               />
 
+              <Pressable onPress={() => router.push('/service/manual')} style={styles.manual}>
+                <Text style={styles.manualText}>{t.manual}</Text>
+              </Pressable>
+
               <Text style={[styles.sortLabel, dark && { color: theme.textMuted }]}>
                 {t.addListSortLabel}
               </Text>
@@ -278,12 +282,6 @@ export default function AddScreen() {
             </View>
           </Pressable>
         )}
-
-        ListFooterComponent={
-          <Pressable onPress={() => router.push('/service/manual')} style={styles.manual}>
-            <Text style={styles.manualText}>{t.manual}</Text>
-          </Pressable>
-        }
       />
 
       {/* ── A–Z index bar (alpha mode) ────────────────────────────────────── */}
@@ -312,7 +310,13 @@ export default function AddScreen() {
         style={[styles.topBtn, { opacity: topBtnOpacity }]}
         pointerEvents={showTopBtn ? 'auto' : 'none'}
       >
-        <Pressable onPress={scrollToTop} style={styles.topBtnInner} hitSlop={8}>
+        <Pressable
+          onPress={scrollToTop}
+          style={styles.topBtnInner}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel={t.scrollToTop}
+        >
           <Text style={styles.topBtnArrow}>↑</Text>
         </Pressable>
       </Animated.View>

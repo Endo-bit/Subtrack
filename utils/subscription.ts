@@ -1,19 +1,33 @@
 import { BillingCycle, Subscription } from '@/types/subscription';
+import { CurrencyCode } from '@/utils/currency';
 
-export const monthly = (s: Subscription) =>
-  s.billingCycle === 'annual'
-    ? s.defaultPrice / 12
-    : s.billingCycle === 'quarterly'
-      ? s.defaultPrice / 3
-      : s.defaultPrice;
+/** Converts a native amount (in `fromCurrency`, or the app's display currency if unset) to the display currency. No-op when omitted. */
+export type ConvertFn = (amount: number, fromCurrency?: CurrencyCode) => number;
 
-export const yearly = (s: Subscription) => monthly(s) * 12;
+/** True while `trialEndsAt` is set and in the future — billing is treated as €0 until then. */
+export function isInTrial(s: Subscription): boolean {
+  return !!s.trialEndsAt && new Date(s.trialEndsAt).getTime() > Date.now();
+}
+
+export const monthly = (s: Subscription, convert?: ConvertFn) => {
+  if (isInTrial(s)) return 0;
+  const raw =
+    s.billingCycle === 'annual'
+      ? s.defaultPrice / 12
+      : s.billingCycle === 'quarterly'
+        ? s.defaultPrice / 3
+        : s.defaultPrice;
+  return convert ? convert(raw, s.currency) : raw;
+};
+
+export const yearly = (s: Subscription, convert?: ConvertFn) => monthly(s, convert) * 12;
 
 /** Cost per day based on billing cycle. */
-export const dailyCost = (s: Subscription): number => {
-  if (s.billingCycle === 'annual') return s.defaultPrice / 365;
-  if (s.billingCycle === 'quarterly') return s.defaultPrice / 91;
-  return s.defaultPrice / 30;
+export const dailyCost = (s: Subscription, convert?: ConvertFn): number => {
+  if (isInTrial(s)) return 0;
+  const raw =
+    s.billingCycle === 'annual' ? s.defaultPrice / 365 : s.billingCycle === 'quarterly' ? s.defaultPrice / 91 : s.defaultPrice / 30;
+  return convert ? convert(raw, s.currency) : raw;
 };
 
 const monthIndex = (year: number, month: number) => year * 12 + month;
@@ -102,8 +116,29 @@ export function isDateOnOrAfterStart(
   return target >= startLocal;
 }
 
+/**
+ * First billing month with no charge, decided at cancel time from `nextBillingDate`:
+ * if this month's charge already went out (next occurrence rolled to a later month),
+ * the cutoff is next month; otherwise it's this month (nothing pending gets charged).
+ */
+export function computeCancelEffectiveMonth(sub: Subscription, now: Date = new Date()): string {
+  const next = new Date(sub.nextBillingDate);
+  const alreadyBilledThisMonth =
+    next.getFullYear() !== now.getFullYear() || next.getMonth() !== now.getMonth();
+  const cutoffMonth = now.getMonth() + (alreadyBilledThisMonth ? 1 : 0);
+  return startOfDay(new Date(now.getFullYear(), cutoffMonth, 1)).toISOString();
+}
+
 export function chargesInMonth(sub: Subscription, year: number, month: number): boolean {
   if (!isMonthOnOrAfterStart(sub, year, month)) return false;
+
+  if (sub.isCancelled) {
+    const cutoff = sub.cancelEffectiveMonth
+      ? new Date(sub.cancelEffectiveMonth)
+      : subscriptionStartedAt(sub);
+    if (Number.isNaN(cutoff.getTime())) return false;
+    if (monthIndex(year, month) >= monthIndex(cutoff.getFullYear(), cutoff.getMonth())) return false;
+  }
 
   const anchor = billingAnchorDate(sub);
   if (Number.isNaN(anchor.getTime())) return false;
@@ -125,9 +160,21 @@ export function chargesInMonth(sub: Subscription, year: number, month: number): 
   }
 }
 
-export function chargeAmountInMonth(sub: Subscription, year: number, month: number): number {
+export function chargeAmountInMonth(
+  sub: Subscription,
+  year: number,
+  month: number,
+  convert?: ConvertFn,
+): number {
   if (!chargesInMonth(sub, year, month)) return 0;
-  return sub.defaultPrice;
+  if (sub.trialEndsAt) {
+    const billDay = billingDayInMonth(sub, year, month);
+    if (billDay !== null) {
+      const occurs = new Date(year, month, billDay);
+      if (occurs.getTime() < new Date(sub.trialEndsAt).getTime()) return 0;
+    }
+  }
+  return convert ? convert(sub.defaultPrice, sub.currency) : sub.defaultPrice;
 }
 
 export type MonthTrendRow = {
@@ -143,7 +190,7 @@ export type MonthBreakdownItem = {
 };
 
 export function billingDayInMonth(sub: Subscription, year: number, month: number): number | null {
-  if (sub.isCancelled || !chargesInMonth(sub, year, month)) return null;
+  if (!chargesInMonth(sub, year, month)) return null;
   const anchor = billingAnchorDate(sub);
   if (Number.isNaN(anchor.getTime())) return null;
   const lastDay = new Date(year, month + 1, 0).getDate();
@@ -158,23 +205,21 @@ export function subsOnBillingDay(
   month: number,
   day: number,
 ): Subscription[] {
-  return subs.filter((s) => {
-    if (s.isCancelled) return false;
-    const billDay = billingDayInMonth(s, year, month);
-    return billDay === day;
-  });
+  return subs.filter((s) => billingDayInMonth(s, year, month) === day);
 }
 
 export function spendingBreakdownForMonth(
   subs: Subscription[],
   year: number,
   month: number,
+  convert?: ConvertFn,
 ): MonthBreakdownItem[] {
-  const active = subs.filter((s) => !s.isCancelled);
-  return active
+  // No isCancelled filter here — chargesInMonth() already zeroes out months at/after
+  // a subscription's cancellation cutoff, so past months stay accurate after cancelling.
+  return subs
     .map((subscription) => ({
       subscription,
-      amount: chargeAmountInMonth(subscription, year, month),
+      amount: chargeAmountInMonth(subscription, year, month, convert),
     }))
     .filter((row) => row.amount > 0)
     .sort((a, b) => b.amount - a.amount);
@@ -184,8 +229,8 @@ export function spendingTrendMonths(
   subs: Subscription[],
   monthCount = 6,
   locale?: string,
+  convert?: ConvertFn,
 ): MonthTrendRow[] {
-  const active = subs.filter((s) => !s.isCancelled);
   const now = new Date();
   const rows: MonthTrendRow[] = [];
 
@@ -193,9 +238,29 @@ export function spendingTrendMonths(
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const year = d.getFullYear();
     const month = d.getMonth();
-    const total = active.reduce((sum, s) => sum + chargeAmountInMonth(s, year, month), 0);
+    const total = subs.reduce((sum, s) => sum + chargeAmountInMonth(s, year, month, convert), 0);
     rows.push({
       label: d.toLocaleString(locale, { month: 'short' }),
+      total,
+      year,
+      month,
+    });
+  }
+  return rows;
+}
+
+/** Jan–Dec spending for a specific calendar year, for browsing past years. */
+export function spendingTrendForYear(
+  subs: Subscription[],
+  year: number,
+  locale?: string,
+  convert?: ConvertFn,
+): MonthTrendRow[] {
+  const rows: MonthTrendRow[] = [];
+  for (let month = 0; month < 12; month++) {
+    const total = subs.reduce((sum, s) => sum + chargeAmountInMonth(s, year, month, convert), 0);
+    rows.push({
+      label: new Date(year, month, 1).toLocaleString(locale, { month: 'short' }),
       total,
       year,
       month,

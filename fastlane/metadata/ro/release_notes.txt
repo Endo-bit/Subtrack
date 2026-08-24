@@ -1,0 +1,5 @@
+Această actualizare rezolvă câteva lucruri pe care ni le-ai semnalat:
+
+- Notificările de tip memento nu mai repetă fiecare plată din fereastra de reamintire de fiecare dată când adaugi, elimini sau schimbi planul unui abonament
+- Ecranul principal marchează acum toate plățile viitoare scadente în următoarea săptămână, nu doar următoarea, fiecare cu propriul contor de zile
+- Schimbarea planului unui abonament completează acum automat prețul tău actual și arată pe ce plan oficial te afli

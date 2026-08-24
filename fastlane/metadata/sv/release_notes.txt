@@ -1,0 +1,5 @@
+Den här uppdateringen åtgärdar några saker du berättade för oss om:
+
+- Påminnelsenotiser upprepar inte längre varje betalning inom ditt påminnelsefönster varje gång du lägger till, tar bort eller ändrar planen för en prenumeration
+- Startskärmen flaggar nu alla kommande betalningar som förfaller inom en vecka, inte bara nästa, var och en med sin egen dagräknare
+- Att ändra en prenumerations plan förifyller nu ditt aktuella pris och visar vilken officiell plan du har

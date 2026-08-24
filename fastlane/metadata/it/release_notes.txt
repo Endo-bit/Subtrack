@@ -1,0 +1,5 @@
+Questo aggiornamento risolve alcuni problemi che ci avete segnalato:
+
+- Le notifiche di promemoria non ripetono più ogni pagamento nella finestra di promemoria ogni volta che aggiungi, rimuovi o cambi il piano di un abbonamento
+- La schermata home ora segnala ogni pagamento in arrivo entro una settimana, non solo il prossimo, ciascuno con il proprio conto alla rovescia
+- Cambiare il piano di un abbonamento ora precompila il prezzo attuale e mostra su quale piano ufficiale ti trovi

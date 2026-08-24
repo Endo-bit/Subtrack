@@ -1,10 +1,18 @@
+import { BlurView } from 'expo-blur';
+
 import { router } from 'expo-router';
 
-import React, { useMemo, useState } from 'react';
+import { Lock } from 'lucide-react-native';
+
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
 
+import { MomDelta } from '@/components/MomDelta';
+
 import { MonthBreakdownSheet } from '@/components/MonthBreakdownSheet';
+
+import { SavingsCard } from '@/components/SavingsCard';
 
 import { ServiceLogo } from '@/components/ServiceLogo';
 
@@ -14,6 +22,8 @@ import { useSubTrack } from '@/context/SubTrackContext';
 
 import { theme } from '@/constants/theme';
 
+import { useFocusedNow } from '@/hooks/useFocusedNow';
+
 import { Strings } from '@/i18n/strings';
 
 import { Category } from '@/types/subscription';
@@ -22,13 +32,14 @@ import { currencySymbol, formatMoney } from '@/utils/currency';
 
 import {
 
+  chargeAmountInMonth,
   dailyCost,
   monthly,
   MonthTrendRow,
 
   spendingBreakdownForMonth,
 
-  spendingTrendMonths,
+  spendingTrendForYear,
 
 } from '@/utils/subscription';
 
@@ -78,21 +89,61 @@ const catLabelKey: Record<Category, keyof Strings> = {
 
 export default function AnalysisScreen() {
 
-  const { subscriptions, monthlyTotal, t, isPro, savedTotal, locale, currency } = useSubTrack();
+  const {
+    subscriptions,
+    monthlyTotal,
+    t,
+    isPro,
+    locale,
+    currency,
+    diagnosisHistory,
+    recordDiagnosis,
+    convert,
+    cancelSubscription,
+  } = useSubTrack();
 
   const money = (n: number) => formatMoney(n, currency);
 
   const dark = useColorScheme() === 'dark';
 
   const active = subscriptions.filter((s) => !s.isCancelled);
+  const cancelledSubs = subscriptions.filter((s) => s.isCancelled);
 
-  const ranked = [...active].sort((a, b) => monthly(b) - monthly(a));
+  const ranked = [...active].sort((a, b) => monthly(b, convert) - monthly(a, convert));
 
-  const trend = useMemo(() => spendingTrendMonths(active, 12, locale), [active, locale]);
+  // Resynced on focus so the trend chart and month totals don't go stale if the
+  // app is left open across a month/year boundary.
+  const today = useFocusedNow();
+  const thisYear = today.getFullYear();
+  const [trendYear, setTrendYear] = useState(thisYear);
+  // Tracks the `thisYear` value trendYear was last auto-following, so we only
+  // fast-forward trendYear when the user hadn't manually browsed to a past year.
+  const followedYearRef = useRef(thisYear);
 
+  useEffect(() => {
+    if (thisYear !== followedYearRef.current) {
+      setTrendYear((prev) => (prev === followedYearRef.current ? thisYear : prev));
+      followedYearRef.current = thisYear;
+    }
+  }, [thisYear]);
+
+  // Uses the full subscription list (not just `active`) so months before a
+  // cancellation's cutoff still show what was actually charged back then.
+  const trend = useMemo(
+    () => spendingTrendForYear(subscriptions, trendYear, locale, convert),
+    [subscriptions, trendYear, locale, convert],
+  );
   const maxTrend = Math.max(...trend.map((m) => m.total), 1);
 
-  const lastMonthTotal = trend.length >= 2 ? trend[trend.length - 2].total : 0;
+  const lastMonthTotal = useMemo(() => {
+    const d = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    return subscriptions.reduce(
+      (sum, s) => sum + chargeAmountInMonth(s, d.getFullYear(), d.getMonth(), convert),
+      0,
+    );
+  }, [subscriptions, convert, today]);
+
+  const momPct = lastMonthTotal > 0 ? ((monthlyTotal - lastMonthTotal) / lastMonthTotal) * 100 : null;
 
 
 
@@ -106,9 +157,9 @@ export default function AnalysisScreen() {
 
     if (!breakdownMonth) return [];
 
-    return spendingBreakdownForMonth(active, breakdownMonth.year, breakdownMonth.month);
+    return spendingBreakdownForMonth(subscriptions, breakdownMonth.year, breakdownMonth.month, convert);
 
-  }, [active, breakdownMonth]);
+  }, [subscriptions, breakdownMonth, convert]);
 
 
 
@@ -140,6 +191,8 @@ export default function AnalysisScreen() {
 
 
 
+      {/* Diagnosis stays free (1 check per subscription; unlimited on Pro — enforced inside
+          SubscriptionDiagnosis via diagnosisHistory). Only the analytics below is Pro-gated. */}
       <Pressable style={styles.diagnosisCard} onPress={() => setDiagnosisOpen(true)}>
 
         <Text style={styles.diagnosisTitle}>{t.diagnosis}</Text>
@@ -150,6 +203,12 @@ export default function AnalysisScreen() {
 
       </Pressable>
 
+      <SavingsCard cancelledSubs={cancelledSubs} currency={currency} convert={convert} t={t} />
+
+      <View style={styles.proSection}>
+
+      <View pointerEvents={isPro ? 'auto' : 'none'} style={styles.proSectionInner}>
+
 
 
       <View style={styles.card}>
@@ -158,7 +217,7 @@ export default function AnalysisScreen() {
 
         {cats.map((c) => {
 
-          const amount = active.filter((s) => s.category === c).reduce((a, s) => a + monthly(s), 0);
+          const amount = active.filter((s) => s.category === c).reduce((a, s) => a + monthly(s, convert), 0);
 
           const pct = monthlyTotal ? (amount / monthlyTotal) * 100 : 0;
 
@@ -196,6 +255,8 @@ export default function AnalysisScreen() {
 
           <Text style={styles.big}>{money(monthlyTotal)}</Text>
 
+          <MomDelta pct={momPct} t={t} />
+
         </View>
 
         <View style={styles.mini}>
@@ -212,7 +273,38 @@ export default function AnalysisScreen() {
 
       <View style={styles.card}>
 
-        <Text style={styles.cardTitle}>{t.spendingTrend}</Text>
+        <View style={styles.trendHeader}>
+
+          <Text style={styles.cardTitle}>{t.spendingTrend}</Text>
+
+          <View style={styles.yearNav}>
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t.prevYear}
+              onPress={() => setTrendYear((y) => y - 1)}
+              style={styles.yearBtn}
+              hitSlop={8}
+            >
+              <Text style={styles.yearBtnText}>‹</Text>
+            </Pressable>
+
+            <Text style={styles.yearLabel}>{trendYear}</Text>
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t.nextYear}
+              onPress={() => setTrendYear((y) => y + 1)}
+              disabled={trendYear >= thisYear}
+              style={[styles.yearBtn, trendYear >= thisYear && styles.yearBtnDisabled]}
+              hitSlop={8}
+            >
+              <Text style={styles.yearBtnText}>›</Text>
+            </Pressable>
+
+          </View>
+
+        </View>
 
         <Text style={styles.trendHint}>{t.trendTapHint}</Text>
 
@@ -248,15 +340,11 @@ export default function AnalysisScreen() {
 
               </Text>
 
-              {m.total > 0 && (
+              <Text style={[styles.trendAmount, m.total === 0 && styles.trendAmountHidden]} numberOfLines={1}>
 
-                <Text style={styles.trendAmount} numberOfLines={1}>
+                {m.total > 0 ? `${currencySymbol(currency)}${Math.round(m.total)}` : '·'}
 
-                  {currencySymbol(currency)}{Math.round(m.total)}
-
-                </Text>
-
-              )}
+              </Text>
 
             </Pressable>
 
@@ -292,7 +380,7 @@ export default function AnalysisScreen() {
 
                 <Text style={styles.rankSub}>
 
-                  {money(dailyCost(s))}
+                  {money(dailyCost(s, convert))}
 
                   {t.perDay}
 
@@ -300,7 +388,7 @@ export default function AnalysisScreen() {
 
               </View>
 
-              <Text style={styles.rankPrice}>{money(monthly(s))}</Text>
+              <Text style={styles.rankPrice}>{money(monthly(s, convert))}</Text>
 
             </View>
 
@@ -310,31 +398,28 @@ export default function AnalysisScreen() {
 
       </View>
 
-
+      </View>
 
       {!isPro && (
-
-        <Pressable style={styles.pro} onPress={() => router.push({ pathname: '/paywall', params: { source: 'analysis' } })}>
-
-          <Text style={styles.proTitle}>{t.pro}</Text>
-
-          <Text style={styles.proText}>{t.proTrendHint}</Text>
-
-        </Pressable>
-
+        <View style={StyleSheet.absoluteFill} pointerEvents="auto">
+          <BlurView intensity={60} tint={dark ? 'dark' : 'light'} style={StyleSheet.absoluteFill} />
+          <View style={styles.lockOverlay}>
+            <View style={styles.lockIconBadge}>
+              <Lock size={26} color={theme.accent} strokeWidth={1.75} />
+            </View>
+            <Text style={[styles.lockTitle, dark && styles.light]}>{t.analyticsLockedTitle}</Text>
+            <Text style={styles.lockBody}>{t.analyticsLockedBody}</Text>
+            <Pressable
+              style={styles.lockCta}
+              onPress={() => router.push({ pathname: '/paywall', params: { source: 'analysis-lock' } })}
+            >
+              <Text style={styles.lockCtaText}>{t.pro}</Text>
+            </Pressable>
+          </View>
+        </View>
       )}
 
-
-
-      {savedTotal > 0 && (
-
-        <Text style={styles.saved}>
-
-          {t.saved}: {money(savedTotal)}
-
-        </Text>
-
-      )}
+      </View>
 
 
 
@@ -368,6 +453,28 @@ export default function AnalysisScreen() {
 
         t={t}
 
+        locale={locale}
+
+        isPro={isPro}
+
+        diagnosisHistory={diagnosisHistory}
+
+        onRecordDiagnosis={recordDiagnosis}
+
+        onCancelSubscription={cancelSubscription}
+
+        currency={currency}
+
+        convert={convert}
+
+        onOpenPaywall={() => {
+
+          setDiagnosisOpen(false);
+
+          router.push({ pathname: '/paywall', params: { source: 'diagnosis' } });
+
+        }}
+
       />
 
     </ScrollView>
@@ -381,6 +488,10 @@ export default function AnalysisScreen() {
 const styles = StyleSheet.create({
 
   screen: { flex: 1, backgroundColor: theme.cream },
+
+  proSection: { position: 'relative' },
+
+  proSectionInner: { gap: 16 },
 
   dark: { backgroundColor: theme.creamDark },
 
@@ -432,6 +543,25 @@ const styles = StyleSheet.create({
 
   big: { fontSize: 22, fontWeight: '700', color: theme.accent, marginTop: 6 },
 
+  trendHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+
+  yearNav: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+
+  yearBtn: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: theme.accentSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  yearBtnDisabled: { opacity: 0.35 },
+
+  yearBtnText: { fontSize: 16, fontWeight: '700', color: theme.accent, lineHeight: 18 },
+
+  yearLabel: { fontSize: 14, fontWeight: '700', color: theme.text, minWidth: 40, textAlign: 'center' },
+
   trendHint: { fontSize: 12, color: theme.textMuted, marginTop: -4 },
 
   trendScroll: { height: 140, alignItems: 'flex-end', gap: 6, paddingTop: 8, paddingRight: 4 },
@@ -454,6 +584,8 @@ const styles = StyleSheet.create({
 
   trendAmount: { fontSize: 8, color: theme.text, fontWeight: '700' },
 
+  trendAmountHidden: { opacity: 0 },
+
   rankRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 6 },
 
   rankNum: { width: 20, fontWeight: '700', color: theme.textMuted, fontSize: 14 },
@@ -468,13 +600,37 @@ const styles = StyleSheet.create({
 
   empty: { color: theme.textMuted },
 
-  pro: { backgroundColor: theme.text, borderRadius: 18, padding: 18 },
+  lockOverlay: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 36,
+    gap: 10,
+  },
 
-  proTitle: { color: '#fff', fontSize: 17, fontWeight: '700' },
+  lockIconBadge: {
+    width: 60,
+    height: 60,
+    borderRadius: 20,
+    backgroundColor: theme.accentSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+  },
 
-  proText: { color: '#C4B8B0', marginTop: 6 },
+  lockTitle: { fontSize: 20, fontWeight: '700', color: theme.text, textAlign: 'center' },
 
-  saved: { fontSize: 18, fontWeight: '700', color: theme.success, textAlign: 'center' },
+  lockBody: { fontSize: 14, color: theme.textMuted, textAlign: 'center', lineHeight: 20 },
+
+  lockCta: {
+    marginTop: 10,
+    backgroundColor: theme.accent,
+    borderRadius: 9999,
+    paddingVertical: 13,
+    paddingHorizontal: 30,
+  },
+
+  lockCtaText: { color: '#FFFFFF', fontWeight: '700', fontSize: 15 },
 
 });
 

@@ -15,8 +15,11 @@ import { ServiceLogo } from '@/components/ServiceLogo';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { theme } from '@/constants/theme';
 import { BillingCycle, Category, PresetService, ServicePlan, Subscription } from '@/types/subscription';
-import { currencySymbol, formatMoney } from '@/utils/currency';
+import { CURRENCIES, currencySymbol, formatMoney } from '@/utils/currency';
+import { pickCustomIcon } from '@/utils/iconPicker';
 import { computeNextBillingFromStart, dailyCost, monthly } from '@/utils/subscription';
+
+const TRIAL_DAY_OPTIONS = [7, 14, 30, 60, 90] as const;
 
 const MANUAL_SERVICE: PresetService = {
   id: 'manual',
@@ -37,7 +40,7 @@ function startOfDay(d: Date): Date {
 
 export default function ServiceAddScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { t, locale, currency, addSubscription, presetServices } = useSubTrack();
+  const { t, locale, currency, isPro, addSubscription, presetServices, convert } = useSubTrack();
   const dark = useColorScheme() === 'dark';
 
   const isManual = id === 'manual';
@@ -58,14 +61,50 @@ export default function ServiceAddScreen() {
   const [name, setName] = useState(service.name);
   const [contractStart, setContractStart] = useState(() => startOfDay(new Date()));
   const [note, setNote] = useState('');
+  const [customLogo, setCustomLogo] = useState<string | undefined>(undefined);
+  const [freeTrial, setFreeTrial] = useState(false);
+  const [trialDays, setTrialDays] = useState<number>(7);
+  const [subCurrency, setSubCurrency] = useState(currency);
 
   const selectedPlan = plans.find((p) => p.id === selectedPlanId);
+  const displayService: PresetService = { ...service, logo: customLogo ?? service.logo };
 
   const pickPlan = (plan: ServicePlan) => {
     setSelectedPlanId(plan.id);
     setCustomMode(false);
     setPrice(String(plan.price));
     setCycle(plan.billingCycle ?? service.billingCycle);
+  };
+
+  const cycleMonths = (c: BillingCycle) => (c === 'annual' ? 12 : c === 'quarterly' ? 3 : 1);
+
+  /** Re-prices a plan for a different billing cycle via its monthly-equivalent (e.g. 9.99/mo → 119.88/yr). */
+  const priceForCycle = (basePrice: number, baseCycle: BillingCycle, newCycle: BillingCycle) => {
+    const monthlyEquivalent = basePrice / cycleMonths(baseCycle);
+    return Math.round(monthlyEquivalent * cycleMonths(newCycle) * 100) / 100;
+  };
+
+  const pickCycle = (next: BillingCycle) => {
+    if (next === cycle) return;
+    const numeric = Number(price.replace(',', '.')) || 0;
+    setPrice(String(priceForCycle(numeric, cycle, next)));
+    setCycle(next);
+    // Preset plans don't carry annual/quarterly pricing — once the user picks a
+    // different cycle, the price becomes an editable estimate (customMode).
+    if (!isManual && !customMode) {
+      setCustomMode(true);
+      setSelectedPlanId(null);
+    }
+  };
+
+  const pickIcon = async () => {
+    if (!isPro) {
+      router.push({ pathname: '/paywall', params: { source: 'custom-icon' } });
+      return;
+    }
+    const result = await pickCustomIcon();
+    if (result.status === 'picked') setCustomLogo(result.uri);
+    else if (result.status === 'denied') Alert.alert(t.photoPermissionDenied);
   };
 
   const draftSub = (): Subscription | null => {
@@ -86,12 +125,17 @@ export default function ServiceAddScreen() {
       customPrice: customMode,
       planChangedAt: startedAt,
       plans: service.plans,
+      logo: customLogo ?? service.logo,
+      trialEndsAt: freeTrial
+        ? new Date(contractStart.getTime() + trialDays * 86400000).toISOString()
+        : undefined,
+      currency: isPro ? subCurrency : undefined,
     };
   };
 
   const preview = draftSub();
-  const previewDaily = preview ? dailyCost(preview) : 0;
-  const previewMonthly = preview ? monthly(preview) : 0;
+  const previewDaily = preview ? dailyCost(preview, convert) : 0;
+  const previewMonthly = preview ? monthly(preview, convert) : 0;
   const money = (n: number) => formatMoney(n, currency);
 
   const save = () => {
@@ -122,10 +166,18 @@ export default function ServiceAddScreen() {
       </Pressable>
 
       <View style={[styles.hero, dark && styles.cardDark]}>
-        <ServiceLogo service={service} size={56} />
+        <ServiceLogo service={displayService} size={56} />
         <Text style={[styles.heroName, dark && styles.textLight]}>
           {isManual ? t.manual : service.name}
         </Text>
+        {isManual && (
+          <Pressable onPress={pickIcon} accessibilityRole="button" accessibilityLabel={t.choosePhoto}>
+            <Text style={styles.choosePhotoText}>
+              {t.choosePhoto}
+              {!isPro ? ` · ${t.pro}` : ''}
+            </Text>
+          </Pressable>
+        )}
       </View>
 
       {isManual && (
@@ -185,7 +237,7 @@ export default function ServiceAddScreen() {
 
       {(customMode || isManual) && (
         <View style={styles.section}>
-          <Text style={[styles.label, dark && styles.textLight]}>{`${t.price} (${currencySymbol(currency)})`}</Text>
+          <Text style={[styles.label, dark && styles.textLight]}>{`${t.price} (${currencySymbol(subCurrency)})`}</Text>
           <TextInput
             value={price}
             onChangeText={setPrice}
@@ -197,57 +249,82 @@ export default function ServiceAddScreen() {
         </View>
       )}
 
+      <View style={styles.section}>
+        <Text style={[styles.label, dark && styles.textLight]}>
+          {t.currency}
+          {!isPro ? ` · ${t.pro}` : ''}
+        </Text>
+        <View style={styles.chips}>
+          {CURRENCIES.map((c) => (
+            <Pressable
+              key={c.code}
+              onPress={() => {
+                if (!isPro) {
+                  router.push({ pathname: '/paywall', params: { source: 'currency' } });
+                  return;
+                }
+                setSubCurrency(c.code);
+              }}
+              style={[styles.chip, subCurrency === c.code && styles.chipActive]}
+            >
+              <Text style={[styles.chipText, subCurrency === c.code && styles.chipTextActive]}>
+                {c.symbol} {c.code}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={[styles.label, dark && styles.textLight]}>{t.cycle}</Text>
+        <View style={styles.chips}>
+          {(
+            [
+              { key: 'monthly', label: t.cycleMonthly },
+              { key: 'quarterly', label: t.cycleQuarterly },
+              { key: 'annual', label: t.cycleAnnual },
+            ] as { key: BillingCycle; label: string }[]
+          ).map((c) => (
+            <Pressable
+              key={c.key}
+              onPress={() => pickCycle(c.key)}
+              style={[styles.chip, cycle === c.key && styles.chipActive]}
+            >
+              <Text style={[styles.chipText, cycle === c.key && styles.chipTextActive]}>
+                {c.label}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+
       {isManual && (
-        <>
-          <View style={styles.section}>
-            <Text style={[styles.label, dark && styles.textLight]}>{t.cycle}</Text>
-            <View style={styles.chips}>
-              {(
-                [
-                  { key: 'monthly', label: t.cycleMonthly },
-                  { key: 'quarterly', label: t.cycleQuarterly },
-                  { key: 'annual', label: t.cycleAnnual },
-                ] as { key: BillingCycle; label: string }[]
-              ).map((c) => (
-                <Pressable
-                  key={c.key}
-                  onPress={() => setCycle(c.key)}
-                  style={[styles.chip, cycle === c.key && styles.chipActive]}
-                >
-                  <Text style={[styles.chipText, cycle === c.key && styles.chipTextActive]}>
-                    {c.label}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
+        <View style={styles.section}>
+          <Text style={[styles.label, dark && styles.textLight]}>{t.category}</Text>
+          <View style={styles.chips}>
+            {(
+              [
+                { key: 'streaming', label: t.catStreaming },
+                { key: 'music', label: t.catMusic },
+                { key: 'productivity', label: t.catProductivity },
+                { key: 'gaming', label: t.catGaming },
+                { key: 'health', label: t.catHealth },
+                { key: 'news', label: t.catNews },
+                { key: 'other', label: t.catOther },
+              ] as { key: Category; label: string }[]
+            ).map((c) => (
+              <Pressable
+                key={c.key}
+                onPress={() => setCategory(c.key)}
+                style={[styles.chip, category === c.key && styles.chipActive]}
+              >
+                <Text style={[styles.chipText, category === c.key && styles.chipTextActive]}>
+                  {c.label}
+                </Text>
+              </Pressable>
+            ))}
           </View>
-          <View style={styles.section}>
-            <Text style={[styles.label, dark && styles.textLight]}>{t.category}</Text>
-            <View style={styles.chips}>
-              {(
-                [
-                  { key: 'streaming', label: t.catStreaming },
-                  { key: 'music', label: t.catMusic },
-                  { key: 'productivity', label: t.catProductivity },
-                  { key: 'gaming', label: t.catGaming },
-                  { key: 'health', label: t.catHealth },
-                  { key: 'news', label: t.catNews },
-                  { key: 'other', label: t.catOther },
-                ] as { key: Category; label: string }[]
-              ).map((c) => (
-                <Pressable
-                  key={c.key}
-                  onPress={() => setCategory(c.key)}
-                  style={[styles.chip, category === c.key && styles.chipActive]}
-                >
-                  <Text style={[styles.chipText, category === c.key && styles.chipTextActive]}>
-                    {c.label}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
-          </View>
-        </>
+        </View>
       )}
 
       <BillingDatePicker
@@ -257,6 +334,38 @@ export default function ServiceAddScreen() {
         locale={locale}
         dark={dark}
       />
+
+      <View style={styles.section}>
+        <Pressable
+          style={styles.trialToggle}
+          onPress={() => setFreeTrial((v) => !v)}
+          accessibilityRole="switch"
+          accessibilityState={{ checked: freeTrial }}
+        >
+          <View style={[styles.checkbox, freeTrial && styles.checkboxActive]}>
+            {freeTrial && <Text style={styles.checkboxMark}>✓</Text>}
+          </View>
+          <Text style={[styles.label, dark && styles.textLight]}>{t.freeTrial}</Text>
+        </Pressable>
+        {freeTrial && (
+          <>
+            <Text style={[styles.label, dark && styles.textLight]}>{t.freeTrialDuration}</Text>
+            <View style={styles.chips}>
+              {TRIAL_DAY_OPTIONS.map((d) => (
+                <Pressable
+                  key={d}
+                  onPress={() => setTrialDays(d)}
+                  style={[styles.chip, trialDays === d && styles.chipActive]}
+                >
+                  <Text style={[styles.chipText, trialDays === d && styles.chipTextActive]}>
+                    {d} {t.freeTrialDaysUnit}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </>
+        )}
+      </View>
 
       {preview && (
         <View style={styles.costRow}>
@@ -310,6 +419,19 @@ const styles = StyleSheet.create({
   },
   cardDark: { backgroundColor: theme.cardDark },
   heroName: { fontSize: 22, fontWeight: '700', color: theme.text },
+  choosePhotoText: { color: theme.accent, fontWeight: '600', fontSize: 13 },
+  trialToggle: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 7,
+    borderWidth: 1.5,
+    borderColor: theme.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxActive: { backgroundColor: theme.accent, borderColor: theme.accent },
+  checkboxMark: { color: '#FFF', fontSize: 13, fontWeight: '800' },
   textLight: { color: '#F5EDE8' },
   section: { gap: 8 },
   label: { fontWeight: '600', color: theme.text, fontSize: 14 },

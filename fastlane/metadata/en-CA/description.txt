@@ -1,0 +1,32 @@
+Stop paying for subscriptions you forgot about.
+
+SubTrack tracks every subscription in one place - streaming, software, gym memberships, and more - and tells you exactly what's worth keeping.
+
+SUBSCRIPTION DIAGNOSIS
+Run a quick check-in on any subscription: how often you use it, whether you have a duplicate, if the price is worth it. SubTrack scores it and tells you to keep, review, or cancel - then tracks how much you've saved from every cancellation.
+
+NEVER MISS A CHARGE
+See upcoming payments on a calendar, get reminders before you're charged, and get notified before free trials convert to paid.
+
+SPENDING ANALYSIS (Pro)
+Category breakdown, spending trends over time, and your highest-cost subscriptions ranked - so you always know where your money goes.
+
+BUILT FOR PRIVACY
+SubTrack keeps everything on your device. No account, no cloud, no sign-up. Your subscription data never leaves your phone - 100% local, GDPR-friendly by design.
+
+MADE FOR EUROPE
+See VAT breakdowns for Germany and France, track subscriptions across multiple currencies with real-time exchange rates (Pro), and back up your data whenever you want.
+
+EVERYTHING ELSE
+- Custom logos and photos for any subscription
+- CSV export
+- Local data backup and restore
+- Pro unlocks unlimited subscription tracking, unlimited diagnosis check-ins, analytics, real-time exchange rates, backup, and custom logos
+
+PRIVACY
+SubTrack doesn't ask for a login and doesn't sync your subscription data to any server — it's stored locally on your device. See our Privacy Policy and Terms of Use:
+Privacy Policy: https://legal-wheat-pi.vercel.app/privacy.html
+Terms of Use: https://legal-wheat-pi.vercel.app/terms.html
+
+TRADEMARKS
+Service names and logos shown in the app (e.g. streaming, music, and software brands) are used solely to help you identify your own subscriptions and remain the property of their respective owners. SubTrack is not affiliated with, endorsed by, or sponsored by any of these companies. If you are a rights holder and want a name or logo removed, email us at cutedogstoryai@gmail.com and we'll take care of it promptly.

@@ -1,0 +1,32 @@
+Slutt å betale for abonnementer du har glemt.
+
+SubTrack holder oversikt over alle abonnementene dine på ett sted - strømming, programvare, treningsabonnementer og mer - og viser deg nøyaktig hva som er verdt å beholde.
+
+ABONNEMENTSDIAGNOSE
+Kjør en rask sjekk av et hvilket som helst abonnement: hvor ofte du bruker det, om du har en duplikat, om prisen er verdt det. SubTrack gir det en poengsum og forteller deg om du bør beholde, vurdere på nytt eller si opp - og holder oversikt over hvor mye du har spart på hver oppsigelse.
+
+GÅ ALDRI GLIPP AV EN BETALING
+Se kommende betalinger i en kalender, få påminnelser før du blir belastet, og bli varslet før gratis prøveperioder går over til betaling.
+
+FORBRUKSANALYSE (Pro)
+Kategorifordeling, forbrukstrender over tid og dine dyreste abonnementer rangert - så du alltid vet hvor pengene dine går.
+
+BYGGET FOR PERSONVERN
+SubTrack lagrer alt kun på enheten din. Ingen konto, ingen sky, ingen registrering. Abonnementsdataene dine forlater aldri telefonen din - 100% lokalt, GDPR-vennlig fra bunnen av.
+
+LAGET FOR EUROPA
+Se MVA-oppdelinger for Tyskland og Frankrike, spor abonnementer på tvers av flere valutaer med sanntids vekslingskurser (Pro), og ta sikkerhetskopi av dataene dine når du vil.
+
+ALT DET ANDRE
+- Egne logoer og bilder for ethvert abonnement
+- CSV-eksport
+- Lokal sikkerhetskopiering og gjenoppretting av data
+- Pro låser opp ubegrenset abonnementssporing, ubegrensede diagnosesjekker, analyse, sanntids vekslingskurser, sikkerhetskopiering og egne logoer
+
+PERSONVERN
+SubTrack ber aldri om innlogging og synkroniserer aldri abonnementsdataene dine til en server - alt lagres lokalt på enheten din. Se vår personvernerklæring og våre bruksvilkår:
+Personvernerklæring: https://legal-wheat-pi.vercel.app/privacy.html
+Bruksvilkår: https://legal-wheat-pi.vercel.app/terms.html
+
+VAREMERKER
+Navn og logoer for tjenester som vises i appen (f.eks. strømme-, musikk- og programvaremerker) brukes utelukkende for å hjelpe deg med å identifisere dine egne abonnementer og forblir eiendommen til sine respektive eiere. SubTrack er ikke tilknyttet, godkjent av eller sponset av noen av disse selskapene. Hvis du er rettighetshaver og ønsker et navn eller en logo fjernet, send oss en e-post på cutedogstoryai@gmail.com, så ordner vi det raskt.

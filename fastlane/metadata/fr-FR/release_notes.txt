@@ -1,0 +1,5 @@
+Cette mise à jour corrige plusieurs points que vous nous avez signalés :
+
+- Les notifications de rappel ne répètent plus chaque paiement de votre fenêtre de rappel à chaque ajout, suppression ou changement de forfait d'un abonnement
+- L'écran d'accueil signale désormais chaque paiement à venir dans les sept prochains jours, pas seulement le prochain, chacun avec son propre compte à rebours en jours
+- Le changement de forfait d'un abonnement pré-remplit désormais votre prix actuel et indique sur quel forfait officiel vous êtes

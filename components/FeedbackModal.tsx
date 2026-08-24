@@ -115,6 +115,9 @@ export function FeedbackModal({ visible, onClose, locale }: Props) {
                     key={i}
                     onPress={() => setRating(i)}
                     style={[styles.emojiBtn, rating === i && styles.emojiBtnActive]}
+                    accessibilityRole="button"
+                    accessibilityLabel={`${i + 1} / 5`}
+                    accessibilityState={{ selected: rating === i }}
                   >
                     <Text style={[styles.emoji, rating === i && styles.emojiSelected]}>
                       {emoji}

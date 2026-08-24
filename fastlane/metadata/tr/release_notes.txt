@@ -1,0 +1,5 @@
+Bu güncelleme bize bildirdiğiniz birkaç sorunu giderir:
+
+- Hatırlatma bildirimleri artık bir abonelik eklediğinizde, kaldırdığınızda veya planını değiştirdiğinizde hatırlatma penceresindeki her ödemeyi tekrar göstermiyor
+- Ana ekran artık bir hafta içinde vadesi gelen tüm yaklaşan ödemeleri, sadece bir sonrakini değil, her biri kendi gün sayacıyla birlikte gösteriyor
+- Bir aboneliğin planını değiştirmek artık mevcut fiyatınızı otomatik dolduruyor ve hangi resmi planda olduğunuzu gösteriyor

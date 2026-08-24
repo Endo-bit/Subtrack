@@ -19,8 +19,14 @@ type Props = {
 export function MonthBreakdownSheet({ visible, onClose, title, items, total, t, currency }: Props) {
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <Pressable style={styles.overlay} onPress={onClose}>
-        <Pressable style={styles.sheet} onPress={(e) => e.stopPropagation()}>
+      <View style={styles.overlay}>
+        {/* Separate sibling (not a wrapper) so it doesn't compete with the
+            ScrollView below for the touch responder — a Pressable wrapping the
+            whole sheet made drag-to-scroll gestures unreliable under
+            GestureHandlerRootView. The sheet visually covers this backdrop, so
+            taps inside the sheet never reach it. */}
+        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
+        <View style={styles.sheet}>
           <View style={styles.handle} />
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.total}>
@@ -42,8 +48,8 @@ export function MonthBreakdownSheet({ visible, onClose, title, items, total, t, 
           <Pressable style={styles.close} onPress={onClose}>
             <Text style={styles.closeText}>{t.billingDone}</Text>
           </Pressable>
-        </Pressable>
-      </Pressable>
+        </View>
+      </View>
     </Modal>
   );
 }
@@ -67,7 +73,11 @@ const styles = StyleSheet.create({
   },
   title: { fontSize: 20, fontWeight: '700', color: theme.text },
   total: { fontSize: 14, color: theme.textMuted, marginTop: 4, marginBottom: 12 },
-  list: { maxHeight: 320 },
+  // flexShrink lets the list give up height to the header/total/close button
+  // when the sheet's 72% cap leaves less than 320px — without it, the list
+  // stays pinned at 320px and can push the close button (or its own bottom
+  // rows) past the sheet's clipped edge with no way to scroll to them.
+  list: { maxHeight: 320, flexShrink: 1 },
   listContent: { gap: 10, paddingBottom: 8 },
   row: {
     flexDirection: 'row',

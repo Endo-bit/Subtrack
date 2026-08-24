@@ -6,7 +6,7 @@ import Purchases, { CustomerInfo, PurchasesOffering, PurchasesPackage } from 're
  * RevenueCat entitlement identifier — must match the entitlement created in the
  * RevenueCat dashboard (Entitlements tab), not the product/package identifier.
  */
-export const PRO_ENTITLEMENT_ID = 'pro';
+export const PRO_ENTITLEMENT_ID = 'com.SubTrack.lifetime';
 
 const iosApiKey = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY;
 const androidApiKey = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY;

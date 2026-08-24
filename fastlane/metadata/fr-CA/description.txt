@@ -1,0 +1,32 @@
+Arrêtez de payer des abonnements que vous avez oubliés.
+
+SubTrack regroupe tous vos abonnements au même endroit - diffusion en continu, logiciels, abonnements de gym et plus encore - et vous dit lesquels valent vraiment la peine d'être gardés.
+
+DIAGNOSTIC D'ABONNEMENT
+Faites un bilan rapide de chaque abonnement : fréquence d'utilisation, doublons, prix - pour savoir quoi garder et quoi annuler. SubTrack lui attribue une note et vous montre combien vous avez économisé grâce à chaque annulation.
+
+NE MANQUEZ PLUS AUCUN PAIEMENT
+Consultez vos prochains paiements dans un calendrier, recevez des rappels avant chaque paiement, et soyez avisé avant qu'un essai gratuit ne devienne payant.
+
+ANALYSE DES DÉPENSES (Pro)
+Répartition par catégorie, évolution de vos dépenses dans le temps, et classement de vos abonnements les plus coûteux - pour toujours savoir où va votre argent.
+
+CONÇU POUR VOTRE VIE PRIVÉE
+SubTrack garde tout sur votre appareil. Aucun compte, aucun nuage, aucune inscription. Vos données d'abonnement ne quittent jamais votre téléphone - 100 % local, respectueux de votre vie privée.
+
+AUSSI PENSÉ POUR L'EUROPE
+Consultez la répartition de la TVA pour l'Allemagne et la France, suivez vos abonnements dans plusieurs devises avec des taux de change en temps réel (Pro), et sauvegardez vos données quand vous le voulez.
+
+ET TOUT LE RESTE
+- Logos et photos personnalisés pour chaque abonnement
+- Exportation CSV
+- Sauvegarde et restauration locales de vos données
+- Pro débloque le suivi illimité d'abonnements, des diagnostics illimités, l'analyse des dépenses, les taux de change en temps réel, la sauvegarde et les logos personnalisés
+
+CONFIDENTIALITÉ
+SubTrack ne demande aucune connexion et ne synchronise jamais vos données d'abonnement avec un serveur - tout est conservé localement sur votre appareil. Consultez notre politique de confidentialité et nos conditions d'utilisation :
+Politique de confidentialité: https://legal-wheat-pi.vercel.app/privacy.html
+Conditions d'utilisation: https://legal-wheat-pi.vercel.app/terms.html
+
+MARQUES DE COMMERCE
+Les noms de services et logos affichés dans l'application (marques de diffusion en continu, de musique et de logiciels, par exemple) servent uniquement à vous aider à identifier vos propres abonnements et demeurent la propriété de leurs détenteurs respectifs. SubTrack n'est affilié, approuvé ni commandité par aucune de ces entreprises. Si vous détenez des droits et souhaitez qu'un nom ou un logo soit retiré, envoyez-nous un courriel à cutedogstoryai@gmail.com et nous nous en occuperons rapidement.

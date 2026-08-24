@@ -21,3 +21,19 @@ export function formatMoney(amount: number, code: CurrencyCode): string {
   const spacer = symbol.length > 1 ? ' ' : '';
   return `${symbol}${spacer}${amount.toFixed(decimals)}`;
 }
+
+/** Rates are "1 EUR = rates[code] units of code" (see utils/exchangeRates.ts). */
+export type ExchangeRates = Partial<Record<CurrencyCode, number>>;
+
+export function convertAmount(
+  amount: number,
+  from: CurrencyCode,
+  to: CurrencyCode,
+  rates: ExchangeRates | null | undefined,
+): number {
+  if (from === to || !rates) return amount;
+  const fromRate = rates[from];
+  const toRate = rates[to];
+  if (!fromRate || !toRate) return amount;
+  return (amount / fromRate) * toRate;
+}

@@ -1,0 +1,32 @@
+Ngừng trả tiền cho những đăng ký bạn đã quên mất.
+
+SubTrack theo dõi mọi đăng ký của bạn tại một nơi - phát trực tuyến, phần mềm, hội viên phòng gym, và nhiều hơn nữa - và cho bạn biết chính xác gói nào đáng giữ lại.
+
+CHẨN ĐOÁN ĐĂNG KÝ
+Kiểm tra nhanh bất kỳ đăng ký nào: bạn dùng nó thường xuyên ra sao, có bị trùng lặp không, giá cả có xứng đáng không. SubTrack chấm điểm và cho bạn biết nên giữ, xem lại, hay hủy - sau đó theo dõi bạn đã tiết kiệm được bao nhiêu từ mỗi lần hủy.
+
+KHÔNG BỎ LỠ KHOẢN THU NÀO
+Xem các khoản thanh toán sắp tới trên lịch, nhận nhắc nhở trước khi bị tính phí, và được thông báo trước khi bản dùng thử miễn phí chuyển sang trả phí.
+
+PHÂN TÍCH CHI TIÊU (Pro)
+Phân tích theo danh mục, xu hướng chi tiêu theo thời gian, và xếp hạng các đăng ký tốn kém nhất của bạn - để bạn luôn biết tiền của mình đi đâu.
+
+XÂY DỰNG VÌ QUYỀN RIÊNG TƯ
+SubTrack lưu mọi thứ trên thiết bị của bạn. Không tài khoản, không đám mây, không đăng ký. Dữ liệu đăng ký của bạn không bao giờ rời khỏi điện thoại - 100% cục bộ, thiết kế thân thiện với GDPR.
+
+DÀNH CHO CHÂU ÂU
+Xem chi tiết VAT cho Đức và Pháp, theo dõi đăng ký trên nhiều loại tiền tệ với tỷ giá hối đoái theo thời gian thực (Pro), và sao lưu dữ liệu bất cứ khi nào bạn muốn.
+
+CÒN NHIỀU HƠN NỮA
+- Logo và ảnh tùy chỉnh cho mọi đăng ký
+- Xuất file CSV
+- Sao lưu và khôi phục dữ liệu cục bộ
+- Pro mở khóa theo dõi đăng ký không giới hạn, kiểm tra chẩn đoán không giới hạn, phân tích, tỷ giá hối đoái theo thời gian thực, sao lưu, và logo tùy chỉnh
+
+QUYỀN RIÊNG TƯ
+SubTrack không yêu cầu đăng nhập và không đồng bộ dữ liệu đăng ký của bạn lên bất kỳ máy chủ nào — dữ liệu được lưu trữ cục bộ trên thiết bị của bạn. Xem Chính sách Quyền riêng tư và Điều khoản Sử dụng của chúng tôi:
+Chính sách Quyền riêng tư: https://legal-wheat-pi.vercel.app/privacy.html
+Điều khoản Sử dụng: https://legal-wheat-pi.vercel.app/terms.html
+
+NHÃN HIỆU
+Tên dịch vụ và logo hiển thị trong ứng dụng (ví dụ: thương hiệu phát trực tuyến, âm nhạc và phần mềm) chỉ được sử dụng để giúp bạn nhận diện đăng ký của chính mình và vẫn thuộc quyền sở hữu của chủ sở hữu tương ứng. SubTrack không liên kết, không được chứng thực, và không được tài trợ bởi bất kỳ công ty nào trong số này. Nếu bạn là chủ sở hữu quyền và muốn gỡ bỏ tên hoặc logo, hãy gửi email cho chúng tôi tại cutedogstoryai@gmail.com và chúng tôi sẽ xử lý nhanh chóng.

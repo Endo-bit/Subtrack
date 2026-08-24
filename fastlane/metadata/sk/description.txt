@@ -1,0 +1,32 @@
+Prestaňte platiť za predplatné, na ktoré ste zabudli.
+
+SubTrack sleduje všetky vaše predplatné na jednom mieste - streamovanie, softvér, členstvo v posilňovni a ďalšie - a presne vám ukáže, čo sa oplatí ponechať.
+
+DIAGNOSTIKA PREDPLATNÉHO
+Urobte rýchlu kontrolu ľubovoľného predplatného: ako často ho používate, či nemáte duplicitu, či sa cena oplatí. SubTrack mu pridelí skóre a povie vám, či si ho ponechať, prehodnotiť alebo zrušiť - a sleduje, koľko ste ušetrili pri každom zrušení.
+
+NIKDY NEZMEŠKAJTE PLATBU
+Sledujte nadchádzajúce platby v kalendári, dostávajte pripomienky pred zúčtovaním a upozornenia predtým, ako sa bezplatné skúšobné doby zmenia na platené.
+
+ANALÝZA VÝDAVKOV (Pro)
+Rozdelenie podľa kategórií, trendy výdavkov v čase a rebríček vašich najdrahších predplatných - takže vždy viete, kam idú vaše peniaze.
+
+VYTVORENÉ PRE SÚKROMIE
+SubTrack ukladá všetko iba vo vašom zariadení. Žiadny účet, žiadny cloud, žiadna registrácia. Vaše údaje o predplatnom nikdy neopustia váš telefón - 100 % lokálne, GDPR-priateľské už od návrhu.
+
+VYTVORENÉ PRE EURÓPU
+Zobrazte si rozpis DPH pre Nemecko a Francúzsko, sledujte predplatné vo viacerých menách s kurzami v reálnom čase (Pro) a zálohujte si dáta, kedykoľvek chcete.
+
+VŠETKO OSTATNÉ
+- Vlastné logá a fotky pre akékoľvek predplatné
+- Export do CSV
+- Lokálna záloha a obnovenie dát
+- Pro odomyká neobmedzené sledovanie predplatných, neobmedzené diagnostické kontroly, analytiku, kurzy v reálnom čase, zálohovanie a vlastné logá
+
+SÚKROMIE
+SubTrack nevyžaduje prihlásenie a nesynchronizuje vaše údaje o predplatnom so žiadnym serverom - všetko sa ukladá lokálne vo vašom zariadení. Pozrite si naše Zásady ochrany osobných údajov a Podmienky používania:
+Zásady ochrany osobných údajov: https://legal-wheat-pi.vercel.app/privacy.html
+Podmienky používania: https://legal-wheat-pi.vercel.app/terms.html
+
+OCHRANNÉ ZNÁMKY
+Názvy a logá služieb zobrazené v aplikácii (napr. streamovacie, hudobné a softvérové značky) slúžia výlučne na to, aby vám pomohli identifikovať vaše vlastné predplatné, a zostávajú majetkom svojich príslušných vlastníkov. SubTrack nie je prepojený, schválený ani sponzorovaný žiadnou z týchto spoločností. Ak ste držiteľom práv a chcete odstrániť názov alebo logo, napíšte nám na cutedogstoryai@gmail.com a my sa o to promptne postaráme.

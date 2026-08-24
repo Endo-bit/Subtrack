@@ -1,0 +1,5 @@
+Ta aktualizacja naprawia kilka rzeczy, o których nam powiedzieliście:
+
+- Powiadomienia przypominające nie powtarzają już każdej płatności w oknie przypomnień za każdym razem, gdy dodajesz, usuwasz lub zmieniasz plan subskrypcji
+- Ekran główny oznacza teraz każdą nadchodzącą płatność wymagalną w ciągu tygodnia, nie tylko najbliższą, każdą z własnym licznikiem dni
+- Zmiana planu subskrypcji automatycznie uzupełnia teraz Twoją aktualną cenę i pokazuje, na jakim oficjalnym planie jesteś

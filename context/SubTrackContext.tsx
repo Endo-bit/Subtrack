@@ -2,12 +2,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import createContextHook from '@nkzw/create-context-hook';
 import * as Haptics from 'expo-haptics';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { AppState } from 'react-native';
 import { PRESET_SERVICES } from '@/data/services';
 import { localeForLanguage, strings } from '@/i18n/strings';
 import { Language, Subscription, VatMode } from '@/types/subscription';
 import { track } from '@/utils/analytics';
-import { CurrencyCode } from '@/utils/currency';
-import { scheduleAllReminders } from '@/utils/notifications';
+import { convertAmount, CurrencyCode, ExchangeRates } from '@/utils/currency';
+import { exportBackupFile, exportCsvFile, pickBackupFile } from '@/utils/dataExport';
+import { DiagnosisRecord } from '@/utils/diagnosis';
+import { fetchExchangeRates, ratesAreStale } from '@/utils/exchangeRates';
+import {
+  getNotificationPermissionStatus,
+  NotificationPermissionStatus,
+  requestNotificationPermission,
+  scheduleAllReminders,
+} from '@/utils/notifications';
 import {
   addEntitlementListener,
   configurePurchases,
@@ -15,7 +24,7 @@ import {
   fetchCustomerInfo,
   restorePurchases as restorePurchasesRC,
 } from '@/utils/purchases';
-import { normalizeSubscription } from '@/utils/subscription';
+import { computeCancelEffectiveMonth, ConvertFn, monthly, normalizeSubscription } from '@/utils/subscription';
 
 const storageKey = 'subtrack-eu-state-v2';
 
@@ -42,16 +51,21 @@ type State = {
   reminderDays: 0 | 1 | 3 | 7;
   hasSeenOnboarding: boolean;
   isPro: boolean;
-  savedTotal: number;
+  diagnosisHistory: DiagnosisRecord[];
+  exchangeRates: ExchangeRates | null;
+  exchangeRatesUpdatedAt: string | null;
 };
 
 const migrateState = (raw: State): State => ({
   ...raw,
   currency: raw.currency ?? 'EUR',
+  diagnosisHistory: raw.diagnosisHistory ?? [],
+  exchangeRates: raw.exchangeRates ?? null,
+  exchangeRatesUpdatedAt: raw.exchangeRatesUpdatedAt ?? null,
   subscriptions: raw.subscriptions.map(normalizeSubscription),
 });
 
-function detectDeviceLanguage(): Language {
+export function detectDeviceLanguage(): Language {
   try {
     const locale = Intl.DateTimeFormat().resolvedOptions().locale;
     const lang = locale.split(/[-_]/)[0].toLowerCase();
@@ -80,15 +94,28 @@ const initialState: State = {
   reminderDays: 3,
   hasSeenOnboarding: false,
   isPro: false,
-  savedTotal: 0,
+  diagnosisHistory: [],
+  exchangeRates: null,
+  exchangeRatesUpdatedAt: null,
 };
 
 export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
   const [state, setState] = useState<State>(initialState);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [addTabResetNonce, setAddTabResetNonce] = useState(0);
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermissionStatus>('undetermined');
   const t = strings[state.language];
   const locale = localeForLanguage(state.language);
+
+  // Real-time FX conversion is a Pro perk; everyone else sees native amounts unconverted.
+  const convert: ConvertFn = useCallback(
+    (amount: number, fromCurrency?: CurrencyCode) => {
+      const from = fromCurrency ?? state.currency;
+      if (!state.isPro || from === state.currency) return amount;
+      return convertAmount(amount, from, state.currency, state.exchangeRates);
+    },
+    [state.isPro, state.currency, state.exchangeRates],
+  );
 
   useEffect(() => {
     const load = async () => {
@@ -125,17 +152,8 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     () =>
       state.subscriptions
         .filter((s) => !s.isCancelled)
-        .reduce(
-          (sum, s) =>
-            sum +
-            (s.billingCycle === 'annual'
-              ? s.defaultPrice / 12
-              : s.billingCycle === 'quarterly'
-                ? s.defaultPrice / 3
-                : s.defaultPrice),
-          0,
-        ),
-    [state.subscriptions],
+        .reduce((sum, s) => sum + monthly(s, convert), 0),
+    [state.subscriptions, convert],
   );
 
   const bumpAddTabReset = useCallback(() => {
@@ -180,8 +198,11 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     (id: string) =>
       setState((prev) => ({
         ...prev,
-        savedTotal: prev.savedTotal + (prev.subscriptions.find((s) => s.id === id)?.defaultPrice ?? 0),
-        subscriptions: prev.subscriptions.map((s) => (s.id === id ? { ...s, isCancelled: true } : s)),
+        subscriptions: prev.subscriptions.map((s) =>
+          s.id === id
+            ? { ...s, isCancelled: true, cancelEffectiveMonth: computeCancelEffectiveMonth(s) }
+            : s,
+        ),
       })),
     [],
   );
@@ -200,10 +221,29 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     setState((prev) => ({ ...prev, ...patch }));
   }, []);
 
+  const refreshNotificationPermission = useCallback(async (): Promise<NotificationPermissionStatus> => {
+    const status = await getNotificationPermissionStatus();
+    setNotificationPermission(status);
+    return status;
+  }, []);
+
+  useEffect(() => {
+    refreshNotificationPermission().catch(() => {});
+    const sub = AppState.addEventListener('change', (appState) => {
+      if (appState === 'active') refreshNotificationPermission().catch(() => {});
+    });
+    return () => sub.remove();
+  }, [refreshNotificationPermission]);
+
   useEffect(() => {
     if (!hasLoaded) return;
-    scheduleAllReminders(state.subscriptions, state.reminderDays, t).catch(() => {});
-  }, [state.subscriptions, state.reminderDays, hasLoaded, t]);
+    scheduleAllReminders(state.subscriptions, state.reminderDays, t, locale, state.currency, convert).catch(() => {});
+  }, [state.subscriptions, state.reminderDays, hasLoaded, t, notificationPermission, locale, state.currency, convert]);
+
+  const enableNotifications = useCallback(async (): Promise<NotificationPermissionStatus> => {
+    await requestNotificationPermission();
+    return refreshNotificationPermission();
+  }, [refreshNotificationPermission]);
 
   // Reconcile local isPro flag with the store's actual entitlement.
   useEffect(() => {
@@ -220,6 +260,50 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     return restored;
   }, []);
 
+  const exportCsv = useCallback(async (): Promise<void> => {
+    await exportCsvFile(state.subscriptions, state.currency, t);
+  }, [state.subscriptions, state.currency, t]);
+
+  const exportBackup = useCallback(async (): Promise<void> => {
+    await exportBackupFile(state);
+  }, [state]);
+
+  const importBackup = useCallback(async (): Promise<'success' | 'cancelled' | 'invalid'> => {
+    const json = await pickBackupFile();
+    if (json === null) return 'cancelled';
+    try {
+      const parsed = JSON.parse(json);
+      if (!Array.isArray(parsed.subscriptions)) return 'invalid';
+      setState((prev) => migrateState({ ...initialState, ...parsed, isPro: prev.isPro }));
+      return 'success';
+    } catch {
+      return 'invalid';
+    }
+  }, []);
+
+  const resetAllData = useCallback(() => {
+    setState((prev) => ({ ...prev, subscriptions: [] }));
+  }, []);
+
+  const recordDiagnosis = useCallback((record: DiagnosisRecord) => {
+    setState((prev) => ({ ...prev, diagnosisHistory: [record, ...prev.diagnosisHistory] }));
+  }, []);
+
+  const refreshExchangeRates = useCallback(async (): Promise<void> => {
+    const rates = await fetchExchangeRates();
+    if (rates) {
+      setState((prev) => ({ ...prev, exchangeRates: rates, exchangeRatesUpdatedAt: new Date().toISOString() }));
+    }
+  }, []);
+
+  // Pro-only: keep FX rates fresh so converted totals stay accurate.
+  useEffect(() => {
+    if (!hasLoaded || !state.isPro) return;
+    if (ratesAreStale(state.exchangeRatesUpdatedAt)) {
+      refreshExchangeRates().catch(() => {});
+    }
+  }, [hasLoaded, state.isPro, state.exchangeRatesUpdatedAt, refreshExchangeRates]);
+
   return {
     ...state,
     t,
@@ -232,6 +316,15 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     removeSubscription,
     updateSettings,
     restorePurchases,
+    exportCsv,
+    exportBackup,
+    importBackup,
+    resetAllData,
+    recordDiagnosis,
+    convert,
+    refreshExchangeRates,
+    notificationPermission,
+    enableNotifications,
     presetServices: PRESET_SERVICES,
     addTabResetNonce,
     bumpAddTabReset,

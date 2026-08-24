@@ -1,0 +1,5 @@
+Ez a frissítés néhány dolgot javít, amelyekről visszajelzést kaptunk:
+
+- Az emlékeztető értesítések többé nem ismétlik meg az emlékeztetési ablakban minden fizetést, amikor előfizetést ad hozzá, távolít el vagy módosít
+- A kezdőképernyő most minden egy héten belül esedékes fizetést jelez, nem csak a következőt, mindegyiket saját napszámlálóval
+- Az előfizetési terv módosításakor most automatikusan kitölti az aktuális árat, és megmutatja, melyik hivatalos csomagon van

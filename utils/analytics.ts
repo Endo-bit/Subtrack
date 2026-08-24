@@ -54,4 +54,7 @@ export const track = {
 
   purchaseRestored: (success: boolean) =>
     posthog.capture('purchase_restored', { success }),
+
+  appCrashed: (message: string, context: string) =>
+    posthog.capture('app_crashed', { message: message.slice(0, 500), context: context.slice(0, 500) }),
 };

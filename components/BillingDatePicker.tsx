@@ -151,7 +151,13 @@ export function BillingDatePicker({ value, onChange, t, locale, dark }: Props) {
             {inlineView === null ? (
               /* Calendar header: ‹  Month  Year  › */
               <View style={styles.calHeader}>
-                <Pressable onPress={prevMonth} style={styles.arrowBtn} hitSlop={10}>
+                <Pressable
+                  onPress={prevMonth}
+                  style={styles.arrowBtn}
+                  hitSlop={10}
+                  accessibilityRole="button"
+                  accessibilityLabel={t.prevMonth}
+                >
                   <Text style={styles.arrowText}>‹</Text>
                 </Pressable>
 
@@ -180,14 +186,26 @@ export function BillingDatePicker({ value, onChange, t, locale, dark }: Props) {
                   <Text style={styles.monthYearValue}>{yearLabel}</Text>
                 </Pressable>
 
-                <Pressable onPress={nextMonth} style={styles.arrowBtn} hitSlop={10}>
+                <Pressable
+                  onPress={nextMonth}
+                  style={styles.arrowBtn}
+                  hitSlop={10}
+                  accessibilityRole="button"
+                  accessibilityLabel={t.nextMonth}
+                >
                   <Text style={styles.arrowText}>›</Text>
                 </Pressable>
               </View>
             ) : (
               /* Month/Year list header: ←  title */
               <View style={styles.inlineHeader}>
-                <Pressable onPress={() => setInlineView(null)} style={styles.backBtn} hitSlop={10}>
+                <Pressable
+                  onPress={() => setInlineView(null)}
+                  style={styles.backBtn}
+                  hitSlop={10}
+                  accessibilityRole="button"
+                  accessibilityLabel={t.back}
+                >
                   <Text style={styles.backText}>←</Text>
                 </Pressable>
                 <Text style={styles.inlineTitle}>
@@ -217,11 +235,19 @@ export function BillingDatePicker({ value, onChange, t, locale, dark }: Props) {
                       value.getDate() === day &&
                       value.getMonth() === viewMonth.getMonth() &&
                       value.getFullYear() === viewMonth.getFullYear();
+                    const cellDate = new Date(viewMonth.getFullYear(), viewMonth.getMonth(), day);
                     return (
                       <Pressable
                         key={day}
                         onPress={() => pickDay(day)}
                         style={[styles.dayCell, selected && styles.daySelected]}
+                        accessibilityRole="button"
+                        accessibilityLabel={cellDate.toLocaleDateString(locale, {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                        accessibilityState={{ selected }}
                       >
                         <Text style={[styles.dayNum, selected && styles.dayNumSelected]}>
                           {day}

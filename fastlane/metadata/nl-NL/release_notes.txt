@@ -1,0 +1,5 @@
+Deze update lost een paar dingen op die je ons liet weten:
+
+- Herinneringsmeldingen herhalen niet langer elke betaling in je herinneringsvenster telkens wanneer je een abonnement toevoegt, verwijdert of van plan wijzigt
+- Het startscherm markeert nu elke aankomende betaling die binnen een week vervalt, niet alleen de eerstvolgende, elk met een eigen dagteller
+- Het wijzigen van een abonnementsplan vult nu automatisch je huidige prijs in en toont welk officieel plan je hebt

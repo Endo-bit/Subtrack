@@ -22,6 +22,7 @@ import { formatMoney } from '@/utils/currency';
 import {
   computeNextBillingFromStart,
   dailyCost,
+  isInTrial,
   monthly,
   subscriptionStartedAt,
   yearly,
@@ -37,6 +38,7 @@ export default function SubscriptionDetailScreen() {
     presetServices,
     updateSubscription,
     removeSubscription,
+    convert,
   } = useSubTrack();
   const dark = useColorScheme() === 'dark';
   const sub = subscriptions.find((s) => s.id === id);
@@ -62,10 +64,7 @@ export default function SubscriptionDetailScreen() {
   const cancelUrl = sub.cancelUrl ?? preset?.cancelUrl;
 
   const openCancel = () => {
-    if (!cancelUrl) {
-      Alert.alert(t.cancelPage, t.openCancelPage);
-      return;
-    }
+    if (!cancelUrl) return;
     track.cancelPageOpened(sub.name);
     Linking.openURL(cancelUrl).catch(() => {});
   };
@@ -108,7 +107,12 @@ export default function SubscriptionDetailScreen() {
 
   return (
     <ScrollView style={[styles.screen, dark && styles.dark]} contentContainerStyle={styles.content}>
-      <Pressable onPress={() => router.back()} style={styles.back}>
+      <Pressable
+        onPress={() => router.back()}
+        style={styles.back}
+        accessibilityRole="button"
+        accessibilityLabel={t.back}
+      >
         <Text style={[styles.backText, dark && styles.textLight]}>←</Text>
       </Pressable>
       <Text style={[styles.pageTitle, dark && styles.textLight]}>{t.subscriptionDetail}</Text>
@@ -121,9 +125,16 @@ export default function SubscriptionDetailScreen() {
 
       <View style={[styles.card, dark && styles.cardDark]}>
         <Row label={t.contractStart} value={started.toLocaleDateString(locale)} dark={dark} />
-        <Row label={t.dailyCostLabel} value={`${money(dailyCost(sub))}${t.perDay}`} dark={dark} />
-        <Row label={t.monthlyCostLabel} value={money(monthly(sub))} dark={dark} />
-        <Row label={t.yearlyCostLabel} value={money(yearly(sub))} dark={dark} />
+        {isInTrial(sub) && (
+          <Row
+            label={t.freeTrialEndsLabel}
+            value={new Date(sub.trialEndsAt as string).toLocaleDateString(locale)}
+            dark={dark}
+          />
+        )}
+        <Row label={t.dailyCostLabel} value={`${money(dailyCost(sub, convert))}${t.perDay}`} dark={dark} />
+        <Row label={t.monthlyCostLabel} value={money(monthly(sub, convert))} dark={dark} />
+        <Row label={t.yearlyCostLabel} value={money(yearly(sub, convert))} dark={dark} />
         {sub.planChangedAt && (
           <Row
             label={t.planEffectiveDate}
@@ -133,25 +144,54 @@ export default function SubscriptionDetailScreen() {
         )}
       </View>
 
-      {cancelUrl && (
+      {sub.note && (
+        <View style={[styles.card, dark && styles.cardDark]}>
+          <Text style={[styles.rowLabel, dark && styles.mutedLight]}>{t.note}</Text>
+          <Text style={[styles.noteText, dark && styles.textLight]}>{sub.note}</Text>
+        </View>
+      )}
+
+      {cancelUrl ? (
         <Pressable style={styles.cancelBtn} onPress={openCancel}>
           <ExternalLink size={18} color={theme.accent} />
           <Text style={styles.cancelBtnText}>{t.openCancelPage}</Text>
         </Pressable>
+      ) : (
+        <View style={styles.cancelNotice}>
+          <Globe size={18} color={theme.textMuted} />
+          <Text style={styles.cancelNoticeText}>
+            {t.cancelPageUnavailable.replaceAll('{name}', sub.name)}
+          </Text>
+        </View>
       )}
 
-      <Pressable style={[styles.card, dark && styles.cardDark]} onPress={() => setEditingPlan((v) => !v)}>
+      <Pressable
+        style={[styles.card, dark && styles.cardDark]}
+        onPress={() =>
+          setEditingPlan((v) => {
+            const next = !v;
+            if (next) setCustomPrice(String(sub.defaultPrice));
+            return next;
+          })
+        }
+      >
         <Text style={[styles.sectionTitle, dark && styles.textLight]}>{t.editPlan}</Text>
       </Pressable>
 
       {editingPlan && (
         <View style={[styles.card, dark && styles.cardDark]}>
-          {plans.map((plan) => (
-            <Pressable key={plan.id} style={styles.planRow} onPress={() => applyPlan(plan)}>
-              <Text style={[styles.planLabel, dark && styles.textLight]}>{plan.name}</Text>
-              <Text style={styles.planPrice}>{money(plan.price)}</Text>
-            </Pressable>
-          ))}
+          {plans.map((plan) => {
+            const isCurrent = !sub.customPrice && sub.planName === plan.name;
+            return (
+              <Pressable key={plan.id} style={styles.planRow} onPress={() => applyPlan(plan)}>
+                <Text style={[styles.planLabel, dark && styles.textLight]}>
+                  {plan.name}
+                  {isCurrent ? ` · ${t.currentPlanLabel}` : ''}
+                </Text>
+                <Text style={styles.planPrice}>{money(plan.price)}</Text>
+              </Pressable>
+            );
+          })}
           <Text style={[styles.label, dark && styles.textLight]}>{t.customPrice}</Text>
           <TextInput
             value={customPrice}
@@ -232,6 +272,7 @@ const styles = StyleSheet.create({
   },
   rowLabel: { color: theme.textMuted, fontWeight: '500', fontSize: 14 },
   rowValue: { color: theme.text, fontWeight: '700', fontSize: 15 },
+  noteText: { color: theme.text, fontSize: 15, lineHeight: 21, marginTop: 6 },
   mutedLight: { color: '#6B6B6B' },
   textLight: { color: '#FFFFFF' },
   cancelBtn: {
@@ -246,6 +287,17 @@ const styles = StyleSheet.create({
     borderColor: '#FF3B3040',
   },
   cancelBtnText: { color: '#FF3B30', fontWeight: '700', fontSize: 15 },
+  cancelNotice: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    padding: 16,
+    borderRadius: 18,
+    backgroundColor: theme.accentSoft,
+    borderWidth: 1,
+    borderColor: theme.border,
+  },
+  cancelNoticeText: { flex: 1, color: theme.textMuted, fontWeight: '500', fontSize: 13, lineHeight: 19 },
   sectionTitle: { fontWeight: '700', fontSize: 16, color: theme.text },
   planRow: {
     flexDirection: 'row',

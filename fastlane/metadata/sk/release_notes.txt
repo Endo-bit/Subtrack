@@ -1,0 +1,5 @@
+Táto aktualizácia opravuje niekoľko vecí, o ktorých ste nám povedali:
+
+- Pripomienkové notifikácie už neopakujú každú platbu vo vašom pripomienkovom okne zakaždým, keď pridáte, odstránite alebo zmeníte plán predplatného
+- Domovská obrazovka teraz označuje všetky nadchádzajúce platby splatné do týždňa, nielen tú najbližšiu, každú s vlastným počítadlom dní
+- Zmena plánu predplatného teraz vopred vyplní vašu aktuálnu cenu a ukáže, na akom oficiálnom pláne sa nachádzate

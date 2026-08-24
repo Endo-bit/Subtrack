@@ -1,42 +1,191 @@
-import React, { useMemo, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SavingsCard } from '@/components/SavingsCard';
 import { ServiceLogo } from '@/components/ServiceLogo';
 import { theme } from '@/constants/theme';
 import { Strings } from '@/i18n/strings';
-import { Subscription } from '@/types/subscription';
+import { PresetService, Subscription } from '@/types/subscription';
+import { CurrencyCode } from '@/utils/currency';
 import {
   buildSession,
   diagnosisLabelKey,
   DiagnosisAnswers,
+  DiagnosisRecord,
   DiagnosisSession,
   emptyAnswers,
-  recommendsCancellation,
+  toDiagnosisRecord,
 } from '@/utils/diagnosis';
+import { ConvertFn } from '@/utils/subscription';
+
+type HistoryGroup = {
+  dateKey: string;
+  dateLabel: string;
+  records: DiagnosisRecord[];
+};
+
+/** Groups diagnosis records by local calendar date, newest first — each group becomes its own results page. */
+function groupHistoryByDate(history: DiagnosisRecord[], locale: string): HistoryGroup[] {
+  const map = new Map<string, DiagnosisRecord[]>();
+  for (const r of history) {
+    const d = new Date(r.createdAt);
+    const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(r);
+  }
+  return Array.from(map.entries())
+    .map(([dateKey, records]) => ({
+      dateKey,
+      dateLabel: new Date(records[0].createdAt).toLocaleDateString(locale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+      records,
+    }))
+    .sort((a, b) => new Date(b.records[0].createdAt).getTime() - new Date(a.records[0].createdAt).getTime());
+}
+
+/** Score-tier colors: >=70 keep (green), >=45 review (amber), below cancel (red). */
+function verdictTone(score: number): string {
+  if (score >= 70) return theme.success;
+  if (score >= 45) return '#D4920A';
+  return '#D64545';
+}
+
+function ResultCard({
+  service,
+  name,
+  score,
+  verdictText,
+  scoreLabel,
+  dateLabel,
+  isCancelled,
+  onCancel,
+  cancelLabel,
+  cancelledLabel,
+}: {
+  service: Pick<PresetService, 'name' | 'initials' | 'color' | 'logo'>;
+  name: string;
+  score: number;
+  verdictText: string;
+  scoreLabel: string;
+  dateLabel?: string;
+  isCancelled?: boolean;
+  onCancel?: () => void;
+  cancelLabel?: string;
+  cancelledLabel?: string;
+}) {
+  const tone = verdictTone(score);
+  return (
+    <View style={styles.resultCard}>
+      <View style={styles.resultTopRow}>
+        <ServiceLogo service={service} size={40} />
+        <View style={styles.resultMain}>
+          <Text style={styles.subName} numberOfLines={1}>{name}</Text>
+          {!!dateLabel && <Text style={styles.resultDate}>{dateLabel}</Text>}
+        </View>
+        <View style={[styles.scorePill, { backgroundColor: `${tone}1F` }]}>
+          <Text style={[styles.scorePillText, { color: tone }]}>{score}</Text>
+          <Text style={[styles.scorePillLabel, { color: tone }]}>{scoreLabel}</Text>
+        </View>
+      </View>
+      <View style={styles.scoreTrack}>
+        <View style={[styles.scoreFill, { width: `${score}%`, backgroundColor: tone }]} />
+      </View>
+      <Text style={[styles.verdict, { color: tone }]}>{verdictText}</Text>
+      {!!onCancel &&
+        (isCancelled ? (
+          <View style={styles.cancelledBadge}>
+            <Text style={styles.cancelledBadgeText}>{cancelledLabel}</Text>
+          </View>
+        ) : (
+          <Pressable style={styles.cancelBtn} onPress={onCancel}>
+            <Text style={styles.cancelBtnText}>{cancelLabel}</Text>
+          </Pressable>
+        ))}
+    </View>
+  );
+}
 
 type Props = {
   visible: boolean;
   onClose: () => void;
   subscriptions: Subscription[];
   t: Strings;
+  locale: string;
+  isPro: boolean;
+  diagnosisHistory: DiagnosisRecord[];
+  onRecordDiagnosis: (record: DiagnosisRecord) => void;
+  onOpenPaywall: () => void;
+  onCancelSubscription: (id: string) => void;
+  currency: CurrencyCode;
+  convert?: ConvertFn;
 };
 
-type Step = 'intro' | 'questions' | 'summary';
+type Step = 'intro' | 'questions' | 'summary' | 'history' | 'historyDetail';
 
-export function SubscriptionDiagnosis({ visible, onClose, subscriptions, t }: Props) {
+export function SubscriptionDiagnosis({
+  visible,
+  onClose,
+  subscriptions,
+  t,
+  locale,
+  isPro,
+  diagnosisHistory,
+  onRecordDiagnosis,
+  onOpenPaywall,
+  onCancelSubscription,
+  currency,
+  convert,
+}: Props) {
   const active = useMemo(() => subscriptions.filter((s) => !s.isCancelled), [subscriptions]);
+  const cancelledSubs = useMemo(() => subscriptions.filter((s) => s.isCancelled), [subscriptions]);
+  const historyGroups = useMemo(
+    () => groupHistoryByDate(diagnosisHistory, locale),
+    [diagnosisHistory, locale],
+  );
+  const diagnosedIds = useMemo(
+    () => new Set(diagnosisHistory.map((r) => r.subscriptionId)),
+    [diagnosisHistory],
+  );
+  // Live list — recomputes as diagnosisHistory grows, used only to decide what's
+  // eligible before a run starts (shown on the 'intro' step).
+  const diagnosable = useMemo(
+    () => active.filter((s) => isPro || !diagnosedIds.has(s.id)),
+    [active, isPro, diagnosedIds],
+  );
+
   const [step, setStep] = useState<Step>('intro');
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<DiagnosisAnswers>(emptyAnswers);
   const [sessions, setSessions] = useState<DiagnosisSession[]>([]);
+  // Frozen snapshot of the subs being diagnosed in the current run. `diagnosable`
+  // shrinks the moment a sub is recorded (diagnosisHistory updates immediately),
+  // so indexing into it live mid-run desyncs `index` and can skip a subscription
+  // or land on `undefined` (rendering a blank screen). Freezing it at the start
+  // of the run keeps the list stable until the user finishes or closes.
+  const [sessionSubs, setSessionSubs] = useState<Subscription[]>([]);
+  const [selectedHistoryDate, setSelectedHistoryDate] = useState<string | null>(null);
+  const scrollRef = useRef<ScrollView>(null);
 
-  const current = active[index];
-  const progress = active.length ? `${index + 1} / ${active.length}` : '0 / 0';
+  const current = sessionSubs[index];
+  const progress = sessionSubs.length ? `${index + 1} / ${sessionSubs.length}` : '0 / 0';
+  const selectedGroup = useMemo(
+    () => historyGroups.find((g) => g.dateKey === selectedHistoryDate) ?? null,
+    [historyGroups, selectedHistoryDate],
+  );
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
+  }, [step, index]);
 
   const reset = () => {
     setStep('intro');
     setIndex(0);
     setAnswers(emptyAnswers());
     setSessions([]);
+    setSessionSubs([]);
+    setSelectedHistoryDate(null);
   };
 
   const close = () => {
@@ -44,17 +193,33 @@ export function SubscriptionDiagnosis({ visible, onClose, subscriptions, t }: Pr
     onClose();
   };
 
+  const start = () => {
+    setSessionSubs(diagnosable);
+    setStep('questions');
+  };
+
   const finishSub = () => {
     if (!current) return;
     const session = buildSession(current, answers);
-    const nextSessions = [...sessions, session];
-    setSessions(nextSessions);
+    setSessions((prev) => [...prev, session]);
+    onRecordDiagnosis(toDiagnosisRecord(session));
     setAnswers(emptyAnswers());
-    if (index + 1 < active.length) {
+    if (index + 1 < sessionSubs.length) {
       setIndex(index + 1);
     } else {
       setStep('summary');
     }
+  };
+
+  const confirmCancel = (sub: Pick<Subscription, 'id' | 'name'>) => {
+    Alert.alert(
+      t.diagnosisCancelConfirmTitle,
+      t.diagnosisCancelConfirmBody.replace('{name}', sub.name),
+      [
+        { text: t.cancel, style: 'cancel' },
+        { text: t.diagnosisCancelConfirm, style: 'destructive', onPress: () => onCancelSubscription(sub.id) },
+      ],
+    );
   };
 
   const renderOption = (label: string, onPress: () => void, selected?: boolean) => (
@@ -67,16 +232,29 @@ export function SubscriptionDiagnosis({ visible, onClose, subscriptions, t }: Pr
     <Modal visible={visible} animationType="slide" transparent onRequestClose={close}>
       <View style={styles.overlay}>
         <View style={styles.sheet}>
-          <ScrollView contentContainerStyle={styles.content}>
+          <ScrollView ref={scrollRef} style={styles.scrollArea} contentContainerStyle={styles.content}>
             {step === 'intro' && (
               <>
                 <Text style={styles.heading}>{t.diagnosis}</Text>
                 <Text style={styles.body}>{t.diagnosisIntro}</Text>
                 {active.length === 0 ? (
                   <Text style={styles.muted}>{t.diagnosisEmpty}</Text>
+                ) : diagnosable.length === 0 ? (
+                  <>
+                    <Text style={styles.subName}>{t.diagnosisAlreadyDoneTitle}</Text>
+                    <Text style={styles.body}>{t.diagnosisAlreadyDoneBody}</Text>
+                    <Pressable style={styles.primary} onPress={onOpenPaywall}>
+                      <Text style={styles.primaryText}>{t.pro}</Text>
+                    </Pressable>
+                  </>
                 ) : (
-                  <Pressable style={styles.primary} onPress={() => setStep('questions')}>
+                  <Pressable style={styles.primary} onPress={start}>
                     <Text style={styles.primaryText}>{t.diagnosisStart}</Text>
+                  </Pressable>
+                )}
+                {diagnosisHistory.length > 0 && (
+                  <Pressable style={styles.ghost} onPress={() => setStep('history')}>
+                    <Text style={styles.ghostText}>{t.diagnosisViewHistory}</Text>
                   </Pressable>
                 )}
               </>
@@ -127,7 +305,7 @@ export function SubscriptionDiagnosis({ visible, onClose, subscriptions, t }: Pr
 
                 <Pressable style={styles.primary} onPress={finishSub}>
                   <Text style={styles.primaryText}>
-                    {index + 1 < active.length ? t.diagnosisNext : t.diagnosisFinish}
+                    {index + 1 < sessionSubs.length ? t.diagnosisNext : t.diagnosisFinish}
                   </Text>
                 </Pressable>
               </>
@@ -137,26 +315,92 @@ export function SubscriptionDiagnosis({ visible, onClose, subscriptions, t }: Pr
               <>
                 <Text style={styles.heading}>{t.diagnosisSummaryTitle}</Text>
                 {sessions.map((s) => {
-                  const labelKey = diagnosisLabelKey(s.score);
-                  const cancel = recommendsCancellation(s.score);
+                  const live = subscriptions.find((sub) => sub.id === s.subscription.id);
                   return (
-                    <View key={s.subscription.id} style={[styles.resultCard, cancel && styles.resultWarn]}>
-                      <View style={styles.resultRow}>
-                        <ServiceLogo service={s.subscription} size={36} />
-                        <View style={styles.resultMain}>
-                          <Text style={styles.subName}>{s.subscription.name}</Text>
-                          <Text style={styles.score}>
-                            {t.diagnosisScore}: {s.score}/100
-                          </Text>
-                          <Text style={[styles.verdict, cancel && styles.verdictWarn]}>{t[labelKey]}</Text>
-                        </View>
-                      </View>
-                    </View>
+                    <ResultCard
+                      key={s.subscription.id}
+                      service={s.subscription}
+                      name={s.subscription.name}
+                      score={s.score}
+                      verdictText={t[diagnosisLabelKey(s.score)]}
+                      scoreLabel={t.diagnosisScore}
+                      isCancelled={live?.isCancelled}
+                      onCancel={() => confirmCancel(live ?? s.subscription)}
+                      cancelLabel={t.diagnosisCancelButton}
+                      cancelledLabel={t.diagnosisCancelled}
+                    />
                   );
                 })}
+                <SavingsCard cancelledSubs={cancelledSubs} currency={currency} convert={convert} t={t} />
                 <Pressable style={styles.primary} onPress={close}>
                   <Text style={styles.primaryText}>{t.billingDone}</Text>
                 </Pressable>
+              </>
+            )}
+
+            {step === 'history' && (
+              <>
+                <Text style={styles.heading}>{t.diagnosisHistoryTitle}</Text>
+                {historyGroups.map((g) => {
+                  const lowCount = g.records.filter((r) => r.score <= 50).length;
+                  const tone = lowCount > 0 ? '#D64545' : theme.success;
+                  return (
+                    <Pressable
+                      key={g.dateKey}
+                      style={styles.historyRow}
+                      onPress={() => {
+                        setSelectedHistoryDate(g.dateKey);
+                        setStep('historyDetail');
+                      }}
+                    >
+                      <View style={styles.historyRowMain}>
+                        <Text style={styles.historyRowDate}>{g.dateLabel}</Text>
+                        <Text style={styles.historyRowCount}>
+                          {t.diagnosisHistoryCount.replace('{n}', String(g.records.length))}
+                        </Text>
+                      </View>
+                      <View style={[styles.scorePill, { backgroundColor: `${tone}1F` }]}>
+                        <Text style={[styles.scorePillText, { color: tone }]}>{lowCount}</Text>
+                        <Text style={[styles.scorePillLabel, { color: tone }]}>{t.diagnosisHistoryLowLabel}</Text>
+                      </View>
+                    </Pressable>
+                  );
+                })}
+                <SavingsCard cancelledSubs={cancelledSubs} currency={currency} convert={convert} t={t} />
+                <Pressable style={styles.primary} onPress={() => setStep('intro')}>
+                  <Text style={styles.primaryText}>{t.back}</Text>
+                </Pressable>
+              </>
+            )}
+
+            {step === 'historyDetail' && selectedGroup && (
+              <>
+                <Pressable style={styles.ghost} onPress={() => setStep('history')}>
+                  <Text style={styles.ghostText}>← {t.back}</Text>
+                </Pressable>
+                <Text style={styles.heading}>{selectedGroup.dateLabel}</Text>
+                {selectedGroup.records.map((r, i) => {
+                  const sub = subscriptions.find((s) => s.id === r.subscriptionId);
+                  const fallback = {
+                    name: r.subscriptionName,
+                    initials: r.subscriptionName.slice(0, 2).toUpperCase(),
+                    color: theme.textMuted,
+                  };
+                  return (
+                    <ResultCard
+                      key={`${r.subscriptionId}-${r.createdAt}-${i}`}
+                      service={sub ?? fallback}
+                      name={r.subscriptionName}
+                      score={r.score}
+                      verdictText={t[diagnosisLabelKey(r.score)]}
+                      scoreLabel={t.diagnosisScore}
+                      isCancelled={sub?.isCancelled}
+                      onCancel={sub ? () => confirmCancel(sub) : undefined}
+                      cancelLabel={t.diagnosisCancelButton}
+                      cancelledLabel={t.diagnosisCancelled}
+                    />
+                  );
+                })}
               </>
             )}
           </ScrollView>
@@ -178,6 +422,10 @@ const styles = StyleSheet.create({
     maxHeight: '90%',
     paddingBottom: 12,
   },
+  // Without flexShrink, a ScrollView with no other size hint renders at its full
+  // content height instead of the space left inside `sheet`'s maxHeight cap —
+  // it never becomes scrollable and just gets cut off at the sheet's bottom edge.
+  scrollArea: { flexShrink: 1 },
   content: { padding: 20, gap: 14, paddingBottom: 8 },
   heading: { fontSize: 22, fontWeight: '700', color: theme.text },
   body: { fontSize: 15, color: theme.textMuted, lineHeight: 22 },
@@ -208,16 +456,48 @@ const styles = StyleSheet.create({
   resultCard: {
     backgroundColor: '#FFF',
     borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: theme.border,
+    gap: 12,
+  },
+  resultTopRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  resultMain: { flex: 1, gap: 2 },
+  resultDate: { fontSize: 12, color: theme.textMuted, fontWeight: '600' },
+  scorePill: { alignItems: 'center', borderRadius: 14, paddingVertical: 6, paddingHorizontal: 10 },
+  scorePillText: { fontSize: 17, fontWeight: '800', lineHeight: 20 },
+  scorePillLabel: { fontSize: 9, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.3 },
+  scoreTrack: { height: 8, borderRadius: 99, backgroundColor: theme.border, overflow: 'hidden' },
+  scoreFill: { height: 8, borderRadius: 99 },
+  verdict: { fontSize: 14, fontWeight: '700' },
+  cancelBtn: {
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#D64545',
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  cancelBtnText: { color: '#D64545', fontWeight: '700', fontSize: 13 },
+  cancelledBadge: {
+    borderRadius: 12,
+    backgroundColor: theme.border,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  cancelledBadgeText: { color: theme.textMuted, fontWeight: '700', fontSize: 13 },
+  historyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#FFF',
+    borderRadius: 16,
     padding: 14,
     borderWidth: 1,
     borderColor: theme.border,
   },
-  resultWarn: { borderColor: theme.accent, backgroundColor: theme.accentSoft },
-  resultRow: { flexDirection: 'row', gap: 12, alignItems: 'center' },
-  resultMain: { flex: 1, gap: 4 },
-  score: { fontSize: 13, color: theme.textMuted, fontWeight: '600' },
-  verdict: { fontSize: 14, fontWeight: '700', color: theme.success },
-  verdictWarn: { color: theme.accent },
+  historyRowMain: { flex: 1, gap: 2 },
+  historyRowDate: { fontWeight: '700', color: theme.text, fontSize: 15 },
+  historyRowCount: { fontSize: 12, color: theme.textMuted, fontWeight: '600' },
   ghost: { alignItems: 'center', padding: 10 },
   ghostText: { color: theme.textMuted, fontWeight: '600' },
 });

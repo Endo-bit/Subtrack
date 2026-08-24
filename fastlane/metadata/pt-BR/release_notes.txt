@@ -1,0 +1,5 @@
+Esta atualização corrige algumas coisas que você nos contou:
+
+- As notificações de lembrete não repetem mais cada pagamento dentro da janela de lembrete toda vez que você adiciona, remove ou muda o plano de uma assinatura
+- A tela inicial agora mostra todos os pagamentos que vencem nos próximos sete dias, não só o próximo, cada um com sua própria contagem de dias
+- Mudar o plano de uma assinatura agora preenche automaticamente o preço atual e mostra em qual plano oficial você está

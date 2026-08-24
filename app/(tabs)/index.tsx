@@ -6,10 +6,11 @@
  */
 import { LinearGradient } from 'expo-linear-gradient';
 import { Href, router } from 'expo-router';
-import { Trash2 } from 'lucide-react-native';
+import { PackageOpen, Trash2 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import {
   Alert,
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -17,13 +18,18 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import { MomDelta } from '@/components/MomDelta';
 import { ServiceLogo } from '@/components/ServiceLogo';
+import { TutorialSlides } from '@/components/TutorialSlides';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { theme, type as t_ } from '@/constants/theme';
+import { useFocusedNow } from '@/hooks/useFocusedNow';
 import { track } from '@/utils/analytics';
-import { Category, SortMode, Subscription } from '@/types/subscription';
+import { BillingCycle, Category, SortMode, Subscription } from '@/types/subscription';
 import { formatMoney } from '@/utils/currency';
-import { dailyCost, monthly, subscriptionStartedAt } from '@/utils/subscription';
+import { chargeAmountInMonth, dailyCost, isInTrial, monthly, subscriptionStartedAt } from '@/utils/subscription';
+
+type CycleFilter = 'all' | BillingCycle;
 
 const categoryColor: Record<Category, string> = {
   streaming: '#FF3B30',
@@ -46,23 +52,39 @@ export default function DashboardScreen() {
     hasSeenOnboarding,
     updateSettings,
     removeSubscription,
+    convert,
   } = useSubTrack();
   const money = (n: number) => formatMoney(n, currency);
   const [sort, setSort] = useState<SortMode>('date');
+  const [cycleFilter, setCycleFilter] = useState<CycleFilter>('all');
   const scheme = useColorScheme();
   const dark = scheme === 'dark';
 
+  // `active` powers the hero totals (always the true overall numbers).
+  // `visible` is the cycle-filtered subset shown in the list below.
   const active = subscriptions.filter((s) => !s.isCancelled);
+  const visible = active.filter((s) => cycleFilter === 'all' || s.billingCycle === cycleFilter);
+
+  // Resynced on focus so this doesn't go stale if the app stays open across a month boundary.
+  const today = useFocusedNow();
+  const lastMonthTotal = useMemo(() => {
+    const d = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    return subscriptions.reduce(
+      (sum, s) => sum + chargeAmountInMonth(s, d.getFullYear(), d.getMonth(), convert),
+      0,
+    );
+  }, [subscriptions, convert, today]);
+  const momPct = lastMonthTotal > 0 ? ((monthlyTotal - lastMonthTotal) / lastMonthTotal) * 100 : null;
   const sorted = useMemo(
     () =>
-      [...active].sort((a, b) =>
+      [...visible].sort((a, b) =>
         sort === 'cost'
-          ? monthly(b) - monthly(a)
+          ? monthly(b, convert) - monthly(a, convert)
           : sort === 'alpha'
             ? a.name.localeCompare(b.name)
             : new Date(a.nextBillingDate).getTime() - new Date(b.nextBillingDate).getTime(),
       ),
-    [active, sort],
+    [visible, sort, convert],
   );
 
   const confirmDelete = (s: Subscription) => {
@@ -74,7 +96,7 @@ export default function DashboardScreen() {
 
   if (!hasSeenOnboarding) {
     return (
-      <Onboarding
+      <TutorialSlides
         onDone={() => {
           track.onboardingCompleted();
           updateSettings({ hasSeenOnboarding: true });
@@ -92,10 +114,19 @@ export default function DashboardScreen() {
     >
       {/* ── Header ── */}
       <View style={styles.header}>
-        <View>
-          {/* Apple display-md, SubTrack brand */}
-          <Text style={[styles.brand, dark && styles.textOnDark]}>SubTrack</Text>
-          <Text style={styles.tagline}>{t.tagline}</Text>
+        <View style={styles.brandRow}>
+          <View style={styles.brandMark}>
+            <Image
+              source={require('@/assets/images/icon.png')}
+              style={styles.brandMarkImage}
+              accessibilityIgnoresInvertColors
+            />
+          </View>
+          <View>
+            {/* Apple display-md, SubTrack brand */}
+            <Text style={[styles.brand, dark && styles.textOnDark]}>SubTrack</Text>
+            <Text style={styles.tagline}>{t.tagline}</Text>
+          </View>
         </View>
         <Pressable style={styles.addPill} onPress={() => router.push('/add')}>
           <Text style={styles.addPillText}>+ {t.add}</Text>
@@ -105,7 +136,8 @@ export default function DashboardScreen() {
       {/* ── Hero — Revolut dark balance card ── */}
       {/* Revolut heroBalance: 56px/600/letterSpacing -2.5, true-black surface */}
       <LinearGradient
-        colors={dark ? ['#111114', '#0A0A0F'] : ['#18181C', '#0D0D12']}
+        colors={dark ? ['#17120F', '#0A0807'] : ['#1E1611', '#0D0908']}
+        locations={[0, 1]}
         style={styles.hero}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -115,6 +147,9 @@ export default function DashboardScreen() {
 
         {/* Revolut display-xl adapted: 56px 600 with tight letter-spacing */}
         <Text style={styles.heroValue}>{money(monthlyTotal)}</Text>
+        <View style={styles.heroMomRow}>
+          <MomDelta pct={momPct} t={t} variant="dark" />
+        </View>
 
         {/* Three stats in a row (Apple hairline dividers) */}
         <View style={styles.heroStats}>
@@ -131,7 +166,7 @@ export default function DashboardScreen() {
           <View style={styles.heroStat}>
             <Text style={styles.heroStatLabel}>{t.dailyCostLabel}</Text>
             <Text style={styles.heroStatValue}>
-              {money(active.reduce((s, sub) => s + dailyCost(sub), 0))}
+              {money(active.reduce((s, sub) => s + dailyCost(sub, convert), 0))}
             </Text>
           </View>
         </View>
@@ -160,10 +195,36 @@ export default function DashboardScreen() {
         ))}
       </View>
 
+      {/* ── Billing-cycle filter — monthly vs. yearly view ── */}
+      <View style={styles.sortRow}>
+        {(
+          [
+            ['all', t.filterAll],
+            ['monthly', t.cycleMonthly],
+            ['quarterly', t.cycleQuarterly],
+            ['annual', t.cycleAnnual],
+          ] as [CycleFilter, string][]
+        ).map(([c, label]) => (
+          <Pressable
+            key={c}
+            onPress={() => setCycleFilter(c)}
+            style={[
+              styles.chip,
+              { backgroundColor: dark ? theme.cardDark : theme.card },
+              cycleFilter === c && styles.chipActive,
+            ]}
+          >
+            <Text style={[styles.chipText, cycleFilter === c && styles.chipTextActive]}>{label}</Text>
+          </Pressable>
+        ))}
+      </View>
+
       {/* ── Empty state ── */}
-      {active.length === 0 ? (
+      {visible.length === 0 ? (
         <View style={[styles.empty, { backgroundColor: dark ? theme.cardDark : theme.card }]}>
-          <Text style={styles.emptyIcon}>📦</Text>
+          <View style={styles.emptyIconBadge}>
+            <PackageOpen size={26} color={theme.accent} strokeWidth={1.75} />
+          </View>
           <Text style={[styles.emptyTitle, dark && styles.textOnDark]}>{t.emptyHomeTitle}</Text>
           <Text style={[styles.emptyBody]}>{t.emptyHomeBody}</Text>
           <Pressable style={styles.emptyCta} onPress={() => router.push('/add')}>
@@ -173,9 +234,9 @@ export default function DashboardScreen() {
       ) : (
         /* ── Subscription list — Apple store-utility-card style ── */
         sorted.map((s) => {
-          const msUntil = new Date(s.nextBillingDate).getTime() - Date.now();
+          const msUntil = new Date(s.nextBillingDate).getTime() - today.getTime();
           const daysUntil = msUntil / 86400000;
-          const isDueSoon = daysUntil < 3 && daysUntil >= 0;
+          const isDueSoon = daysUntil < 7 && daysUntil >= 0;
           return (
             <Pressable
               key={s.id}
@@ -195,6 +256,11 @@ export default function DashboardScreen() {
                   >
                     {s.name}
                   </Text>
+                  {isInTrial(s) && (
+                    <View style={styles.trialBadge}>
+                      <Text style={styles.trialBadgeText}>{t.freeTrialBadge}</Text>
+                    </View>
+                  )}
                   {isDueSoon && (
                     <View style={styles.dueBadge}>
                       <Text style={styles.dueBadgeText}>
@@ -206,13 +272,13 @@ export default function DashboardScreen() {
                 {/* Apple caption style */}
                 <Text style={styles.rowMeta}>
                   {subscriptionStartedAt(s).toLocaleDateString(locale)} ·{' '}
-                  {money(dailyCost(s))}{t.perDay}
+                  {money(dailyCost(s, convert))}{t.perDay}
                 </Text>
               </View>
 
               <View style={styles.rowRight}>
                 <Text style={[styles.rowCost, dark && styles.textOnDark]}>
-                  {money(monthly(s))}
+                  {money(monthly(s, convert))}
                 </Text>
                 <Text style={styles.rowCostSub}>/mo</Text>
               </View>
@@ -221,6 +287,8 @@ export default function DashboardScreen() {
                 onPress={(e) => { e.stopPropagation?.(); confirmDelete(s); }}
                 hitSlop={12}
                 style={styles.deleteBtn}
+                accessibilityRole="button"
+                accessibilityLabel={`${t.delete}: ${s.name}`}
               >
                 <Trash2 size={15} color={theme.textMuted} />
               </Pressable>
@@ -229,41 +297,6 @@ export default function DashboardScreen() {
         })
       )}
     </ScrollView>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────── Onboarding ── */
-function Onboarding({ onDone }: { onDone: () => void }) {
-  const { t } = useSubTrack();
-  const [step, setStep] = useState(0);
-  const slides = [
-    { title: t.onboarding1Title, body: t.onboarding1Body, icon: '📦' },
-    { title: t.onboarding2Title, body: t.onboarding2Body, icon: '📅' },
-    { title: t.onboarding3Title, body: t.onboarding3Body, icon: '🔒' },
-  ];
-  const slide = slides[step];
-  const isLast = step === slides.length - 1;
-
-  return (
-    <View style={on.wrap}>
-      {/* Revolut hero-band-dark style */}
-      <LinearGradient colors={['#0D0D12', '#18181C']} style={on.card}>
-        <Text style={on.icon}>{slide.icon}</Text>
-        {/* Revolut display-lg adapted: 40px/600 tight */}
-        <Text style={on.title}>{slide.title}</Text>
-        {/* Revolut body-lg: 18px/400 */}
-        <Text style={on.body}>{slide.body}</Text>
-        <View style={on.dots}>
-          {slides.map((_, i) => (
-            <View key={i} style={[on.dot, i === step && on.dotActive]} />
-          ))}
-        </View>
-      </LinearGradient>
-      {/* Revolut button-primary (white on dark) */}
-      <Pressable style={on.cta} onPress={() => (isLast ? onDone() : setStep((s) => s + 1))}>
-        <Text style={on.ctaText}>{isLast ? t.start : '→'}</Text>
-      </Pressable>
-    </View>
   );
 }
 
@@ -280,8 +313,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 2,
   },
+  brandRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  brandMark: {
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    backgroundColor: theme.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  brandMarkImage: {
+    width: '100%',
+    height: '100%',
+  },
   brand: {
     ...t_.displayMd,
+    fontSize: 26,
     color: theme.text,
   },
   tagline: {
@@ -325,8 +373,9 @@ const styles = StyleSheet.create({
     ...t_.heroBalance,
     color: '#FFFFFF',
     marginTop: 6,
-    marginBottom: 20,
+    marginBottom: 6,
   },
+  heroMomRow: { minHeight: 14, marginBottom: 6 },
   heroStats: { flexDirection: 'row', alignItems: 'center' },
   heroStat: { flex: 1, alignItems: 'center' },
   // Apple caption: 13px/400
@@ -396,6 +445,13 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   dueBadgeText: { fontSize: 10, fontWeight: '700', color: '#FFF' },
+  trialBadge: {
+    backgroundColor: theme.accent,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+  },
+  trialBadgeText: { fontSize: 10, fontWeight: '700', color: '#FFF' },
   deleteBtn: { padding: 4, marginLeft: 2 },
 
   // Empty
@@ -408,7 +464,14 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: theme.border,
   },
-  emptyIcon: { fontSize: 44 },
+  emptyIconBadge: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    backgroundColor: theme.accentSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   emptyTitle: { ...t_.sectionHead, color: theme.text },
   emptyBody: { ...t_.body, color: theme.textMuted, textAlign: 'center' },
   emptyCta: {
@@ -419,20 +482,4 @@ const styles = StyleSheet.create({
     borderRadius: 9999,  // Revolut pill
   },
   emptyCtaText: { ...t_.button, color: '#FFF' },
-});
-
-const on = StyleSheet.create({
-  wrap: { flex: 1, backgroundColor: '#08080F' },
-  card: { flex: 1, padding: 32, paddingTop: 96, gap: 14 },
-  icon: { fontSize: 52 },
-  // Revolut display-lg adapted
-  title: { fontSize: 36, fontWeight: '600', letterSpacing: -0.5, color: '#FFFFFF', lineHeight: 42 },
-  // Revolut body-lg
-  body: { fontSize: 18, fontWeight: '400', letterSpacing: -0.1, color: 'rgba(255,255,255,0.65)', lineHeight: 28 },
-  dots: { flexDirection: 'row', gap: 6, marginTop: 24 },
-  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.25)' },
-  dotActive: { width: 22, backgroundColor: '#FFFFFF' },
-  // Revolut button-primary (white pill on dark)
-  cta: { margin: 24, backgroundColor: '#FFFFFF', borderRadius: 9999, padding: 17, alignItems: 'center' },
-  ctaText: { ...t_.button, color: '#000000', fontSize: 17 },
 });

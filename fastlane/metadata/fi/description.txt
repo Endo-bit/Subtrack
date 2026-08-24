@@ -1,0 +1,32 @@
+Lopeta maksaminen tilauksista, jotka olet unohtanut.
+
+SubTrack seuraa kaikkia tilauksiasi yhdessä paikassa - suoratoisto, ohjelmistot, kuntosalijäsenyydet ja muut - ja kertoo tarkalleen, mikä kannattaa pitää.
+
+TILAUSDIAGNOOSI
+Tee nopea tarkistus mille tahansa tilaukselle: kuinka usein käytät sitä, onko sinulla kaksoiskappale, kannattaako hinta. SubTrack pisteyttää sen ja kertoo, kannattaako pitää, harkita uudelleen vai peruuttaa - ja seuraa, kuinka paljon olet säästänyt jokaisesta peruutuksesta.
+
+ÄLÄ IKINÄ MYÖHÄSTY MAKSUSTA
+Katso tulevat maksut kalenterista, saa muistutuksia ennen veloitusta ja saa ilmoituksen ennen kuin ilmaiset kokeilujaksot muuttuvat maksullisiksi.
+
+KULUANALYYSI (Pro)
+Kategoriajaottelu, kulujen kehitys ajan myötä ja kalleimmat tilauksesi järjestettynä - jotta tiedät aina, mihin rahasi kuluvat.
+
+RAKENNETTU YKSITYISYYDELLE
+SubTrack tallentaa kaiken vain laitteellesi. Ei tiliä, ei pilveä, ei rekisteröitymistä. Tilaustietosi eivät koskaan poistu puhelimestasi - 100 % paikallinen, GDPR-ystävällinen suunnittelultaan.
+
+TEHTY EUROOPPAA VARTEN
+Näe ALV-erittelyt Saksalle ja Ranskalle, seuraa tilauksia useissa valuutoissa reaaliaikaisilla vaihtokursseilla (Pro), ja varmuuskopioi tietosi milloin haluat.
+
+KAIKKI MUU
+- Omat logot ja kuvat mille tahansa tilaukselle
+- CSV-vienti
+- Paikallinen varmuuskopiointi ja palautus
+- Pro avaa rajoittamattoman tilausten seurannan, rajoittamattomat diagnoositarkistukset, analytiikan, reaaliaikaiset vaihtokurssit, varmuuskopioinnin ja omat logot
+
+YKSITYISYYS
+SubTrack ei kysy kirjautumista eikä synkronoi tilaustietojasi millekään palvelimelle - kaikki tallennetaan paikallisesti laitteellesi. Katso tietosuojakäytäntömme ja käyttöehtomme:
+Tietosuojakäytäntö: https://legal-wheat-pi.vercel.app/privacy.html
+Käyttöehdot: https://legal-wheat-pi.vercel.app/terms.html
+
+TAVARAMERKIT
+Sovelluksessa näkyvät palveluiden nimet ja logot (esim. suoratoisto-, musiikki- ja ohjelmistomerkit) on tarkoitettu ainoastaan auttamaan sinua tunnistamaan omat tilauksesi, ja ne pysyvät omistajiensa omaisuutena. SubTrack ei ole sidoksissa, minkään näiden yritysten hyväksymä tai sponsoroima. Jos olet oikeudenhaltija ja haluat nimen tai logon poistettavaksi, lähetä meille sähköpostia osoitteeseen cutedogstoryai@gmail.com, niin hoidamme asian nopeasti.

@@ -1,0 +1,32 @@
+Nu mai plăti pentru abonamente pe care le-ai uitat.
+
+SubTrack îți urmărește toate abonamentele într-un singur loc - streaming, software, abonamente la sală și multe altele - și îți spune exact ce merită păstrat.
+
+DIAGNOSTIC ABONAMENT
+Fă o verificare rapidă pentru orice abonament: cât de des îl folosești, dacă ai un duplicat, dacă prețul merită. SubTrack îl evaluează și îți recomandă să-l păstrezi, să-l reconsideri sau să-l anulezi - apoi urmărește cât ai economisit din fiecare anulare.
+
+NU RATA NICIODATĂ O PLATĂ
+Vezi plățile viitoare într-un calendar, primește memento-uri înainte de a fi taxat și află din timp înainte ca o perioadă de probă gratuită să devină plătită.
+
+ANALIZA CHELTUIELILOR (Pro)
+Defalcare pe categorii, tendințe ale cheltuielilor în timp și clasamentul celor mai costisitoare abonamente - astfel știi mereu unde îți duci banii.
+
+CONSTRUIT PENTRU CONFIDENȚIALITATE
+SubTrack păstrează totul pe dispozitivul tău. Fără cont, fără cloud, fără înregistrare. Datele tale despre abonamente nu părăsesc niciodată telefonul - 100% local, prietenos cu GDPR prin design.
+
+CREAT PENTRU EUROPA
+Vezi defalcarea TVA pentru Germania și Franța, urmărește abonamente în mai multe valute cu cursuri de schimb în timp real (Pro) și fă o copie de rezervă a datelor oricând dorești.
+
+TOT RESTUL
+- Sigle și fotografii personalizate pentru orice abonament
+- Export CSV
+- Backup și restaurare locală a datelor
+- Pro deblochează urmărire nelimitată a abonamentelor, verificări de diagnostic nelimitate, analize, cursuri de schimb în timp real, backup și sigle personalizate
+
+CONFIDENȚIALITATE
+SubTrack nu cere autentificare și nu sincronizează datele despre abonamentele tale cu niciun server - totul este stocat local, pe dispozitivul tău. Consultă Politica noastră de confidențialitate și Termenii de utilizare:
+Politica de confidențialitate: https://legal-wheat-pi.vercel.app/privacy.html
+Termeni de utilizare: https://legal-wheat-pi.vercel.app/terms.html
+
+MĂRCI ÎNREGISTRATE
+Numele și siglele serviciilor afișate în aplicație (de ex. mărci de streaming, muzică și software) sunt folosite exclusiv pentru a te ajuta să îți identifici propriile abonamente și rămân proprietatea deținătorilor lor. SubTrack nu este afiliat, aprobat sau sponsorizat de niciuna dintre aceste companii. Dacă ești deținătorul unor drepturi și dorești eliminarea unui nume sau a unei sigle, scrie-ne la cutedogstoryai@gmail.com și ne vom ocupa prompt de asta.

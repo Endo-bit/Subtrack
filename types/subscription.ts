@@ -1,3 +1,5 @@
+import { CurrencyCode } from '@/utils/currency';
+
 export type Language = 'de' | 'fr' | 'en' | 'es';
 export type BillingCycle = 'monthly' | 'quarterly' | 'annual';
 export type Category = 'streaming' | 'music' | 'productivity' | 'gaming' | 'health' | 'news' | 'other';
@@ -31,10 +33,21 @@ export type Subscription = PresetService & {
   startedAt: string;
   note?: string;
   isCancelled?: boolean;
+  /**
+   * ISO date (1st of month) — the first billing month with no charge once cancelled.
+   * Set at cancel time based on whether that month's bill had already gone out.
+   * Legacy cancellations from before this field existed have isCancelled without it,
+   * which chargesInMonth() treats as "cancelled from the start" (excluded everywhere).
+   */
+  cancelEffectiveMonth?: string;
   planName?: string;
   /** ISO date when price/plan last changed. */
   planChangedAt?: string;
   customPrice?: boolean;
+  /** ISO date the free trial ends. While in the future, billing is treated as €0. */
+  trialEndsAt?: string;
+  /** Currency this subscription is actually billed in (Pro only). Defaults to the app's display currency when unset. */
+  currency?: CurrencyCode;
 };
 
 export type SortMode = 'date' | 'cost' | 'alpha';

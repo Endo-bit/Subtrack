@@ -1,0 +1,32 @@
+Stop med at betale for abonnementer, du har glemt.
+
+SubTrack holder styr på alle dine abonnementer ét sted - streaming, software, fitnessmedlemskaber og mere - og viser dig præcis, hvad der er værd at beholde.
+
+ABONNEMENTSDIAGNOSE
+Lav et hurtigt tjek af ethvert abonnement: hvor ofte du bruger det, om du har en dublet, om prisen er det værd. SubTrack giver det en score og fortæller dig, om du skal beholde, genoverveje eller opsige - og holder styr på, hvor meget du har sparet ved hver opsigelse.
+
+GÅ ALDRIG GLIP AF EN BETALING
+Se kommende betalinger i en kalender, få påmindelser før du bliver trukket, og bliv underrettet før gratis prøveperioder bliver til betaling.
+
+FORBRUGSANALYSE (Pro)
+Kategoriopdeling, forbrugstendenser over tid og dine dyreste abonnementer rangeret - så du altid ved, hvor dine penge går hen.
+
+BYGGET TIL PRIVATLIV
+SubTrack gemmer alt kun på din enhed. Ingen konto, ingen cloud, ingen tilmelding. Dine abonnementsdata forlader aldrig din telefon - 100% lokalt, GDPR-venligt fra bunden.
+
+LAVET TIL EUROPA
+Se momsopdelinger for Tyskland og Frankrig, spor abonnementer på tværs af flere valutaer med realtidsvekselkurser (Pro), og tag backup af dine data, når du vil.
+
+ALT DET ANDET
+- Egne logoer og fotos til ethvert abonnement
+- CSV-eksport
+- Lokal databackup og gendannelse
+- Pro låser op for ubegrænset abonnementssporing, ubegrænsede diagnosetjek, analyse, realtidsvekselkurser, backup og egne logoer
+
+PRIVATLIV
+SubTrack beder aldrig om login og synkroniserer aldrig dine abonnementsdata til en server - alt gemmes lokalt på din enhed. Se vores privatlivspolitik og servicevilkår:
+Privatlivspolitik: https://legal-wheat-pi.vercel.app/privacy.html
+Servicevilkår: https://legal-wheat-pi.vercel.app/terms.html
+
+VAREMÆRKER
+Navne og logoer for tjenester, der vises i appen (f.eks. streaming-, musik- og softwaremærker), bruges udelukkende til at hjælpe dig med at identificere dine egne abonnementer og forbliver de respektive ejeres ejendom. SubTrack er ikke tilknyttet, godkendt af eller sponsoreret af nogen af disse virksomheder. Hvis du er rettighedshaver og ønsker et navn eller logo fjernet, så send os en e-mail på cutedogstoryai@gmail.com, og vi ordner det hurtigt.

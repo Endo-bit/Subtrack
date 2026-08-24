@@ -1,0 +1,5 @@
+Esta actualización soluciona algunas cosas que nos contaste:
+
+- Las notificaciones de recordatorio ya no repiten cada pago dentro de tu ventana de recordatorio cada vez que añades, eliminas o cambias el plan de una suscripción
+- La pantalla de inicio ahora marca cada pago próximo dentro de la próxima semana, no solo el siguiente, cada uno con su propio contador de días
+- Cambiar el plan de una suscripción ahora rellena automáticamente tu precio actual y muestra en qué plan oficial estás

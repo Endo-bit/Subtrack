@@ -1,0 +1,1 @@
+regningspåminnelse,fornyelsespåminnelse,faste betalinger,budsjett,gratis prøveperiode,gdpr,csv,mva

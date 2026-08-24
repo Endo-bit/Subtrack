@@ -30,7 +30,7 @@ export type Strings = {
   dailyCostLabel: string;
   monthlyCostLabel: string;
   yearlyCostLabel: string;
-  cancelPage: string;
+  cancelPageUnavailable: string;
   openCancelPage: string;
   selectPlan: string;
   customPrice: string;
@@ -40,18 +40,17 @@ export type Strings = {
   pickMonth: string;
   pickYear: string;
   customPlan: string;
+  currentPlanLabel: string;
   privacy: string;
   start: string;
   pro: string;
   limit: string;
-  saved: string;
   totalMonth: string;
   diagnosis: string;
   language: string;
   vat: string;
   reminders: string;
   export: string;
-  biometric: string;
   version: string;
   vatDe: string;
   vatFr: string;
@@ -75,6 +74,7 @@ export type Strings = {
   deleteTitle: string;
   deleteMessage: string;
   cancel: string;
+  back: string;
   tagline: string;
   privacyBadge: string;
   onboarding1Title: string;
@@ -99,6 +99,8 @@ export type Strings = {
   rankPosition: string;
   monthBreakdownTotal: string;
   monthBreakdownEmpty: string;
+  dayBreakdownEmpty: string;
+  daysUntilTemplate: string;
   billingPresetToday: string;
   billingPresetIn7: string;
   billingPreset1st: string;
@@ -137,6 +139,7 @@ export type Strings = {
   prevMonth: string;
   nextMonth: string;
   currency: string;
+  reminderNotificationTitle: string;
   reminderNotificationBody: string;
   paywallTitle: string;
   paywallRestore: string;
@@ -150,7 +153,68 @@ export type Strings = {
   paywallTerms: string;
   paywallPrivacy: string;
   paywallLegalNote: string;
+  paywallLifetimeNote: string;
+  paywallRecommended: string;
   paywallLoading: string;
+  paywallDurationMonthly: string;
+  paywallDurationYearly: string;
+  paywallDurationLifetime: string;
+  paywallFeatureBackup: string;
+  diagnosisUnlimitedProOnly: string;
+  customLogoProOnly: string;
+  backupData: string;
+  restoreData: string;
+  resetData: string;
+  resetConfirmTitle: string;
+  resetConfirmMessage: string;
+  restoreSuccess: string;
+  restoreInvalid: string;
+  trialEndingNotificationTitle: string;
+  trialEndingNotificationBody: string;
+  diagnosisAlreadyDoneTitle: string;
+  diagnosisAlreadyDoneBody: string;
+  diagnosisViewHistory: string;
+  diagnosisHistoryTitle: string;
+  diagnosisCancelButton: string;
+  diagnosisCancelled: string;
+  diagnosisCancelConfirmTitle: string;
+  diagnosisCancelConfirmBody: string;
+  diagnosisCancelConfirm: string;
+  diagnosisSavingsTitle: string;
+  diagnosisSavingsMonthly: string;
+  diagnosisSavingsYearly: string;
+  diagnosisSavingsBreakdown: string;
+  diagnosisHistoryCount: string;
+  diagnosisHistoryLowLabel: string;
+  momVsLastMonth: string;
+  freeTrial: string;
+  freeTrialDuration: string;
+  freeTrialDaysUnit: string;
+  freeTrialBadge: string;
+  freeTrialEndsLabel: string;
+  prevYear: string;
+  nextYear: string;
+  photoPermissionDenied: string;
+  choosePhoto: string;
+  analyticsLockedTitle: string;
+  analyticsLockedBody: string;
+  filterAll: string;
+  fxProOnly: string;
+  viewTutorial: string;
+  analyticsProOnly: string;
+  notificationsLabel: string;
+  notificationsOn: string;
+  notificationsOff: string;
+  enableNotificationsBtn: string;
+  openSettingsBtn: string;
+  manageSubscription: string;
+  csvMonthlyEquivalent: string;
+  csvStarted: string;
+  csvNextBilling: string;
+  errorBoundaryTitle: string;
+  errorBoundaryBody: string;
+  errorBoundaryRetry: string;
+  scrollToTop: string;
 };
 
 export const strings: Record<Language, Strings> = {
@@ -184,7 +248,7 @@ export const strings: Record<Language, Strings> = {
     dailyCostLabel: 'Pro Tag',
     monthlyCostLabel: 'Pro Monat',
     yearlyCostLabel: 'Pro Jahr',
-    cancelPage: 'Kündigungsseite',
+    cancelPageUnavailable: 'Für {name} liegt uns kein direkter Kündigungslink vor. Bitte kündige direkt in der {name}-App oder auf der Website.',
     openCancelPage: 'Kündigung öffnen',
     selectPlan: 'Tarif wählen',
     customPrice: 'Eigener Preis',
@@ -194,19 +258,18 @@ export const strings: Record<Language, Strings> = {
     pickMonth: 'Monat',
     pickYear: 'Jahr',
     customPlan: 'Individuell',
+    currentPlanLabel: 'aktuell',
     privacy:
       'SubTrack speichert alles nur auf deinem Gerät. Kein Konto, kein Cloud-Sync — deine Abos bleiben bei dir.',
     start: 'Loslegen',
     pro: 'Pro freischalten',
     limit: 'Die Free-Version erlaubt bis zu 5 Abos. Mit Pro trackst du unbegrenzt.',
-    saved: 'Gespart',
     totalMonth: 'Fällig diesen Monat',
     diagnosis: 'Abo-Check',
     language: 'Sprache',
     vat: 'MwSt.',
     reminders: 'Erinnerung',
     export: 'CSV exportieren',
-    biometric: 'Biometrische Sperre',
     version: 'Version',
     vatDe: '19 % MwSt. (DE)',
     vatFr: '20 % TVA (FR)',
@@ -214,7 +277,7 @@ export const strings: Record<Language, Strings> = {
     reminderOff: 'Aus',
     reminderDaysBefore: 'Tage vorher',
     dataPrivacy: 'Daten & Privatsphäre',
-    proBlurb: 'Unbegrenzte Abos, Diagnose, Widget und Export.',
+    proBlurb: 'Unbegrenzte Abos, unbegrenzte Diagnosen, Analyse, Echtzeit-Wechselkurse, CSV-Export, Datensicherung und eigene Logos.',
     proPrice: '€1,99/Monat oder €14,99/Jahr',
     categoryBreakdown: 'Nach Kategorie',
     thisMonth: 'Dieser Monat',
@@ -230,6 +293,7 @@ export const strings: Record<Language, Strings> = {
     deleteTitle: 'Abo entfernen?',
     deleteMessage: '„{name}“ wird aus deiner Übersicht gelöscht.',
     cancel: 'Abbrechen',
+    back: 'Zurück',
     tagline: 'Deine Abos, schön verpackt.',
     privacyBadge: '100 % lokal · DSGVO',
     onboarding1Title: 'Alles an einem Ort',
@@ -251,10 +315,12 @@ export const strings: Record<Language, Strings> = {
     catHealth: 'Gesundheit',
     catNews: 'Nachrichten',
     catOther: 'Sonstiges',
-    proTrendHint: 'Trends, Export und Diagnose mit Pro.',
+    proTrendHint: 'Verfolge unbegrenzt viele Abos und exportiere deine Daten mit Pro.',
     rankPosition: 'Platz',
     monthBreakdownTotal: 'gesamt',
     monthBreakdownEmpty: 'Keine Abbuchungen in diesem Monat.',
+    dayBreakdownEmpty: 'Keine Abbuchung an diesem Tag.',
+    daysUntilTemplate: 'in {n} Tagen',
     billingPresetToday: 'Heute',
     billingPresetIn7: 'In 7 Tagen',
     billingPreset1st: '1. des Monats',
@@ -294,7 +360,8 @@ export const strings: Record<Language, Strings> = {
     prevMonth: 'Vormonat',
     nextMonth: 'Nächster Monat',
     currency: 'Währung',
-    reminderNotificationBody: '„{name}“ wird bald abgebucht.',
+    reminderNotificationTitle: '{name} – Zahlung in {days} Tagen',
+    reminderNotificationBody: '{price} wird abgebucht.',
     paywallTitle: 'SubTrack Pro',
     paywallRestore: 'Käufe wiederherstellen',
     paywallRestoreSuccess: 'Käufe wiederhergestellt',
@@ -307,8 +374,69 @@ export const strings: Record<Language, Strings> = {
     paywallTerms: 'Nutzungsbedingungen',
     paywallPrivacy: 'Datenschutz',
     paywallLegalNote:
-      'Die Zahlung wird deinem Apple-ID-Konto belastet. Das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ende der aktuellen Periode gekündigt wird.',
+      'Die Zahlung wird deinem Apple-ID-Konto belastet. Das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ende der aktuellen Periode gekündigt wird. Du kannst jederzeit in den App-Store-Einstellungen kündigen.',
+    paywallLifetimeNote: 'Einmalige Zahlung. Kein Abo, keine automatische Verlängerung.',
+    paywallRecommended: 'Empfohlen',
     paywallLoading: 'Lädt…',
+    paywallDurationMonthly: 'Monatlich',
+    paywallDurationYearly: 'Jährlich',
+    paywallDurationLifetime: 'Einmalig',
+    paywallFeatureBackup: 'Daten sichern und wiederherstellen',
+    diagnosisUnlimitedProOnly: 'Unbegrenzte Abo-Diagnosen mit Pro',
+    customLogoProOnly: 'Eigenes Logo/Bild für jedes Abo festlegen',
+    backupData: 'Daten sichern',
+    restoreData: 'Backup wiederherstellen',
+    resetData: 'Alle Daten löschen',
+    resetConfirmTitle: 'Alle Daten löschen?',
+    resetConfirmMessage: 'Entfernt alle erfassten Abos von diesem Gerät. Das kann nicht rückgängig gemacht werden.',
+    restoreSuccess: 'Backup wiederhergestellt',
+    restoreInvalid: 'Diese Datei ist kein gültiges SubTrack-Backup.',
+    trialEndingNotificationTitle: '{name}: Testphase endet am {date}',
+    trialEndingNotificationBody: 'Danach wird es kostenpflichtig ({price}).',
+    diagnosisAlreadyDoneTitle: 'Bereits geprüft',
+    diagnosisAlreadyDoneBody: 'Du hast alle Abos schon einmal geprüft. Mit Pro kannst du sie erneut prüfen.',
+    diagnosisViewHistory: 'Frühere Ergebnisse ansehen',
+    diagnosisHistoryTitle: 'Frühere Ergebnisse',
+    diagnosisCancelButton: 'Dieses Abo kündigen',
+    diagnosisCancelled: 'Gekündigt',
+    diagnosisCancelConfirmTitle: 'Abo kündigen?',
+    diagnosisCancelConfirmBody: 'Markiere „{name}“ als gekündigt. Du kannst dies in den Details rückgängig machen.',
+    diagnosisCancelConfirm: 'Kündigen',
+    diagnosisSavingsTitle: 'Ersparnis durch Kündigungen',
+    diagnosisSavingsMonthly: 'Pro Monat',
+    diagnosisSavingsYearly: 'Pro Jahr',
+    diagnosisSavingsBreakdown: 'Aufschlüsselung',
+    diagnosisHistoryCount: '{n} geprüft',
+    diagnosisHistoryLowLabel: 'unter 50',
+    momVsLastMonth: 'ggü. Vormonat',
+    freeTrial: 'Testphase',
+    freeTrialDuration: 'Dauer der Testphase',
+    freeTrialDaysUnit: 'Tage',
+    freeTrialBadge: 'Test',
+    freeTrialEndsLabel: 'Testphase endet',
+    prevYear: 'Vorheriges Jahr',
+    nextYear: 'Nächstes Jahr',
+    photoPermissionDenied: 'Zugriff auf Fotos wurde nicht erlaubt.',
+    choosePhoto: 'Foto wählen',
+    analyticsLockedTitle: 'Analyse mit Pro freischalten',
+    analyticsLockedBody: 'Kategorien, Ausgabenverlauf und Ranking siehst du mit SubTrack Pro.',
+    filterAll: 'Alle',
+    fxProOnly: 'Echtzeit-Wechselkurse sind Teil von Pro.',
+    viewTutorial: 'Einführung ansehen',
+    analyticsProOnly: 'Kategorien, Trends und Ranking mit Pro',
+    notificationsLabel: 'Benachrichtigungen',
+    notificationsOn: 'Aktiviert',
+    notificationsOff: 'Deaktiviert',
+    enableNotificationsBtn: 'Aktivieren',
+    openSettingsBtn: 'Einstellungen öffnen',
+    manageSubscription: 'Abo verwalten/kündigen',
+    csvMonthlyEquivalent: 'Monatlich (umgerechnet)',
+    csvStarted: 'Beginn',
+    csvNextBilling: 'Nächste Abbuchung',
+    errorBoundaryTitle: 'Etwas ist schiefgelaufen',
+    errorBoundaryBody: 'SubTrack ist auf einen unerwarteten Fehler gestoßen. Deine Daten sind auf diesem Gerät sicher.',
+    errorBoundaryRetry: 'Erneut versuchen',
+    scrollToTop: 'Nach oben scrollen',
   },
   fr: {
     overview: 'Accueil',
@@ -340,7 +468,7 @@ export const strings: Record<Language, Strings> = {
     dailyCostLabel: 'Par jour',
     monthlyCostLabel: 'Par mois',
     yearlyCostLabel: 'Par an',
-    cancelPage: 'Page de résiliation',
+    cancelPageUnavailable: 'Nous n\'avons pas de lien de résiliation direct pour {name}. Merci de résilier directement depuis l\'application ou le site de {name}.',
     openCancelPage: 'Ouvrir la résiliation',
     selectPlan: 'Choisir une offre',
     customPrice: 'Prix personnalisé',
@@ -350,19 +478,18 @@ export const strings: Record<Language, Strings> = {
     pickMonth: 'Mois',
     pickYear: 'Année',
     customPlan: 'Personnalisé',
+    currentPlanLabel: 'actuel',
     privacy:
       'SubTrack garde tout sur votre appareil. Pas de compte, pas de cloud — vos abonnements restent chez vous.',
     start: 'Commencer',
     pro: 'Passer à Pro',
     limit: 'La version gratuite permet 5 abonnements. Pro débloque le suivi illimité.',
-    saved: 'Économisé',
     totalMonth: 'Dû ce mois-ci',
     diagnosis: 'Bilan abonnements',
     language: 'Langue',
     vat: 'TVA',
     reminders: 'Rappel',
     export: 'Exporter CSV',
-    biometric: 'Verrouillage biométrique',
     version: 'Version',
     vatDe: '19 % TVA (DE)',
     vatFr: '20 % TVA (FR)',
@@ -370,7 +497,7 @@ export const strings: Record<Language, Strings> = {
     reminderOff: 'Désactivé',
     reminderDaysBefore: 'jours avant',
     dataPrivacy: 'Données & confidentialité',
-    proBlurb: 'Abonnements illimités, diagnostic, widget et export.',
+    proBlurb: 'Abonnements illimités, diagnostics illimités, analyse, taux de change en temps réel, export CSV, sauvegarde et logos personnalisés.',
     proPrice: '1,99 €/mois ou 14,99 €/an',
     categoryBreakdown: 'Par catégorie',
     thisMonth: 'Ce mois-ci',
@@ -386,6 +513,7 @@ export const strings: Record<Language, Strings> = {
     deleteTitle: 'Supprimer l’abonnement ?',
     deleteMessage: '« {name} » sera retiré de votre liste.',
     cancel: 'Annuler',
+    back: 'Retour',
     tagline: 'Vos abonnements, bien rangés.',
     privacyBadge: '100 % local · RGPD',
     onboarding1Title: 'Tout au même endroit',
@@ -407,10 +535,12 @@ export const strings: Record<Language, Strings> = {
     catHealth: 'Santé',
     catNews: 'Actualités',
     catOther: 'Autre',
-    proTrendHint: 'Tendances, export et diagnostic avec Pro.',
+    proTrendHint: 'Suivez un nombre illimité d’abonnements et exportez vos données avec Pro.',
     rankPosition: 'Rang',
     monthBreakdownTotal: 'total',
     monthBreakdownEmpty: 'Aucun prélèvement ce mois-ci.',
+    dayBreakdownEmpty: 'Aucun prélèvement ce jour-là.',
+    daysUntilTemplate: 'dans {n} jours',
     billingPresetToday: "Aujourd'hui",
     billingPresetIn7: 'Dans 7 jours',
     billingPreset1st: '1er du mois',
@@ -450,7 +580,8 @@ export const strings: Record<Language, Strings> = {
     prevMonth: 'Mois précédent',
     nextMonth: 'Mois suivant',
     currency: 'Devise',
-    reminderNotificationBody: '« {name} » sera bientôt prélevé.',
+    reminderNotificationTitle: '{name} – Paiement dans {days} jours',
+    reminderNotificationBody: '{price} sera prélevé.',
     paywallTitle: 'SubTrack Pro',
     paywallRestore: 'Restaurer les achats',
     paywallRestoreSuccess: 'Achats restaurés',
@@ -463,8 +594,69 @@ export const strings: Record<Language, Strings> = {
     paywallTerms: 'Conditions d’utilisation',
     paywallPrivacy: 'Confidentialité',
     paywallLegalNote:
-      'Le paiement sera prélevé sur votre compte Apple ID. L’abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin de la période en cours.',
+      'Le paiement sera prélevé sur votre compte Apple ID. L’abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin de la période en cours. Vous pouvez annuler à tout moment dans les réglages de l’App Store.',
+    paywallLifetimeNote: 'Paiement unique. Pas d’abonnement, pas de renouvellement.',
+    paywallRecommended: 'Recommandé',
     paywallLoading: 'Chargement…',
+    paywallDurationMonthly: 'Mensuel',
+    paywallDurationYearly: 'Annuel',
+    paywallDurationLifetime: 'À vie',
+    paywallFeatureBackup: 'Sauvegardez et restaurez vos données',
+    diagnosisUnlimitedProOnly: 'Diagnostics d’abonnement illimités avec Pro',
+    customLogoProOnly: 'Définissez un logo personnalisé pour chaque abonnement',
+    backupData: 'Sauvegarder les données',
+    restoreData: 'Restaurer une sauvegarde',
+    resetData: 'Supprimer toutes les données',
+    resetConfirmTitle: 'Supprimer toutes les données ?',
+    resetConfirmMessage: 'Supprime tous vos abonnements suivis sur cet appareil. Action irréversible.',
+    restoreSuccess: 'Sauvegarde restaurée',
+    restoreInvalid: 'Ce fichier n’est pas une sauvegarde SubTrack valide.',
+    trialEndingNotificationTitle: '{name} : essai gratuit jusqu’au {date}',
+    trialEndingNotificationBody: 'Ensuite, l’abonnement devient payant ({price}).',
+    diagnosisAlreadyDoneTitle: 'Déjà vérifié',
+    diagnosisAlreadyDoneBody: 'Vous avez déjà vérifié tous vos abonnements. Passez à Pro pour recommencer.',
+    diagnosisViewHistory: 'Voir les résultats précédents',
+    diagnosisHistoryTitle: 'Résultats précédents',
+    diagnosisCancelButton: 'Résilier cet abonnement',
+    diagnosisCancelled: 'Résilié',
+    diagnosisCancelConfirmTitle: 'Résilier l’abonnement ?',
+    diagnosisCancelConfirmBody: 'Marque « {name} » comme résilié. Vous pourrez annuler cela depuis ses détails.',
+    diagnosisCancelConfirm: 'Résilier',
+    diagnosisSavingsTitle: 'Économies grâce aux résiliations',
+    diagnosisSavingsMonthly: 'Par mois',
+    diagnosisSavingsYearly: 'Par an',
+    diagnosisSavingsBreakdown: 'Détail',
+    diagnosisHistoryCount: '{n} vérifié(s)',
+    diagnosisHistoryLowLabel: 'sous 50',
+    momVsLastMonth: 'vs mois dernier',
+    freeTrial: 'Essai gratuit',
+    freeTrialDuration: 'Durée de l’essai',
+    freeTrialDaysUnit: 'jours',
+    freeTrialBadge: 'Essai',
+    freeTrialEndsLabel: 'Fin de l’essai',
+    prevYear: 'Année précédente',
+    nextYear: 'Année suivante',
+    photoPermissionDenied: 'Accès aux photos refusé.',
+    choosePhoto: 'Choisir une photo',
+    analyticsLockedTitle: 'Débloquez l’analyse avec Pro',
+    analyticsLockedBody: 'Catégories, évolution des dépenses et classement avec SubTrack Pro.',
+    filterAll: 'Tous',
+    fxProOnly: 'Les taux de change en temps réel font partie de Pro.',
+    viewTutorial: 'Revoir l’introduction',
+    analyticsProOnly: 'Catégories, tendances et classement avec Pro',
+    notificationsLabel: 'Notifications',
+    notificationsOn: 'Activées',
+    notificationsOff: 'Désactivées',
+    enableNotificationsBtn: 'Activer',
+    openSettingsBtn: 'Ouvrir les réglages',
+    manageSubscription: 'Gérer/résilier l’abonnement',
+    csvMonthlyEquivalent: 'Équivalent mensuel',
+    csvStarted: 'Début',
+    csvNextBilling: 'Prochain prélèvement',
+    errorBoundaryTitle: 'Un problème est survenu',
+    errorBoundaryBody: 'SubTrack a rencontré une erreur inattendue. Vos données restent en sécurité sur cet appareil.',
+    errorBoundaryRetry: 'Réessayer',
+    scrollToTop: 'Remonter en haut',
   },
   en: {
     overview: 'Overview',
@@ -496,7 +688,7 @@ export const strings: Record<Language, Strings> = {
     dailyCostLabel: 'Per day',
     monthlyCostLabel: 'Per month',
     yearlyCostLabel: 'Per year',
-    cancelPage: 'Cancellation page',
+    cancelPageUnavailable: 'We don\'t have a direct cancellation link for {name}. Please cancel it from the {name} app or website.',
     openCancelPage: 'Open cancellation page',
     selectPlan: 'Choose a plan',
     customPrice: 'Custom price',
@@ -506,19 +698,18 @@ export const strings: Record<Language, Strings> = {
     pickMonth: 'Month',
     pickYear: 'Year',
     customPlan: 'Custom',
+    currentPlanLabel: 'current',
     privacy:
       'SubTrack keeps everything on your device. No account, no cloud — your subscriptions stay with you.',
     start: 'Get started',
     pro: 'Upgrade to Pro',
     limit: 'Free supports up to 5 subscriptions. Pro unlocks unlimited tracking.',
-    saved: 'Saved',
     totalMonth: 'Due this month',
     diagnosis: 'Subscription check-in',
     language: 'Language',
     vat: 'VAT',
     reminders: 'Reminder',
     export: 'Export CSV',
-    biometric: 'Biometric lock',
     version: 'Version',
     vatDe: '19% VAT (DE)',
     vatFr: '20% VAT (FR)',
@@ -526,7 +717,7 @@ export const strings: Record<Language, Strings> = {
     reminderOff: 'Off',
     reminderDaysBefore: 'days before',
     dataPrivacy: 'Data & privacy',
-    proBlurb: 'Unlimited subs, diagnosis, widget, and export.',
+    proBlurb: 'Unlimited subscriptions, unlimited diagnosis, Analytics, real-time exchange rates, CSV export, data backup, and custom logos.',
     proPrice: '€1.99/month or €14.99/year',
     categoryBreakdown: 'By category',
     thisMonth: 'This month',
@@ -542,6 +733,7 @@ export const strings: Record<Language, Strings> = {
     deleteTitle: 'Remove subscription?',
     deleteMessage: '“{name}” will be removed from your overview.',
     cancel: 'Cancel',
+    back: 'Back',
     tagline: 'Your subscriptions, neatly packed.',
     privacyBadge: '100% local · GDPR-friendly',
     onboarding1Title: 'Everything in one place',
@@ -563,10 +755,12 @@ export const strings: Record<Language, Strings> = {
     catHealth: 'Health',
     catNews: 'News',
     catOther: 'Other',
-    proTrendHint: 'Trends, export, and diagnosis with Pro.',
+    proTrendHint: 'Track unlimited subscriptions and export your data with Pro.',
     rankPosition: 'Rank',
     monthBreakdownTotal: 'total',
     monthBreakdownEmpty: 'No charges in this month.',
+    dayBreakdownEmpty: 'No charge on this day.',
+    daysUntilTemplate: 'in {n} days',
     billingPresetToday: 'Today',
     billingPresetIn7: 'In 7 days',
     billingPreset1st: '1st of month',
@@ -606,7 +800,8 @@ export const strings: Record<Language, Strings> = {
     prevMonth: 'Previous month',
     nextMonth: 'Next month',
     currency: 'Currency',
-    reminderNotificationBody: '"{name}" renews soon.',
+    reminderNotificationTitle: '{name} – payment in {days} days',
+    reminderNotificationBody: '{price} will be charged.',
     paywallTitle: 'SubTrack Pro',
     paywallRestore: 'Restore purchases',
     paywallRestoreSuccess: 'Purchases restored',
@@ -619,8 +814,69 @@ export const strings: Record<Language, Strings> = {
     paywallTerms: 'Terms of Use',
     paywallPrivacy: 'Privacy Policy',
     paywallLegalNote:
-      'Payment will be charged to your Apple ID account. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.',
+      'Payment will be charged to your Apple ID account. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period. You can cancel anytime in App Store settings.',
+    paywallLifetimeNote: 'One-time payment. No subscription, no auto-renewal.',
+    paywallRecommended: 'Recommended',
     paywallLoading: 'Loading…',
+    paywallDurationMonthly: 'Monthly',
+    paywallDurationYearly: 'Yearly',
+    paywallDurationLifetime: 'Lifetime',
+    paywallFeatureBackup: 'Back up and restore your data',
+    diagnosisUnlimitedProOnly: 'Unlimited subscription diagnosis checks with Pro',
+    customLogoProOnly: 'Set a custom logo/photo for any subscription',
+    backupData: 'Back up data',
+    restoreData: 'Restore backup',
+    resetData: 'Delete all data',
+    resetConfirmTitle: 'Delete all data?',
+    resetConfirmMessage: 'This removes all tracked subscriptions from this device. This cannot be undone.',
+    restoreSuccess: 'Backup restored',
+    restoreInvalid: 'This file is not a valid SubTrack backup.',
+    trialEndingNotificationTitle: '{name}: free trial ends {date}',
+    trialEndingNotificationBody: 'After that it becomes paid ({price}).',
+    diagnosisAlreadyDoneTitle: 'Already checked',
+    diagnosisAlreadyDoneBody: 'You\'ve already checked all your subscriptions once. Upgrade to Pro to re-check them.',
+    diagnosisViewHistory: 'View past results',
+    diagnosisHistoryTitle: 'Past results',
+    diagnosisCancelButton: 'Cancel this subscription',
+    diagnosisCancelled: 'Cancelled',
+    diagnosisCancelConfirmTitle: 'Cancel subscription?',
+    diagnosisCancelConfirmBody: 'Mark "{name}" as cancelled. You can undo this from its details.',
+    diagnosisCancelConfirm: 'Cancel it',
+    diagnosisSavingsTitle: 'Savings from cancellations',
+    diagnosisSavingsMonthly: 'Per month',
+    diagnosisSavingsYearly: 'Per year',
+    diagnosisSavingsBreakdown: 'Breakdown',
+    diagnosisHistoryCount: '{n} checked',
+    diagnosisHistoryLowLabel: 'below 50',
+    momVsLastMonth: 'vs last month',
+    freeTrial: 'Free trial',
+    freeTrialDuration: 'Trial length',
+    freeTrialDaysUnit: 'days',
+    freeTrialBadge: 'Trial',
+    freeTrialEndsLabel: 'Trial ends',
+    prevYear: 'Previous year',
+    nextYear: 'Next year',
+    photoPermissionDenied: 'Photo access was not granted.',
+    choosePhoto: 'Choose photo',
+    analyticsLockedTitle: 'Unlock Analytics with Pro',
+    analyticsLockedBody: 'Category breakdown, spending trends, and rankings with SubTrack Pro.',
+    filterAll: 'All',
+    fxProOnly: 'Real-time exchange rates are a Pro feature.',
+    viewTutorial: 'View tutorial',
+    analyticsProOnly: 'Category breakdown, trends, and rankings with Pro',
+    notificationsLabel: 'Notifications',
+    notificationsOn: 'On',
+    notificationsOff: 'Off',
+    enableNotificationsBtn: 'Enable',
+    openSettingsBtn: 'Open Settings',
+    manageSubscription: 'Manage/cancel subscription',
+    csvMonthlyEquivalent: 'Monthly equivalent',
+    csvStarted: 'Started',
+    csvNextBilling: 'Next billing',
+    errorBoundaryTitle: 'Something went wrong',
+    errorBoundaryBody: 'SubTrack ran into an unexpected error. Your data is safe on this device.',
+    errorBoundaryRetry: 'Try again',
+    scrollToTop: 'Scroll to top',
   },
   es: {
     overview: 'Resumen',
@@ -652,7 +908,7 @@ export const strings: Record<Language, Strings> = {
     dailyCostLabel: 'Al día',
     monthlyCostLabel: 'Al mes',
     yearlyCostLabel: 'Al año',
-    cancelPage: 'Página de cancelación',
+    cancelPageUnavailable: 'No disponemos de un enlace de cancelación directo para {name}. Cancélalo directamente desde la app o el sitio web de {name}.',
     openCancelPage: 'Abrir cancelación',
     selectPlan: 'Elegir plan',
     customPrice: 'Precio personalizado',
@@ -662,19 +918,18 @@ export const strings: Record<Language, Strings> = {
     pickMonth: 'Mes',
     pickYear: 'Año',
     customPlan: 'Personalizado',
+    currentPlanLabel: 'actual',
     privacy:
       'SubTrack guarda todo en tu dispositivo. Sin cuenta ni nube: tus suscripciones se quedan contigo.',
     start: 'Empezar',
     pro: 'Pasar a Pro',
     limit: 'La versión gratuita permite hasta 5 suscripciones. Pro desbloquea el seguimiento ilimitado.',
-    saved: 'Ahorrado',
     totalMonth: 'A pagar este mes',
     diagnosis: 'Revisión de suscripciones',
     language: 'Idioma',
     vat: 'IVA',
     reminders: 'Recordatorio',
     export: 'Exportar CSV',
-    biometric: 'Bloqueo biométrico',
     version: 'Versión',
     vatDe: '19 % IVA (DE)',
     vatFr: '20 % IVA (FR)',
@@ -682,7 +937,7 @@ export const strings: Record<Language, Strings> = {
     reminderOff: 'Desactivado',
     reminderDaysBefore: 'días antes',
     dataPrivacy: 'Datos y privacidad',
-    proBlurb: 'Suscripciones ilimitadas, revisión, widget y exportación.',
+    proBlurb: 'Suscripciones ilimitadas, diagnósticos ilimitados, análisis, tipos de cambio en tiempo real, exportación CSV, copia de seguridad y logos personalizados.',
     proPrice: '1,99 €/mes o 14,99 €/año',
     categoryBreakdown: 'Por categoría',
     thisMonth: 'Este mes',
@@ -698,6 +953,7 @@ export const strings: Record<Language, Strings> = {
     deleteTitle: '¿Eliminar suscripción?',
     deleteMessage: '«{name}» se quitará de tu lista.',
     cancel: 'Cancelar',
+    back: 'Atrás',
     tagline: 'Tus suscripciones, bien organizadas.',
     privacyBadge: '100 % local · RGPD',
     onboarding1Title: 'Todo en un solo lugar',
@@ -720,10 +976,12 @@ export const strings: Record<Language, Strings> = {
     catHealth: 'Salud',
     catNews: 'Noticias',
     catOther: 'Otros',
-    proTrendHint: 'Tendencias, exportación y revisión con Pro.',
+    proTrendHint: 'Sigue suscripciones ilimitadas y exporta tus datos con Pro.',
     rankPosition: 'Puesto',
     monthBreakdownTotal: 'total',
     monthBreakdownEmpty: 'No hay cobros este mes.',
+    dayBreakdownEmpty: 'No hay cobro ese día.',
+    daysUntilTemplate: 'en {n} días',
     billingPresetToday: 'Hoy',
     billingPresetIn7: 'En 7 días',
     billingPreset1st: 'Día 1 del mes',
@@ -763,7 +1021,8 @@ export const strings: Record<Language, Strings> = {
     prevMonth: 'Mes anterior',
     nextMonth: 'Mes siguiente',
     currency: 'Moneda',
-    reminderNotificationBody: '"{name}" se renovará pronto.',
+    reminderNotificationTitle: '{name}: pago en {days} días',
+    reminderNotificationBody: 'Se cobrará {price}.',
     paywallTitle: 'SubTrack Pro',
     paywallRestore: 'Restaurar compras',
     paywallRestoreSuccess: 'Compras restauradas',
@@ -776,8 +1035,69 @@ export const strings: Record<Language, Strings> = {
     paywallTerms: 'Términos de uso',
     paywallPrivacy: 'Privacidad',
     paywallLegalNote:
-      'El pago se cargará a tu cuenta de Apple ID. La suscripción se renueva automáticamente a menos que se cancele al menos 24 horas antes del final del período actual.',
+      'El pago se cargará a tu cuenta de Apple ID. La suscripción se renueva automáticamente a menos que se cancele al menos 24 horas antes del final del período actual. Puedes cancelar en cualquier momento desde los ajustes de la App Store.',
+    paywallLifetimeNote: 'Pago único. Sin suscripción, sin renovación automática.',
+    paywallRecommended: 'Recomendado',
     paywallLoading: 'Cargando…',
+    paywallDurationMonthly: 'Mensual',
+    paywallDurationYearly: 'Anual',
+    paywallDurationLifetime: 'De por vida',
+    paywallFeatureBackup: 'Haz copia de seguridad y restaura tus datos',
+    diagnosisUnlimitedProOnly: 'Diagnósticos de suscripción ilimitados con Pro',
+    customLogoProOnly: 'Configura un logo/foto personalizado para cualquier suscripción',
+    backupData: 'Copia de seguridad',
+    restoreData: 'Restaurar copia de seguridad',
+    resetData: 'Eliminar todos los datos',
+    resetConfirmTitle: '¿Eliminar todos los datos?',
+    resetConfirmMessage: 'Esto elimina todas las suscripciones registradas en este dispositivo. No se puede deshacer.',
+    restoreSuccess: 'Copia de seguridad restaurada',
+    restoreInvalid: 'Este archivo no es una copia de seguridad válida de SubTrack.',
+    trialEndingNotificationTitle: '{name}: la prueba gratuita termina el {date}',
+    trialEndingNotificationBody: 'Después pasará a ser de pago ({price}).',
+    diagnosisAlreadyDoneTitle: 'Ya revisado',
+    diagnosisAlreadyDoneBody: 'Ya revisaste todas tus suscripciones una vez. Pásate a Pro para volver a revisarlas.',
+    diagnosisViewHistory: 'Ver resultados anteriores',
+    diagnosisHistoryTitle: 'Resultados anteriores',
+    diagnosisCancelButton: 'Cancelar esta suscripción',
+    diagnosisCancelled: 'Cancelada',
+    diagnosisCancelConfirmTitle: '¿Cancelar suscripción?',
+    diagnosisCancelConfirmBody: 'Marca "{name}" como cancelada. Puedes deshacerlo desde sus detalles.',
+    diagnosisCancelConfirm: 'Cancelar',
+    diagnosisSavingsTitle: 'Ahorro por cancelaciones',
+    diagnosisSavingsMonthly: 'Al mes',
+    diagnosisSavingsYearly: 'Al año',
+    diagnosisSavingsBreakdown: 'Desglose',
+    diagnosisHistoryCount: '{n} revisada(s)',
+    diagnosisHistoryLowLabel: 'bajo 50',
+    momVsLastMonth: 'vs mes pasado',
+    freeTrial: 'Prueba gratuita',
+    freeTrialDuration: 'Duración de la prueba',
+    freeTrialDaysUnit: 'días',
+    freeTrialBadge: 'Prueba',
+    freeTrialEndsLabel: 'La prueba termina',
+    prevYear: 'Año anterior',
+    nextYear: 'Año siguiente',
+    photoPermissionDenied: 'No se concedió acceso a las fotos.',
+    choosePhoto: 'Elegir foto',
+    analyticsLockedTitle: 'Desbloquea el análisis con Pro',
+    analyticsLockedBody: 'Desglose por categorías, evolución del gasto y ranking con SubTrack Pro.',
+    filterAll: 'Todas',
+    fxProOnly: 'Los tipos de cambio en tiempo real son parte de Pro.',
+    viewTutorial: 'Ver introducción',
+    analyticsProOnly: 'Categorías, tendencias y ranking con Pro',
+    notificationsLabel: 'Notificaciones',
+    notificationsOn: 'Activadas',
+    notificationsOff: 'Desactivadas',
+    enableNotificationsBtn: 'Activar',
+    openSettingsBtn: 'Abrir ajustes',
+    manageSubscription: 'Gestionar/cancelar suscripción',
+    csvMonthlyEquivalent: 'Equivalente mensual',
+    csvStarted: 'Inicio',
+    csvNextBilling: 'Próximo cobro',
+    errorBoundaryTitle: 'Algo salió mal',
+    errorBoundaryBody: 'SubTrack encontró un error inesperado. Tus datos están a salvo en este dispositivo.',
+    errorBoundaryRetry: 'Intentar de nuevo',
+    scrollToTop: 'Desplazarse arriba',
   },
 };
 

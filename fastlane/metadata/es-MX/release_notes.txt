@@ -1,0 +1,5 @@
+Esta actualización corrige varias cosas que nos reportaste:
+
+- Los recordatorios ya no repiten cada pago dentro de tu ventana de aviso cada vez que agregas, eliminas o cambias el plan de una suscripción
+- La pantalla de inicio ahora marca todos los pagos próximos dentro de una semana, no solo el siguiente, cada uno con su propio conteo de días
+- Cambiar el plan de una suscripción ahora prellena tu precio actual y muestra en qué plan oficial estás

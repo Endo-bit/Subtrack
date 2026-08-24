@@ -1,17 +1,64 @@
 import { router } from 'expo-router';
-import { MessageSquare, ShieldCheck } from 'lucide-react-native';
+import { GraduationCap, MessageSquare, ShieldCheck } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { FeedbackModal } from '@/components/FeedbackModal';
+import { TutorialModal } from '@/components/TutorialModal';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { theme } from '@/constants/theme';
 import { Language, VatMode } from '@/types/subscription';
 import { CURRENCIES } from '@/utils/currency';
 
 export default function SettingsScreen() {
-  const { t, language, vatMode, currency, reminderDays, isPro, locale, updateSettings } = useSubTrack();
+  const {
+    t,
+    language,
+    vatMode,
+    currency,
+    reminderDays,
+    isPro,
+    locale,
+    updateSettings,
+    exportCsv,
+    exportBackup,
+    importBackup,
+    resetAllData,
+    notificationPermission,
+    enableNotifications,
+  } = useSubTrack();
   const dark = useColorScheme() === 'dark';
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+
+  const onNotificationsPress = () => {
+    if (notificationPermission === 'denied') {
+      Linking.openSettings();
+    } else if (notificationPermission === 'undetermined') {
+      enableNotifications();
+    }
+  };
+
+  const requirePro = (action: () => void) => {
+    if (!isPro) {
+      router.push({ pathname: '/paywall', params: { source: 'settings' } });
+      return;
+    }
+    action();
+  };
+
+  const onRestore = () =>
+    requirePro(async () => {
+      const result = await importBackup();
+      if (result === 'success') Alert.alert(t.restoreSuccess);
+      else if (result === 'invalid') Alert.alert(t.restoreInvalid);
+    });
+
+  const onReset = () => {
+    Alert.alert(t.resetConfirmTitle, t.resetConfirmMessage, [
+      { text: t.cancel, style: 'cancel' },
+      { text: t.resetData, style: 'destructive', onPress: resetAllData },
+    ]);
+  };
 
   const vatLabels: Record<VatMode, string> = {
     de: t.vatDe,
@@ -94,10 +141,40 @@ export default function SettingsScreen() {
           ))}
         </SettingGroup>
 
-        {/* Export (Pro) */}
-        <View style={[styles.row, { backgroundColor: cardBg }]}>
-          <Text style={[styles.rowText, { color: textCol }]}>{t.export} · Pro</Text>
-          <Text style={styles.badge}>CSV</Text>
+        {/* Notification permission status */}
+        <Pressable
+          style={[styles.row, { backgroundColor: cardBg }]}
+          onPress={onNotificationsPress}
+          disabled={notificationPermission === 'granted' || notificationPermission === 'unsupported'}
+        >
+          <Text style={[styles.rowText, { color: textCol }]}>{t.notificationsLabel}</Text>
+          {notificationPermission === 'granted' ? (
+            <Text style={styles.notificationsOnText}>{t.notificationsOn}</Text>
+          ) : (
+            <Text style={styles.notificationsOffText}>
+              {notificationPermission === 'denied' ? t.openSettingsBtn : t.enableNotificationsBtn}
+            </Text>
+          )}
+        </Pressable>
+
+        {/* Data (Pro) */}
+        <View style={styles.group}>
+          <View style={styles.rowStack}>
+            <Pressable style={[styles.row, { backgroundColor: cardBg }]} onPress={() => requirePro(exportCsv)}>
+              <Text style={[styles.rowText, { color: textCol }]}>{t.export} · Pro</Text>
+              <Text style={styles.badge}>CSV</Text>
+            </Pressable>
+            <Pressable style={[styles.row, { backgroundColor: cardBg }]} onPress={() => requirePro(exportBackup)}>
+              <Text style={[styles.rowText, { color: textCol }]}>{t.backupData} · Pro</Text>
+              <Text style={styles.badge}>JSON</Text>
+            </Pressable>
+            <Pressable style={[styles.row, { backgroundColor: cardBg }]} onPress={onRestore}>
+              <Text style={[styles.rowText, { color: textCol }]}>{t.restoreData} · Pro</Text>
+            </Pressable>
+            <Pressable style={[styles.row, { backgroundColor: cardBg }]} onPress={onReset}>
+              <Text style={[styles.rowText, styles.dangerText]}>{t.resetData}</Text>
+            </Pressable>
+          </View>
         </View>
 
         {/* Pro */}
@@ -114,6 +191,27 @@ export default function SettingsScreen() {
             </Text>
           </Pressable>
         )}
+
+        {/* Manage / cancel subscription — Apple requires this be easy to find regardless of Pro status */}
+        <Pressable
+          style={[styles.row, { backgroundColor: cardBg }]}
+          onPress={() => Linking.openURL('itms-apps://apps.apple.com/account/subscriptions').catch(() => {})}
+        >
+          <Text style={[styles.rowText, { color: textCol }]}>{t.manageSubscription}</Text>
+          <Text style={{ color: theme.textMuted, fontSize: 18 }}>›</Text>
+        </Pressable>
+
+        {/* Tutorial */}
+        <Pressable
+          style={[styles.feedbackBtn, { backgroundColor: cardBg }]}
+          onPress={() => setTutorialOpen(true)}
+        >
+          <GraduationCap size={20} color={theme.accent} />
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.feedbackTitle, { color: textCol }]}>{t.viewTutorial}</Text>
+          </View>
+          <Text style={{ color: theme.textMuted, fontSize: 18 }}>›</Text>
+        </Pressable>
 
         {/* Feedback */}
         <Pressable
@@ -136,6 +234,7 @@ export default function SettingsScreen() {
       </ScrollView>
 
       <FeedbackModal visible={feedbackOpen} onClose={() => setFeedbackOpen(false)} locale={locale} />
+      <TutorialModal visible={tutorialOpen} onClose={() => setTutorialOpen(false)} />
     </>
   );
 }
@@ -225,7 +324,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  rowStack: { gap: 10 },
   rowText: { fontWeight: '600' },
+  dangerText: { color: '#D64545' },
+  notificationsOnText: { color: theme.success, fontWeight: '700' },
+  notificationsOffText: { color: theme.accent, fontWeight: '700' },
   badge: {
     backgroundColor: theme.accentSoft,
     color: theme.accent,

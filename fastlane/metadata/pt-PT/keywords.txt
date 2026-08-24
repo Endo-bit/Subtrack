@@ -1,0 +1,1 @@
+faturas,lembrete renovação,pagamentos recorrentes,orçamento,alerta teste gratuito,rgpd,csv,iva

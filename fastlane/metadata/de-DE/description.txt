@@ -1,0 +1,32 @@
+Zahlen Sie nicht länger für Abos, die Sie vergessen haben.
+
+SubTrack behält alle deine Abonnements im Blick - Streaming, Software, Fitnessstudio und mehr - und zeigt dir, was sich wirklich lohnt.
+
+ABO-DIAGNOSE
+Kurzer Check pro Abo: Nutzung, Doppeltes, Preis - wir sagen dir, was sich lohnt und was zur Kündigung reift. SubTrack vergibt einen Score und zeigt dir, wie viel du durch jede Kündigung sparst.
+
+NICHTS VERPASSEN
+Kalender für alle Abbuchungen, Erinnerungen kurz vor der Zahlung und Benachrichtigungen, bevor eine kostenlose Testphase kostenpflichtig wird.
+
+AUSGABENANALYSE (Pro)
+Aufschlüsselung nach Kategorie, Ausgabenverlauf über Zeit und deine teuersten Abos im Ranking - damit du immer weißt, wohin dein Geld fließt.
+
+100 % PRIVAT
+SubTrack speichert alles nur auf deinem Gerät. Kein Konto, keine Cloud, keine Anmeldung. Deine Daten verlassen dein Handy nie - 100 % lokal, DSGVO-konform.
+
+FÜR EUROPA GEMACHT
+MwSt.-Aufschlüsselung für Deutschland und Frankreich, Abos in mehreren Währungen mit Echtzeit-Wechselkursen (Pro) und Datensicherung, wann immer du willst.
+
+ALLES WEITERE
+- Eigene Logos und Fotos für jedes Abo
+- CSV-Export
+- Lokale Datensicherung und Wiederherstellung
+- Mit Pro: unbegrenzte Abos, unbegrenzte Diagnosen, Analyse, Echtzeit-Wechselkurse, Backup und eigene Logos
+
+DATENSCHUTZ
+SubTrack verlangt keine Anmeldung und synchronisiert deine Abo-Daten nicht mit einem Server – sie werden lokal auf deinem Gerät gespeichert. Unsere Datenschutzerklärung und Nutzungsbedingungen:
+Datenschutzerklärung: https://legal-wheat-pi.vercel.app/privacy.html
+Nutzungsbedingungen: https://legal-wheat-pi.vercel.app/terms.html
+
+MARKEN
+Die in der App angezeigten Dienstnamen und Logos (z. B. von Streaming-, Musik- und Software-Marken) dienen ausschließlich dazu, dir das Erkennen deiner eigenen Abos zu erleichtern, und bleiben Eigentum ihrer jeweiligen Inhaber. SubTrack steht in keiner Verbindung zu diesen Unternehmen und wird von ihnen weder unterstützt noch gesponsert. Bist du Rechteinhaber und möchtest einen Namen oder ein Logo entfernen lassen, schreib uns an cutedogstoryai@gmail.com – wir kümmern uns umgehend darum.

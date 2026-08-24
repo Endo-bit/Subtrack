@@ -1,0 +1,5 @@
+Cette mise à jour corrige plusieurs points que vous nous avez signalés :
+
+- Les rappels ne répètent plus chaque paiement de votre fenêtre de rappel à chaque fois que vous ajoutez, supprimez ou changez le forfait d'un abonnement
+- L'écran d'accueil signale maintenant tous les paiements à venir dans la semaine, pas seulement le prochain, chacun avec son propre compte à rebours
+- Changer le forfait d'un abonnement remplit maintenant automatiquement votre prix actuel et indique le forfait officiel que vous utilisez

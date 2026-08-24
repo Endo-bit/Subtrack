@@ -1,0 +1,5 @@
+Esta atualização corrige algumas coisas que nos reportaste:
+
+- As notificações de lembrete deixaram de repetir cada pagamento dentro da janela de lembrete sempre que adicionas, removes ou alteras o plano de uma subscrição
+- O ecrã principal agora assinala todos os pagamentos a chegar nos próximos sete dias, não só o seguinte, cada um com a sua própria contagem de dias
+- Alterar o plano de uma subscrição agora preenche automaticamente o preço atual e mostra em que plano oficial estás
