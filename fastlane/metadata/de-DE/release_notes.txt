@@ -1,5 +1,13 @@
-Dieses Update behebt ein paar Dinge, die du uns gemeldet hast:
+Home-Bildschirm-Widget
+Ausgaben dieses Monats und die nächsten drei Abbuchungen auf einen Blick - ohne die App zu öffnen.
 
-- Erinnerungsbenachrichtigungen wiederholen nicht mehr jede Zahlung in deinem Erinnerungszeitraum, wenn du ein Abo hinzufügst, entfernst oder dessen Tarif änderst
-- Der Startbildschirm zeigt jetzt jede anstehende Zahlung innerhalb der nächsten Woche an, nicht nur die nächste - jeweils mit eigener Tageszählung
-- Beim Ändern eines Abo-Tarifs wird jetzt dein aktueller Preis vorausgefüllt und angezeigt, welchen offiziellen Tarif du hast
+Zuverlässigere Erinnerungen
+Erinnerungen kommen jetzt von selbst, im Hintergrund: vor einer Zahlung, am Abbuchungstag und bevor eine kostenlose Testphase endet. Am Tag nach dem Ende der Testphase fragt SubTrack, ob du gekündigt hast oder weitermachst - damit nichts unbemerkt kostenpflichtig wird.
+
+Übersicht teilen
+Mach aus deinen Monatsausgaben und den Ergebnissen des Abo-Checks eine Karte zum Teilen - über die Einstellungen oder direkt nach einem Check.
+
+Außerdem verbessert
+- Pro-Preise erscheinen jetzt in deiner eigenen App Store-Währung
+- Heute fällige Abos sind in der Übersicht klar markiert
+- Größerer, leichter treffbarer Kündigen-Button im Abo-Check

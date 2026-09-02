@@ -1,5 +1,13 @@
-Esta atualização corrige algumas coisas que nos reportaste:
+Widget no ecrã principal
+Os gastos do mês e os três próximos débitos num relance, sem abrir a app.
 
-- As notificações de lembrete deixaram de repetir cada pagamento dentro da janela de lembrete sempre que adicionas, removes ou alteras o plano de uma subscrição
-- O ecrã principal agora assinala todos os pagamentos a chegar nos próximos sete dias, não só o seguinte, cada um com a sua própria contagem de dias
-- Alterar o plano de uma subscrição agora preenche automaticamente o preço atual e mostra em que plano oficial estás
+Lembretes mais fiáveis
+Os lembretes chegam agora sozinhos, em segundo plano: antes de um débito, no próprio dia e antes de terminar um período experimental gratuito. No dia seguinte ao fim do período experimental, o SubTrack pergunta se cancelou ou continuou, para que nada comece a ser cobrado sem dar por isso.
+
+Resumo para partilhar
+Transforme os gastos mensais e os resultados da avaliação num cartão para partilhar, a partir das definições ou logo após uma avaliação.
+
+Também melhorado
+- Os preços Pro aparecem na moeda da sua App Store
+- As subscrições debitadas hoje ficam claramente assinaladas
+- Botão de cancelamento maior e mais fácil de tocar na avaliação

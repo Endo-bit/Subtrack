@@ -19,7 +19,9 @@ import {
   View,
 } from 'react-native';
 import { MomDelta } from '@/components/MomDelta';
+import { RatePrompt } from '@/components/RatePrompt';
 import { ServiceLogo } from '@/components/ServiceLogo';
+import { TrialFollowUpModal } from '@/components/TrialFollowUpModal';
 import { TutorialSlides } from '@/components/TutorialSlides';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { theme, type as t_ } from '@/constants/theme';
@@ -27,7 +29,14 @@ import { useFocusedNow } from '@/hooks/useFocusedNow';
 import { track } from '@/utils/analytics';
 import { BillingCycle, Category, SortMode, Subscription } from '@/types/subscription';
 import { formatMoney } from '@/utils/currency';
-import { chargeAmountInMonth, dailyCost, isInTrial, monthly, subscriptionStartedAt } from '@/utils/subscription';
+import {
+  calendarDaysUntil,
+  chargeAmountInMonth,
+  dailyCost,
+  isInTrial,
+  monthly,
+  subscriptionStartedAt,
+} from '@/utils/subscription';
 
 type CycleFilter = 'all' | BillingCycle;
 
@@ -234,8 +243,7 @@ export default function DashboardScreen() {
       ) : (
         /* ── Subscription list — Apple store-utility-card style ── */
         sorted.map((s) => {
-          const msUntil = new Date(s.nextBillingDate).getTime() - today.getTime();
-          const daysUntil = msUntil / 86400000;
+          const daysUntil = calendarDaysUntil(today, new Date(s.nextBillingDate));
           const isDueSoon = daysUntil < 7 && daysUntil >= 0;
           return (
             <Pressable
@@ -264,7 +272,7 @@ export default function DashboardScreen() {
                   {isDueSoon && (
                     <View style={styles.dueBadge}>
                       <Text style={styles.dueBadgeText}>
-                        {Math.ceil(daysUntil) === 0 ? 'Today' : `${Math.ceil(daysUntil)}d`}
+                        {daysUntil === 0 ? t.dueToday : `${daysUntil}d`}
                       </Text>
                     </View>
                   )}
@@ -296,6 +304,9 @@ export default function DashboardScreen() {
           );
         })
       )}
+
+      <TrialFollowUpModal />
+      <RatePrompt />
     </ScrollView>
   );
 }

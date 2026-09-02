@@ -55,6 +55,14 @@ export const track = {
   purchaseRestored: (success: boolean) =>
     posthog.capture('purchase_restored', { success }),
 
+  reviewPromptAnswered: (accepted: boolean) =>
+    posthog.capture('review_prompt_answered', { accepted }),
+
+  trialFollowUpAnswered: (props: { name: string; answer: string }) =>
+    posthog.capture('trial_follow_up_answered', props),
+
+  summaryShared: (source: string) => posthog.capture('summary_shared', { source }),
+
   appCrashed: (message: string, context: string) =>
     posthog.capture('app_crashed', { message: message.slice(0, 500), context: context.slice(0, 500) }),
 };

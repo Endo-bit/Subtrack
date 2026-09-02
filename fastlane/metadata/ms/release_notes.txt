@@ -1,5 +1,13 @@
-Kemas kini ini membaiki beberapa perkara yang anda beritahu kami:
+Widget Skrin Utama
+Perbelanjaan bulan ini dan tiga caj berikutnya dalam satu pandangan — tanpa membuka apl.
 
-- Notifikasi peringatan tidak lagi mengulangi setiap pembayaran dalam tetingkap peringatan anda setiap kali anda menambah, mengeluarkan, atau menukar pelan langganan
-- Skrin utama kini menandakan setiap pembayaran akan datang yang perlu dibayar dalam masa seminggu, bukan hanya yang seterusnya, masing-masing dengan kiraan harinya sendiri
-- Menukar pelan langganan kini pra-isi harga semasa anda dan menunjukkan pelan rasmi yang anda gunakan
+Peringatan yang lebih boleh dipercayai
+Peringatan kini sampai dengan sendirinya di latar belakang: sebelum caj, pada hari caj itu sendiri, dan sebelum percubaan percuma tamat. Sehari selepas percubaan tamat, SubTrack bertanya sama ada anda membatalkan atau meneruskan, supaya tiada apa-apa mula mengecaj anda tanpa disedari.
+
+Ringkasan untuk dikongsi
+Tukarkan perbelanjaan bulanan dan keputusan pemeriksaan langganan anda menjadi kad yang boleh dikongsi — daripada tetapan atau sebaik selepas pemeriksaan.
+
+Turut ditambah baik
+- Harga Pro kini dipaparkan dalam mata wang App Store anda sendiri
+- Langganan yang dicaj hari ini ditanda dengan jelas dalam senarai
+- Butang batal dalam pemeriksaan lebih besar dan lebih mudah disentuh

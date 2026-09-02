@@ -54,6 +54,28 @@ export async function fetchCurrentOffering(): Promise<PurchasesOffering | null> 
   }
 }
 
+/**
+ * One purchasable Pro option, reduced to what the UI needs. `priceString` comes straight from
+ * StoreKit / Google Play, so it is already formatted in the user's storefront currency and
+ * locale — never rebuild it from a number, and never hardcode a price in copy.
+ */
+export type ProPriceOption = {
+  identifier: string;
+  productIdentifier: string;
+  packageType: string;
+  priceString: string;
+};
+
+export async function fetchProPriceOptions(): Promise<ProPriceOption[]> {
+  const offering = await fetchCurrentOffering();
+  return (offering?.availablePackages ?? []).map((pkg) => ({
+    identifier: pkg.identifier,
+    productIdentifier: pkg.product.identifier,
+    packageType: pkg.packageType,
+    priceString: pkg.product.priceString,
+  }));
+}
+
 export async function purchasePackage(
   pkg: PurchasesPackage,
 ): Promise<{ isPro: boolean; cancelled: boolean }> {

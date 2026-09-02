@@ -1,5 +1,13 @@
-Această actualizare rezolvă câteva lucruri pe care ni le-ai semnalat:
+Widget pe ecranul principal
+Cheltuielile lunii și următoarele trei plăți dintr-o privire — fără să deschizi aplicația.
 
-- Notificările de tip memento nu mai repetă fiecare plată din fereastra de reamintire de fiecare dată când adaugi, elimini sau schimbi planul unui abonament
-- Ecranul principal marchează acum toate plățile viitoare scadente în următoarea săptămână, nu doar următoarea, fiecare cu propriul contor de zile
-- Schimbarea planului unui abonament completează acum automat prețul tău actual și arată pe ce plan oficial te afli
+Mementouri mai sigure
+Mementourile ajung acum de la sine, în fundal: înainte de o plată, în ziua plății și înainte să se termine o perioadă de probă gratuită. A doua zi după încheierea probei, SubTrack te întreabă dacă ai anulat sau continui, ca nimic să nu înceapă să te coste pe nesimțite.
+
+Rezumat de partajat
+Transformă cheltuielile lunare și rezultatele verificării abonamentelor într-un card pe care îl poți partaja — din setări sau imediat după o verificare.
+
+De asemenea, îmbunătățit
+- Prețurile Pro apar acum în moneda propriului tău App Store
+- Abonamentele care se plătesc azi sunt marcate clar în listă
+- Buton de anulare mai mare și mai ușor de atins în verificare

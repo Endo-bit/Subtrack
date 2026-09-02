@@ -1,5 +1,13 @@
-Ta aktualizacja naprawia kilka rzeczy, o których nam powiedzieliście:
+Widżet na ekranie początkowym
+Wydatki z tego miesiąca i trzy najbliższe obciążenia na pierwszy rzut oka — bez otwierania aplikacji.
 
-- Powiadomienia przypominające nie powtarzają już każdej płatności w oknie przypomnień za każdym razem, gdy dodajesz, usuwasz lub zmieniasz plan subskrypcji
-- Ekran główny oznacza teraz każdą nadchodzącą płatność wymagalną w ciągu tygodnia, nie tylko najbliższą, każdą z własnym licznikiem dni
-- Zmiana planu subskrypcji automatycznie uzupełnia teraz Twoją aktualną cenę i pokazuje, na jakim oficjalnym planie jesteś
+Bardziej niezawodne przypomnienia
+Przypomnienia docierają teraz same, w tle: przed obciążeniem, w dniu obciążenia i przed końcem bezpłatnego okresu próbnego. Dzień po jego zakończeniu SubTrack zapyta, czy anulowałeś subskrypcję, czy ją kontynuujesz, żeby nic nie zaczęło pobierać opłat niezauważenie.
+
+Podsumowanie do udostępnienia
+Zamień miesięczne wydatki i wyniki przeglądu subskrypcji w kartę, którą możesz udostępnić — z ustawień lub od razu po przeglądzie.
+
+Ponadto
+- Ceny Pro pokazują się w walucie Twojego App Store
+- Subskrypcje obciążane dzisiaj są wyraźnie oznaczone na liście
+- Większy i łatwiejszy do trafienia przycisk anulowania w przeglądzie

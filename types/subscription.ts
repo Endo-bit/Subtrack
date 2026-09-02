@@ -48,6 +48,12 @@ export type Subscription = PresetService & {
   trialEndsAt?: string;
   /** Currency this subscription is actually billed in (Pro only). Defaults to the app's display currency when unset. */
   currency?: CurrencyCode;
+  /**
+   * ISO timestamp of when the user answered the post-trial "did you cancel or continue?"
+   * prompt. While a trial has ended and this is unset, the prompt is still pending — that's
+   * what stops it reappearing forever once answered.
+   */
+  trialFollowUpAnsweredAt?: string;
 };
 
 export type SortMode = 'date' | 'cost' | 'alpha';

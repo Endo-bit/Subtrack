@@ -1,5 +1,13 @@
-Esta atualização corrige algumas coisas que você nos contou:
+Widget na tela de início
+Seus gastos do mês e as três próximas cobranças num relance, sem abrir o app.
 
-- As notificações de lembrete não repetem mais cada pagamento dentro da janela de lembrete toda vez que você adiciona, remove ou muda o plano de uma assinatura
-- A tela inicial agora mostra todos os pagamentos que vencem nos próximos sete dias, não só o próximo, cada um com sua própria contagem de dias
-- Mudar o plano de uma assinatura agora preenche automaticamente o preço atual e mostra em qual plano oficial você está
+Lembretes mais confiáveis
+Os lembretes agora chegam sozinhos, em segundo plano: antes de uma cobrança, no dia da cobrança e antes de um teste grátis terminar. No dia seguinte ao fim do teste, o SubTrack pergunta se você cancelou ou continuou, para que nada comece a ser cobrado sem você perceber.
+
+Resumo para compartilhar
+Transforme seus gastos mensais e os resultados da avaliação num cartão para compartilhar, pelos ajustes ou logo após uma avaliação.
+
+Também melhorado
+- Os preços do Pro aparecem na moeda da sua App Store
+- Assinaturas cobradas hoje ficam claramente marcadas
+- Botão de cancelar maior e mais fácil de tocar na avaliação

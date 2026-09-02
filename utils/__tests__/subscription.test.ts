@@ -1,5 +1,6 @@
 import { Subscription } from '@/types/subscription';
 import {
+  calendarDaysUntil,
   chargeAmountInMonth,
   chargesInMonth,
   computeNextBillingFromStart,
@@ -169,5 +170,28 @@ describe('spendingTrendForYear', () => {
     });
     const rows = spendingTrendForYear([sub], 2026);
     expect(rows.every((r) => r.total === 0)).toBe(true);
+  });
+});
+
+describe('calendarDaysUntil', () => {
+  test('counts a charge dated today as 0 days away, whatever the time of day', () => {
+    // The old timestamp subtraction went negative after 00:00 and hid today's charges.
+    const morning = new Date(2026, 8, 5, 9, 30);
+    const dueToday = new Date(2026, 8, 5, 0, 0);
+    expect(calendarDaysUntil(morning, dueToday)).toBe(0);
+
+    const lateEvening = new Date(2026, 8, 5, 23, 45);
+    expect(calendarDaysUntil(lateEvening, dueToday)).toBe(0);
+  });
+
+  test('counts whole days forward and backward', () => {
+    expect(calendarDaysUntil(new Date(2026, 8, 5, 23, 0), new Date(2026, 8, 6, 1, 0))).toBe(1);
+    expect(calendarDaysUntil(new Date(2026, 8, 5, 1, 0), new Date(2026, 8, 12, 23, 0))).toBe(7);
+    expect(calendarDaysUntil(new Date(2026, 8, 5), new Date(2026, 8, 3))).toBe(-2);
+  });
+
+  test('stays whole across a DST shift', () => {
+    // Late October in Europe: one of these local days is 25 hours long.
+    expect(calendarDaysUntil(new Date(2026, 9, 24, 12), new Date(2026, 9, 26, 12))).toBe(2);
   });
 });

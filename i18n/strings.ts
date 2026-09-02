@@ -59,7 +59,6 @@ export type Strings = {
   reminderDaysBefore: string;
   dataPrivacy: string;
   proBlurb: string;
-  proPrice: string;
   categoryBreakdown: string;
   thisMonth: string;
   lastMonth: string;
@@ -171,6 +170,36 @@ export type Strings = {
   restoreInvalid: string;
   trialEndingNotificationTitle: string;
   trialEndingNotificationBody: string;
+  billingTodayNotificationTitle: string;
+  billingTodayNotificationBody: string;
+  trialEndsTodayNotificationTitle: string;
+  trialEndsTodayNotificationBody: string;
+  trialFollowUpNotificationTitle: string;
+  trialFollowUpNotificationBody: string;
+  trialFollowUpTitle: string;
+  trialFollowUpBody: string;
+  trialFollowUpCancelled: string;
+  trialFollowUpContinue: string;
+  trialFollowUpLater: string;
+  dueToday: string;
+  continuePlanTitle: string;
+  continuePlanBody: string;
+  continuePlanSave: string;
+  share: string;
+  shareTitle: string;
+  shareSubtitle: string;
+  shareSubsLabel: string;
+  shareCheckupTitle: string;
+  shareCta: string;
+  shareDiagnosisPrompt: string;
+  shareUnavailable: string;
+  shareGeneratedBy: string;
+  rateTitle: string;
+  rateBody: string;
+  rateNow: string;
+  rateLater: string;
+  widgetTitle: string;
+  widgetBody: string;
   diagnosisAlreadyDoneTitle: string;
   diagnosisAlreadyDoneBody: string;
   diagnosisViewHistory: string;
@@ -278,7 +307,6 @@ export const strings: Record<Language, Strings> = {
     reminderDaysBefore: 'Tage vorher',
     dataPrivacy: 'Daten & Privatsphäre',
     proBlurb: 'Unbegrenzte Abos, unbegrenzte Diagnosen, Analyse, Echtzeit-Wechselkurse, CSV-Export, Datensicherung und eigene Logos.',
-    proPrice: '€1,99/Monat oder €14,99/Jahr',
     categoryBreakdown: 'Nach Kategorie',
     thisMonth: 'Dieser Monat',
     lastMonth: 'Vormonat',
@@ -393,6 +421,36 @@ export const strings: Record<Language, Strings> = {
     restoreInvalid: 'Diese Datei ist kein gültiges SubTrack-Backup.',
     trialEndingNotificationTitle: '{name}: Testphase endet am {date}',
     trialEndingNotificationBody: 'Danach wird es kostenpflichtig ({price}).',
+    billingTodayNotificationTitle: '{name} – heute fällig',
+    billingTodayNotificationBody: '{price} wird heute abgebucht.',
+    trialEndsTodayNotificationTitle: '{name}: Testphase endet heute',
+    trialEndsTodayNotificationBody: 'Ab morgen kostenpflichtig ({price}).',
+    trialFollowUpNotificationTitle: 'Hast du {name} gekündigt?',
+    trialFollowUpNotificationBody: 'Die Testphase ist vorbei. Öffne SubTrack und sag uns Bescheid.',
+    trialFollowUpTitle: 'Testphase beendet',
+    trialFollowUpBody: 'Die kostenlose Testphase von {name} ist vorbei. Hast du gekündigt oder läuft es weiter?',
+    trialFollowUpCancelled: 'Ich habe gekündigt',
+    trialFollowUpContinue: 'Läuft weiter',
+    trialFollowUpLater: 'Später fragen',
+    dueToday: 'Heute',
+    continuePlanTitle: 'Tarif wählen',
+    continuePlanBody: 'Die Testphase von {name} ist vorbei. Wähle den Tarif, den du jetzt zahlst.',
+    continuePlanSave: 'Tarif aktualisieren',
+    share: 'Teilen',
+    shareTitle: 'Meine Abos',
+    shareSubtitle: 'Übersicht aus SubTrack',
+    shareSubsLabel: 'Abos',
+    shareCheckupTitle: 'Ergebnisse des Abo-Checks',
+    shareCta: 'Übersicht teilen',
+    shareDiagnosisPrompt: 'Ergebnisse teilen?',
+    shareUnavailable: 'Teilen ist auf diesem Gerät nicht verfügbar.',
+    shareGeneratedBy: 'Erstellt mit SubTrack',
+    rateTitle: 'Gefällt dir SubTrack?',
+    rateBody: 'Du hast schon 3 Abos angelegt. Eine kurze Bewertung im App Store hilft uns sehr.',
+    rateNow: 'SubTrack bewerten',
+    rateLater: 'Jetzt nicht',
+    widgetTitle: 'Home-Bildschirm-Widget',
+    widgetBody: 'Home-Bildschirm gedrückt halten, auf + tippen und nach SubTrack suchen.',
     diagnosisAlreadyDoneTitle: 'Bereits geprüft',
     diagnosisAlreadyDoneBody: 'Du hast alle Abos schon einmal geprüft. Mit Pro kannst du sie erneut prüfen.',
     diagnosisViewHistory: 'Frühere Ergebnisse ansehen',
@@ -498,7 +556,6 @@ export const strings: Record<Language, Strings> = {
     reminderDaysBefore: 'jours avant',
     dataPrivacy: 'Données & confidentialité',
     proBlurb: 'Abonnements illimités, diagnostics illimités, analyse, taux de change en temps réel, export CSV, sauvegarde et logos personnalisés.',
-    proPrice: '1,99 €/mois ou 14,99 €/an',
     categoryBreakdown: 'Par catégorie',
     thisMonth: 'Ce mois-ci',
     lastMonth: 'Mois dernier',
@@ -613,6 +670,36 @@ export const strings: Record<Language, Strings> = {
     restoreInvalid: 'Ce fichier n’est pas une sauvegarde SubTrack valide.',
     trialEndingNotificationTitle: '{name} : essai gratuit jusqu’au {date}',
     trialEndingNotificationBody: 'Ensuite, l’abonnement devient payant ({price}).',
+    billingTodayNotificationTitle: '{name} – prélèvement aujourd’hui',
+    billingTodayNotificationBody: '{price} sera prélevé aujourd’hui.',
+    trialEndsTodayNotificationTitle: '{name} : l’essai gratuit se termine aujourd’hui',
+    trialEndsTodayNotificationBody: 'À partir de demain, c’est payant ({price}).',
+    trialFollowUpNotificationTitle: 'Avez-vous résilié {name} ?',
+    trialFollowUpNotificationBody: 'L’essai gratuit est terminé. Ouvrez SubTrack pour nous le dire.',
+    trialFollowUpTitle: 'Essai gratuit terminé',
+    trialFollowUpBody: 'L’essai gratuit de {name} est terminé. L’avez-vous résilié ou continuez-vous ?',
+    trialFollowUpCancelled: 'Je l’ai résilié',
+    trialFollowUpContinue: 'Je continue',
+    trialFollowUpLater: 'Plus tard',
+    dueToday: 'Auj.',
+    continuePlanTitle: 'Choisir la formule',
+    continuePlanBody: 'L’essai gratuit de {name} est terminé. Choisissez la formule que vous payez maintenant.',
+    continuePlanSave: 'Mettre à jour la formule',
+    share: 'Partager',
+    shareTitle: 'Mes abonnements',
+    shareSubtitle: 'Résumé depuis SubTrack',
+    shareSubsLabel: 'Abonnements',
+    shareCheckupTitle: 'Résultats du bilan',
+    shareCta: 'Partager mon résumé',
+    shareDiagnosisPrompt: 'Partager vos résultats ?',
+    shareUnavailable: 'Le partage n’est pas disponible sur cet appareil.',
+    shareGeneratedBy: 'Créé avec SubTrack',
+    rateTitle: 'SubTrack vous plaît ?',
+    rateBody: 'Vous avez ajouté 3 abonnements. Une note sur l’App Store nous aide beaucoup.',
+    rateNow: 'Noter SubTrack',
+    rateLater: 'Pas maintenant',
+    widgetTitle: 'Widget écran d’accueil',
+    widgetBody: 'Appuyez longuement sur l’écran d’accueil, touchez +, puis cherchez SubTrack.',
     diagnosisAlreadyDoneTitle: 'Déjà vérifié',
     diagnosisAlreadyDoneBody: 'Vous avez déjà vérifié tous vos abonnements. Passez à Pro pour recommencer.',
     diagnosisViewHistory: 'Voir les résultats précédents',
@@ -718,7 +805,6 @@ export const strings: Record<Language, Strings> = {
     reminderDaysBefore: 'days before',
     dataPrivacy: 'Data & privacy',
     proBlurb: 'Unlimited subscriptions, unlimited diagnosis, Analytics, real-time exchange rates, CSV export, data backup, and custom logos.',
-    proPrice: '€1.99/month or €14.99/year',
     categoryBreakdown: 'By category',
     thisMonth: 'This month',
     lastMonth: 'Last month',
@@ -833,6 +919,36 @@ export const strings: Record<Language, Strings> = {
     restoreInvalid: 'This file is not a valid SubTrack backup.',
     trialEndingNotificationTitle: '{name}: free trial ends {date}',
     trialEndingNotificationBody: 'After that it becomes paid ({price}).',
+    billingTodayNotificationTitle: '{name} – payment today',
+    billingTodayNotificationBody: '{price} is charged today.',
+    trialEndsTodayNotificationTitle: '{name}: free trial ends today',
+    trialEndsTodayNotificationBody: 'From tomorrow it becomes paid ({price}).',
+    trialFollowUpNotificationTitle: 'Did you cancel {name}?',
+    trialFollowUpNotificationBody: 'The free trial is over. Open SubTrack to let us know.',
+    trialFollowUpTitle: 'Free trial finished',
+    trialFollowUpBody: 'The free trial for {name} has ended. Did you cancel it, or are you continuing?',
+    trialFollowUpCancelled: 'I cancelled it',
+    trialFollowUpContinue: 'I’m continuing',
+    trialFollowUpLater: 'Ask me later',
+    dueToday: 'Today',
+    continuePlanTitle: 'Choose your plan',
+    continuePlanBody: 'The free trial for {name} is over. Pick the plan you moved onto.',
+    continuePlanSave: 'Update plan',
+    share: 'Share',
+    shareTitle: 'My subscriptions',
+    shareSubtitle: 'Snapshot from SubTrack',
+    shareSubsLabel: 'Subscriptions',
+    shareCheckupTitle: 'Check-in results',
+    shareCta: 'Share my summary',
+    shareDiagnosisPrompt: 'Share your results?',
+    shareUnavailable: 'Sharing isn’t available on this device.',
+    shareGeneratedBy: 'Made with SubTrack',
+    rateTitle: 'Enjoying SubTrack?',
+    rateBody: 'You’ve added 3 subscriptions. A quick App Store rating helps a lot.',
+    rateNow: 'Rate SubTrack',
+    rateLater: 'Not now',
+    widgetTitle: 'Home Screen widget',
+    widgetBody: 'Touch and hold your Home Screen, tap +, then search for SubTrack.',
     diagnosisAlreadyDoneTitle: 'Already checked',
     diagnosisAlreadyDoneBody: 'You\'ve already checked all your subscriptions once. Upgrade to Pro to re-check them.',
     diagnosisViewHistory: 'View past results',
@@ -938,7 +1054,6 @@ export const strings: Record<Language, Strings> = {
     reminderDaysBefore: 'días antes',
     dataPrivacy: 'Datos y privacidad',
     proBlurb: 'Suscripciones ilimitadas, diagnósticos ilimitados, análisis, tipos de cambio en tiempo real, exportación CSV, copia de seguridad y logos personalizados.',
-    proPrice: '1,99 €/mes o 14,99 €/año',
     categoryBreakdown: 'Por categoría',
     thisMonth: 'Este mes',
     lastMonth: 'Mes anterior',
@@ -1054,6 +1169,36 @@ export const strings: Record<Language, Strings> = {
     restoreInvalid: 'Este archivo no es una copia de seguridad válida de SubTrack.',
     trialEndingNotificationTitle: '{name}: la prueba gratuita termina el {date}',
     trialEndingNotificationBody: 'Después pasará a ser de pago ({price}).',
+    billingTodayNotificationTitle: '{name}: pago hoy',
+    billingTodayNotificationBody: 'Hoy se cobra {price}.',
+    trialEndsTodayNotificationTitle: '{name}: la prueba gratuita termina hoy',
+    trialEndsTodayNotificationBody: 'Desde mañana pasa a ser de pago ({price}).',
+    trialFollowUpNotificationTitle: '¿Cancelaste {name}?',
+    trialFollowUpNotificationBody: 'La prueba gratuita ha terminado. Abre SubTrack para decírnoslo.',
+    trialFollowUpTitle: 'Prueba gratuita finalizada',
+    trialFollowUpBody: 'La prueba gratuita de {name} ha terminado. ¿La cancelaste o vas a continuar?',
+    trialFollowUpCancelled: 'La cancelé',
+    trialFollowUpContinue: 'Voy a continuar',
+    trialFollowUpLater: 'Preguntar más tarde',
+    dueToday: 'Hoy',
+    continuePlanTitle: 'Elige tu plan',
+    continuePlanBody: 'La prueba gratuita de {name} ha terminado. Elige el plan que pagas ahora.',
+    continuePlanSave: 'Actualizar plan',
+    share: 'Compartir',
+    shareTitle: 'Mis suscripciones',
+    shareSubtitle: 'Resumen de SubTrack',
+    shareSubsLabel: 'Suscripciones',
+    shareCheckupTitle: 'Resultados del chequeo',
+    shareCta: 'Compartir mi resumen',
+    shareDiagnosisPrompt: '¿Compartir tus resultados?',
+    shareUnavailable: 'Compartir no está disponible en este dispositivo.',
+    shareGeneratedBy: 'Hecho con SubTrack',
+    rateTitle: '¿Te gusta SubTrack?',
+    rateBody: 'Ya has añadido 3 suscripciones. Una valoración en la App Store nos ayuda mucho.',
+    rateNow: 'Valorar SubTrack',
+    rateLater: 'Ahora no',
+    widgetTitle: 'Widget en la pantalla de inicio',
+    widgetBody: 'Mantén pulsada la pantalla de inicio, toca + y busca SubTrack.',
     diagnosisAlreadyDoneTitle: 'Ya revisado',
     diagnosisAlreadyDoneBody: 'Ya revisaste todas tus suscripciones una vez. Pásate a Pro para volver a revisarlas.',
     diagnosisViewHistory: 'Ver resultados anteriores',

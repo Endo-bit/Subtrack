@@ -1,5 +1,13 @@
-Aquesta actualització soluciona algunes coses que ens vau comentar:
+Widget a la pantalla d'inici
+La despesa d'aquest mes i els tres propers càrrecs d'un cop d'ull, sense obrir l'app.
 
-- Les notificacions de recordatori ja no repeteixen cada pagament dins la finestra de recordatori cada vegada que afegeixes, elimines o canvies el pla d'una subscripció
-- La pantalla d'inici ara mostra tots els pagaments propers en els pròxims set dies, no només el següent, cadascun amb el seu propi comptador de dies
-- Canviar el pla d'una subscripció ara emplena automàticament el preu actual i mostra en quin pla oficial et trobes
+Recordatoris més fiables
+Ara els recordatoris arriben sols, en segon pla: abans d'un càrrec, el mateix dia del cobrament i abans que acabi una prova gratuïta. L'endemà d'acabar la prova, SubTrack et pregunta si l'has cancel·lada o si continues, perquè res no comenci a cobrar-te sense adonar-te'n.
+
+Resum per compartir
+Converteix la despesa mensual i els resultats de la revisió en una targeta que pots compartir, des dels ajustos o just després d'una revisió.
+
+També millorat
+- Els preus Pro es mostren en la moneda del teu App Store
+- Les subscripcions que es cobren avui estan clarament marcades
+- Botó de cancel·lar més gran i més fàcil de prémer a la revisió

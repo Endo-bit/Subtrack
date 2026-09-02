@@ -1,1 +1,1 @@
-Katso, mitkä tilaukset kannattaa pitää - SubTrack näyttää, kuinka paljon säästäisit peruuttamalla. 100 % yksityinen: ei tiliä, ei pilveä, koskaan.
+Uutta: koti-valikon widget, jossa näet kuun menot ja kolme seuraavaa veloitusta. Muistutukset saapuvat nyt itsestään.

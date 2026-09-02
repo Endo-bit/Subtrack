@@ -2,7 +2,7 @@
   "expo": {
     "name": "SubTrack EU",
     "slug": "subtrack-eu",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "subtrack",
@@ -16,8 +16,14 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.cutedogstoryai.subtrack",
+      "appleTeamId": "Z824MPGK2X",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
+      },
+      "entitlements": {
+        "com.apple.security.application-groups": [
+          "group.com.cutedogstoryai.subtrack"
+        ]
       }
     },
     "android": {
@@ -41,7 +47,8 @@
           "cameraPermission": false,
           "microphonePermission": false
         }
-      ]
+      ],
+      "@bacons/apple-targets"
     ],
     "experiments": {
       "typedRoutes": true

@@ -1,5 +1,13 @@
-Questo aggiornamento risolve alcuni problemi che ci avete segnalato:
+Widget per la schermata Home
+La spesa del mese e i tre prossimi addebiti a colpo d'occhio, senza aprire l'app.
 
-- Le notifiche di promemoria non ripetono più ogni pagamento nella finestra di promemoria ogni volta che aggiungi, rimuovi o cambi il piano di un abbonamento
-- La schermata home ora segnala ogni pagamento in arrivo entro una settimana, non solo il prossimo, ciascuno con il proprio conto alla rovescia
-- Cambiare il piano di un abbonamento ora precompila il prezzo attuale e mostra su quale piano ufficiale ti trovi
+Promemoria più affidabili
+I promemoria ora arrivano da soli, in background: prima di un addebito, il giorno stesso e prima che finisca una prova gratuita. Il giorno dopo la fine della prova, SubTrack ti chiede se hai disdetto o se continui, così nulla inizia a costarti senza che te ne accorga.
+
+Riepilogo da condividere
+Trasforma la spesa mensile e i risultati del check-up in una scheda da condividere, dalle impostazioni o subito dopo un check-up.
+
+Altri miglioramenti
+- I prezzi Pro compaiono nella valuta del tuo App Store
+- Gli abbonamenti addebitati oggi sono segnalati chiaramente
+- Pulsante di disdetta più grande e più facile da toccare nel check-up

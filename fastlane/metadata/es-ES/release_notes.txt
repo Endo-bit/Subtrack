@@ -1,5 +1,13 @@
-Esta actualización soluciona algunas cosas que nos contaste:
+Widget en la pantalla de inicio
+Tu gasto del mes y tus tres próximos cobros de un vistazo, sin abrir la app.
 
-- Las notificaciones de recordatorio ya no repiten cada pago dentro de tu ventana de recordatorio cada vez que añades, eliminas o cambias el plan de una suscripción
-- La pantalla de inicio ahora marca cada pago próximo dentro de la próxima semana, no solo el siguiente, cada uno con su propio contador de días
-- Cambiar el plan de una suscripción ahora rellena automáticamente tu precio actual y muestra en qué plan oficial estás
+Recordatorios más fiables
+Los recordatorios ahora llegan solos, en segundo plano: antes de un cobro, el mismo día del cargo y antes de que termine una prueba gratuita. Al día siguiente de acabar la prueba, SubTrack te pregunta si la cancelaste o sigues con ella, para que nada empiece a cobrarte sin que te enteres.
+
+Resumen para compartir
+Convierte tu gasto mensual y los resultados del chequeo en una tarjeta que puedes compartir, desde los ajustes o justo después de un chequeo.
+
+También mejorado
+- Los precios de Pro se muestran en la moneda de tu App Store
+- Las suscripciones que se cobran hoy se señalan claramente
+- Botón de cancelar más grande y fácil de pulsar en el chequeo

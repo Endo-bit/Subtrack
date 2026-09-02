@@ -7,7 +7,7 @@ import { PRESET_SERVICES } from '@/data/services';
 import { localeForLanguage, strings } from '@/i18n/strings';
 import { Language, Subscription, VatMode } from '@/types/subscription';
 import { track } from '@/utils/analytics';
-import { convertAmount, CurrencyCode, ExchangeRates } from '@/utils/currency';
+import { convertAmount, CurrencyCode, detectDeviceCurrency, ExchangeRates } from '@/utils/currency';
 import { exportBackupFile, exportCsvFile, pickBackupFile } from '@/utils/dataExport';
 import { DiagnosisRecord } from '@/utils/diagnosis';
 import { fetchExchangeRates, ratesAreStale } from '@/utils/exchangeRates';
@@ -17,16 +17,22 @@ import {
   requestNotificationPermission,
   scheduleAllReminders,
 } from '@/utils/notifications';
+import { syncWidgetData } from '@/utils/widget';
 import {
   addEntitlementListener,
   configurePurchases,
   entitlementIsActive,
   fetchCustomerInfo,
+  fetchProPriceOptions,
+  ProPriceOption,
   restorePurchases as restorePurchasesRC,
 } from '@/utils/purchases';
 import { computeCancelEffectiveMonth, ConvertFn, monthly, normalizeSubscription } from '@/utils/subscription';
 
 const storageKey = 'subtrack-eu-state-v2';
+
+/** How long after a free trial ends the "did you cancel?" prompt stays worth asking. */
+const TRIAL_FOLLOW_UP_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
 
 // On web, use localStorage directly so data survives tab close.
 // On native, AsyncStorage is persistent already.
@@ -54,14 +60,23 @@ type State = {
   diagnosisHistory: DiagnosisRecord[];
   exchangeRates: ExchangeRates | null;
   exchangeRatesUpdatedAt: string | null;
+  /** Lifetime count of subscriptions ever added — gates the "rate the app" prompt. */
+  subscriptionsAdded: number;
+  /** Set once the App Store review prompt has been offered, so it's never shown twice. */
+  hasAskedForReview: boolean;
 };
 
 const migrateState = (raw: State): State => ({
   ...raw,
-  currency: raw.currency ?? 'EUR',
+  currency: raw.currency ?? detectDeviceCurrency(),
   diagnosisHistory: raw.diagnosisHistory ?? [],
   exchangeRates: raw.exchangeRates ?? null,
   exchangeRatesUpdatedAt: raw.exchangeRatesUpdatedAt ?? null,
+  // Installs from before this counter existed have no history to count, so seed it from the
+  // subscriptions they already have: someone who has been tracking five of them has long since
+  // passed the bar the review prompt is looking for.
+  subscriptionsAdded: raw.subscriptionsAdded ?? raw.subscriptions.length,
+  hasAskedForReview: raw.hasAskedForReview ?? false,
   subscriptions: raw.subscriptions.map(normalizeSubscription),
 });
 
@@ -90,13 +105,15 @@ const initialState: State = {
   subscriptions: [],
   language: detectedLang,
   vatMode: detectVatMode(detectedLang),
-  currency: 'EUR',
+  currency: detectDeviceCurrency(),
   reminderDays: 3,
   hasSeenOnboarding: false,
   isPro: false,
   diagnosisHistory: [],
   exchangeRates: null,
   exchangeRatesUpdatedAt: null,
+  subscriptionsAdded: 0,
+  hasAskedForReview: false,
 };
 
 export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
@@ -104,6 +121,10 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [addTabResetNonce, setAddTabResetNonce] = useState(0);
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermissionStatus>('undetermined');
+  const [proPriceOptions, setProPriceOptions] = useState<ProPriceOption[]>([]);
+  // Subscriptions whose post-trial prompt the user dismissed with "ask me later". Session-only
+  // on purpose: "later" should mean the next launch, not never.
+  const [deferredTrialFollowUps, setDeferredTrialFollowUps] = useState<string[]>([]);
   const t = strings[state.language];
   const locale = localeForLanguage(state.language);
 
@@ -166,6 +187,7 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
       const startedAt = sub.startedAt ?? new Date().toISOString();
       setState((prev) => ({
         ...prev,
+        subscriptionsAdded: prev.subscriptionsAdded + 1,
         subscriptions: [
           normalizeSubscription({ ...sub, id: `${sub.id}-${Date.now()}`, startedAt }),
           ...prev.subscriptions,
@@ -240,6 +262,24 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     scheduleAllReminders(state.subscriptions, state.reminderDays, t, locale, state.currency, convert).catch(() => {});
   }, [state.subscriptions, state.reminderDays, hasLoaded, t, notificationPermission, locale, state.currency, convert]);
 
+  // Reminders were the app's core promise but nothing ever asked the OS for permission unless
+  // the user happened to dig into Settings — so for most people no reminder was ever scheduled.
+  // Ask at the first moment a reminder could actually be useful: right after subscription #1.
+  useEffect(() => {
+    if (!hasLoaded) return;
+    if (notificationPermission !== 'undetermined') return;
+    if (state.subscriptions.length === 0) return;
+    requestNotificationPermission()
+      .then(() => refreshNotificationPermission())
+      .catch(() => {});
+  }, [hasLoaded, notificationPermission, state.subscriptions.length, refreshNotificationPermission]);
+
+  // Keep the Home Screen widget in step with whatever the app is showing.
+  useEffect(() => {
+    if (!hasLoaded) return;
+    syncWidgetData(state.subscriptions, state.currency, locale, convert).catch(() => {});
+  }, [hasLoaded, state.subscriptions, state.currency, locale, convert]);
+
   const enableNotifications = useCallback(async (): Promise<NotificationPermissionStatus> => {
     await requestNotificationPermission();
     return refreshNotificationPermission();
@@ -252,6 +292,12 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
       if (info) setState((prev) => ({ ...prev, isPro: entitlementIsActive(info) }));
     });
     return addEntitlementListener((isPro) => setState((prev) => ({ ...prev, isPro })));
+  }, []);
+
+  // Prices are never hardcoded in copy: StoreKit / Play returns them already formatted for the
+  // user's storefront currency, which is the only source that stays correct in every territory.
+  useEffect(() => {
+    fetchProPriceOptions().then(setProPriceOptions).catch(() => {});
   }, []);
 
   const restorePurchases = useCallback(async (): Promise<boolean> => {
@@ -283,6 +329,59 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
 
   const resetAllData = useCallback(() => {
     setState((prev) => ({ ...prev, subscriptions: [] }));
+  }, []);
+
+  /**
+   * The subscription whose free trial has ended and whose "did you cancel or continue?" prompt
+   * is still unanswered. Oldest first, so a backlog is worked through in the order it built up.
+   */
+  const pendingTrialFollowUp = useMemo(() => {
+    const now = Date.now();
+    return (
+      state.subscriptions
+        .filter((s) => {
+          if (!s.trialEndsAt || s.trialFollowUpAnsweredAt || s.isCancelled) return false;
+          if (deferredTrialFollowUps.includes(s.id)) return false;
+          const endedAgo = now - new Date(s.trialEndsAt).getTime();
+          // Only ask about trials that ended recently. Anything older the user has long since
+          // dealt with in real life, and asking would just be a queue of stale questions on
+          // first launch after this feature ships.
+          return endedAgo >= 0 && endedAgo <= TRIAL_FOLLOW_UP_WINDOW_MS;
+        })
+        .sort((a, b) => new Date(a.trialEndsAt!).getTime() - new Date(b.trialEndsAt!).getTime())[0] ?? null
+    );
+  }, [state.subscriptions, deferredTrialFollowUps]);
+
+  const answerTrialFollowUp = useCallback(
+    (id: string, answer: 'cancelled' | 'continuing' | 'later') => {
+      if (answer === 'later') {
+        setDeferredTrialFollowUps((prev) => (prev.includes(id) ? prev : [...prev, id]));
+        return;
+      }
+      const answeredAt = new Date().toISOString();
+      const sub = state.subscriptions.find((s) => s.id === id);
+      if (sub) track.trialFollowUpAnswered({ name: sub.name, answer });
+      setState((prev) => ({
+        ...prev,
+        subscriptions: prev.subscriptions.map((s) =>
+          s.id !== id
+            ? s
+            : answer === 'cancelled'
+              ? {
+                  ...s,
+                  trialFollowUpAnsweredAt: answeredAt,
+                  isCancelled: true,
+                  cancelEffectiveMonth: computeCancelEffectiveMonth(s),
+                }
+              : { ...s, trialFollowUpAnsweredAt: answeredAt },
+        ),
+      }));
+    },
+    [state.subscriptions],
+  );
+
+  const markReviewAsked = useCallback(() => {
+    setState((prev) => ({ ...prev, hasAskedForReview: true }));
   }, []);
 
   const recordDiagnosis = useCallback((record: DiagnosisRecord) => {
@@ -325,6 +424,11 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     refreshExchangeRates,
     notificationPermission,
     enableNotifications,
+    proPriceOptions,
+    pendingTrialFollowUp,
+    answerTrialFollowUp,
+    shouldAskForReview: state.subscriptionsAdded >= 3 && !state.hasAskedForReview,
+    markReviewAsked,
     presetServices: PRESET_SERVICES,
     addTabResetNonce,
     bumpAddTabReset,

@@ -1,5 +1,13 @@
-Cette mise à jour corrige plusieurs points que vous nous avez signalés :
+Widget d'écran d'accueil
+Vos dépenses du mois et vos trois prochains prélèvements en un coup d'œil - sans ouvrir l'app.
 
-- Les rappels ne répètent plus chaque paiement de votre fenêtre de rappel à chaque fois que vous ajoutez, supprimez ou changez le forfait d'un abonnement
-- L'écran d'accueil signale maintenant tous les paiements à venir dans la semaine, pas seulement le prochain, chacun avec son propre compte à rebours
-- Changer le forfait d'un abonnement remplit maintenant automatiquement votre prix actuel et indique le forfait officiel que vous utilisez
+Des rappels plus fiables
+Les rappels arrivent désormais tout seuls, en arrière-plan : avant un prélèvement, le jour même, et avant la fin d'un essai gratuit. Le lendemain de la fin d'un essai, SubTrack vous demande si vous avez résilié ou continué - pour que rien ne devienne payant à votre insu.
+
+Résumé à partager
+Transformez vos dépenses mensuelles et les résultats de votre bilan en une carte à partager, depuis les réglages ou juste après un bilan.
+
+Autres améliorations
+- Les tarifs Pro s'affichent maintenant dans la devise de votre App Store
+- Les abonnements prélevés aujourd'hui sont clairement signalés
+- Bouton de résiliation plus grand et plus facile à toucher dans le bilan

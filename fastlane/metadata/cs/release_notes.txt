@@ -1,5 +1,13 @@
-Tato aktualizace opravuje několik věcí, na které jste nás upozornili:
+Widget na plochu
+Útrata za tento měsíc a tři nejbližší platby na jeden pohled — bez otevírání aplikace.
 
-- Připomínková oznámení už neopakují každou platbu v okně připomenutí pokaždé, když přidáte, odeberete nebo změníte plán předplatného
-- Domovská obrazovka nyní označuje všechny nadcházející platby splatné do týdne, ne jen tu nejbližší, každou s vlastním počtem dní
-- Změna plánu předplatného nyní předvyplní vaši aktuální cenu a ukáže, na jakém oficiálním plánu se nacházíte
+Spolehlivější připomenutí
+Připomenutí teď chodí sama, na pozadí: před platbou, v den stržení i před koncem bezplatné zkušební verze. Den po jejím skončení se SubTrack zeptá, jestli jsi zrušil, nebo pokračuješ, aby ti nic nezačalo strhávat peníze nepozorovaně.
+
+Souhrn ke sdílení
+Proměň měsíční útratu a výsledky kontroly předplatných v kartu, kterou můžeš sdílet — z nastavení nebo hned po kontrole.
+
+Dále vylepšeno
+- Ceny Pro se zobrazují v měně tvého App Store
+- Předplatná strhávaná dnes jsou v seznamu jasně označená
+- Větší a snáz trefitelné tlačítko zrušení v kontrole

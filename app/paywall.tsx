@@ -4,30 +4,20 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { PRIVACY_POLICY_URL, TERMS_OF_USE_URL } from '@/constants/legal';
 import { theme } from '@/constants/theme';
-import { Strings } from '@/i18n/strings';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { track } from '@/utils/analytics';
+import { durationLabel, isLifetimeOption } from '@/utils/proPricing';
 import { fetchCurrentOffering, purchasePackage } from '@/utils/purchases';
 import { PurchasesPackage } from 'react-native-purchases';
 
-// Prefer RevenueCat's reserved "lifetime" package type, but also match a custom
-// package/product identifier containing "lifetime" in case the offering's package
-// wasn't set up with the reserved $rc_lifetime identifier (e.g. product id
-// com.SubTrack.lifetime, mapped as a CUSTOM package type).
-const isLifetime = (pkg: PurchasesPackage) =>
-  pkg.packageType === 'LIFETIME' ||
-  pkg.identifier.toLowerCase().includes('lifetime') ||
-  pkg.product.identifier.toLowerCase().includes('lifetime');
+/** Reduces a store package to the shape utils/proPricing.ts reasons about. */
+const describe = (pkg: PurchasesPackage) => ({
+  packageType: pkg.packageType,
+  identifier: pkg.identifier,
+  productIdentifier: pkg.product.identifier,
+});
 
-// App Store guideline 3.1.2 requires the subscription length to be visible
-// alongside its title and price — the App Store Connect display name isn't
-// guaranteed to spell that out, so we derive it from the package type instead.
-const durationLabel = (pkg: PurchasesPackage, t: Strings): string | null => {
-  if (isLifetime(pkg)) return t.paywallDurationLifetime;
-  if (pkg.packageType === 'ANNUAL') return t.paywallDurationYearly;
-  if (pkg.packageType === 'MONTHLY') return t.paywallDurationMonthly;
-  return null;
-};
+const isLifetime = (pkg: PurchasesPackage) => isLifetimeOption(describe(pkg));
 
 export default function PaywallScreen() {
   const { source } = useLocalSearchParams<{ source?: string }>();
@@ -117,7 +107,7 @@ export default function PaywallScreen() {
             <View style={styles.packages}>
               {offeringPackages.map((pkg) => {
                 const recommended = isLifetime(pkg);
-                const duration = durationLabel(pkg, t);
+                const duration = durationLabel(describe(pkg), t);
                 return (
                   <Pressable
                     key={pkg.identifier}

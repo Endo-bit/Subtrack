@@ -1,5 +1,13 @@
-This update fixes a few things you told us about:
+Home Screen widget
+See this month's spending and your next three charges at a glance - without opening the app.
 
-- Reminder notifications no longer repeat every payment in your reminder window each time you add, remove, or change a subscription's plan
-- The home screen now flags every upcoming payment due within a week, not just the next one, each with its own day count
-- Changing a subscription's plan now pre-fills your current price and shows which official plan you're on
+More reliable reminders
+Reminders now arrive on their own, in the background: before a payment, on the billing day, and before a free trial ends. The day after a trial finishes, SubTrack asks whether you cancelled or kept it - so nothing starts charging you unnoticed.
+
+Shareable summary
+Turn your monthly spending and check-in results into a card you can share, from Settings or right after a check-in.
+
+Also improved
+- Pro prices now show in your own App Store currency
+- Subscriptions due today are clearly marked on the dashboard
+- Larger, easier-to-tap cancel button in the check-in

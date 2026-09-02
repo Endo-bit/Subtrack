@@ -1,5 +1,13 @@
-Den här uppdateringen åtgärdar några saker du berättade för oss om:
+Widget på hemskärmen
+Månadens utgifter och dina tre nästa betalningar med en blick — utan att öppna appen.
 
-- Påminnelsenotiser upprepar inte längre varje betalning inom ditt påminnelsefönster varje gång du lägger till, tar bort eller ändrar planen för en prenumeration
-- Startskärmen flaggar nu alla kommande betalningar som förfaller inom en vecka, inte bara nästa, var och en med sin egen dagräknare
-- Att ändra en prenumerations plan förifyller nu ditt aktuella pris och visar vilken officiell plan du har
+Pålitligare påminnelser
+Påminnelser kommer nu av sig själva, i bakgrunden: före en betalning, på betalningsdagen och innan en gratis provperiod tar slut. Dagen efter att provperioden tagit slut frågar SubTrack om du sa upp eller fortsatte, så att inget börjar kosta utan att du märker det.
+
+Sammanfattning att dela
+Gör om månadens utgifter och resultatet från din abonnemangskoll till ett kort du kan dela — från inställningarna eller direkt efter en koll.
+
+Också förbättrat
+- Pro-priser visas nu i din egen App Store-valuta
+- Abonnemang som dras idag är tydligt markerade i listan
+- Större och lättare att träffa uppsägningsknapp i kollen

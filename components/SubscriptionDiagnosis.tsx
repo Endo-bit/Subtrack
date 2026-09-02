@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SavingsCard } from '@/components/SavingsCard';
 import { ServiceLogo } from '@/components/ServiceLogo';
+import { ShareSummarySheet } from '@/components/ShareSummarySheet';
 import { theme } from '@/constants/theme';
 import { Strings } from '@/i18n/strings';
 import { PresetService, Subscription } from '@/types/subscription';
@@ -99,7 +100,13 @@ function ResultCard({
             <Text style={styles.cancelledBadgeText}>{cancelledLabel}</Text>
           </View>
         ) : (
-          <Pressable style={styles.cancelBtn} onPress={onCancel}>
+          <Pressable
+            style={styles.cancelBtn}
+            onPress={onCancel}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={cancelLabel}
+          >
             <Text style={styles.cancelBtnText}>{cancelLabel}</Text>
           </Pressable>
         ))}
@@ -166,6 +173,7 @@ export function SubscriptionDiagnosis({
   // of the run keeps the list stable until the user finishes or closes.
   const [sessionSubs, setSessionSubs] = useState<Subscription[]>([]);
   const [selectedHistoryDate, setSelectedHistoryDate] = useState<string | null>(null);
+  const [shareOpen, setShareOpen] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
 
   const current = sessionSubs[index];
@@ -186,6 +194,7 @@ export function SubscriptionDiagnosis({
     setSessions([]);
     setSessionSubs([]);
     setSelectedHistoryDate(null);
+    setShareOpen(false);
   };
 
   const close = () => {
@@ -332,6 +341,9 @@ export function SubscriptionDiagnosis({
                   );
                 })}
                 <SavingsCard cancelledSubs={cancelledSubs} currency={currency} convert={convert} t={t} />
+                <Pressable style={styles.shareBtn} onPress={() => setShareOpen(true)}>
+                  <Text style={styles.shareBtnText}>{t.shareDiagnosisPrompt}</Text>
+                </Pressable>
                 <Pressable style={styles.primary} onPress={close}>
                   <Text style={styles.primaryText}>{t.billingDone}</Text>
                 </Pressable>
@@ -409,6 +421,8 @@ export function SubscriptionDiagnosis({
           </Pressable>
         </View>
       </View>
+
+      <ShareSummarySheet visible={shareOpen} onClose={() => setShareOpen(false)} source="diagnosis" />
     </Modal>
   );
 }
@@ -453,6 +467,14 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   primaryText: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  shareBtn: {
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: theme.accent,
+    paddingVertical: 15,
+    alignItems: 'center',
+  },
+  shareBtnText: { color: theme.accent, fontWeight: '700', fontSize: 15 },
   resultCard: {
     backgroundColor: '#FFF',
     borderRadius: 16,
@@ -470,21 +492,28 @@ const styles = StyleSheet.create({
   scoreTrack: { height: 8, borderRadius: 99, backgroundColor: theme.border, overflow: 'hidden' },
   scoreFill: { height: 8, borderRadius: 99 },
   verdict: { fontSize: 14, fontWeight: '700' },
+  // 52pt tall and filled rather than outlined — this is the action the whole check-in exists
+  // to make easy, and at 10pt padding it was the smallest tap target on the sheet.
   cancelBtn: {
-    borderRadius: 12,
-    borderWidth: 1,
+    borderRadius: 14,
+    borderWidth: 1.5,
     borderColor: '#D64545',
-    paddingVertical: 10,
+    backgroundColor: '#D645450F',
+    paddingVertical: 16,
+    minHeight: 52,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  cancelBtnText: { color: '#D64545', fontWeight: '700', fontSize: 13 },
+  cancelBtnText: { color: '#D64545', fontWeight: '700', fontSize: 15 },
   cancelledBadge: {
-    borderRadius: 12,
+    borderRadius: 14,
     backgroundColor: theme.border,
-    paddingVertical: 10,
+    paddingVertical: 16,
+    minHeight: 52,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  cancelledBadgeText: { color: theme.textMuted, fontWeight: '700', fontSize: 13 },
+  cancelledBadgeText: { color: theme.textMuted, fontWeight: '700', fontSize: 15 },
   historyRow: {
     flexDirection: 'row',
     alignItems: 'center',

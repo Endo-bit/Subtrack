@@ -1,5 +1,13 @@
-Tämä päivitys korjaa muutamia asioita, joista kerroit meille:
+Widget Koti-valikkoon
+Kuun menot ja kolme seuraavaa veloitusta yhdellä silmäyksellä — ilman että avaat sovellusta.
 
-- Muistutusilmoitukset eivät enää toista jokaista maksua muistutusikkunassasi joka kerta, kun lisäät, poistat tai muutat tilauksen suunnitelmaa
-- Etusivu merkitsee nyt kaikki viikon sisällä erääntyvät tulevat maksut, ei vain seuraavaa, kukin omalla päivälaskurillaan
-- Tilaussuunnitelman vaihtaminen esitäyttää nyt nykyisen hintasi ja näyttää, millä virallisella suunnitelmalla olet
+Luotettavammat muistutukset
+Muistutukset saapuvat nyt itsestään taustalla: ennen veloitusta, veloituspäivänä ja ennen ilmaisen kokeilun päättymistä. Kokeilun päättymistä seuraavana päivänä SubTrack kysyy, peruitko vai jatkatko, jottei mikään ala veloittaa huomaamatta.
+
+Jaettava yhteenveto
+Tee kuukausimenoista ja tilaustarkistuksen tuloksista kortti, jonka voit jakaa — asetuksista tai heti tarkistuksen jälkeen.
+
+Myös parannettu
+- Pro-hinnat näkyvät nyt oman App Storesi valuutassa
+- Tänään veloitettavat tilaukset on merkitty selkeästi listaan
+- Isompi ja helpommin osuttava peruutuspainike tarkistuksessa

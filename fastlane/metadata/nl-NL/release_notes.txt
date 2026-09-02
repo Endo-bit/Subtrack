@@ -1,5 +1,13 @@
-Deze update lost een paar dingen op die je ons liet weten:
+Widget op het beginscherm
+Je uitgaven deze maand en je volgende drie afschrijvingen in één oogopslag, zonder de app te openen.
 
-- Herinneringsmeldingen herhalen niet langer elke betaling in je herinneringsvenster telkens wanneer je een abonnement toevoegt, verwijdert of van plan wijzigt
-- Het startscherm markeert nu elke aankomende betaling die binnen een week vervalt, niet alleen de eerstvolgende, elk met een eigen dagteller
-- Het wijzigen van een abonnementsplan vult nu automatisch je huidige prijs in en toont welk officieel plan je hebt
+Betrouwbaardere herinneringen
+Herinneringen komen nu vanzelf binnen, op de achtergrond: vóór een betaling, op de afschrijfdag zelf en voordat een gratis proefperiode afloopt. De dag na afloop vraagt SubTrack of je hebt opgezegd of doorgaat, zodat er niets ongemerkt begint te kosten.
+
+Overzicht om te delen
+Maak van je maanduitgaven en de resultaten van je check een kaart die je kunt delen, via instellingen of meteen na een check.
+
+Ook verbeterd
+- Pro-prijzen verschijnen nu in de valuta van je eigen App Store
+- Abonnementen die vandaag worden afgeschreven zijn duidelijk gemarkeerd
+- Grotere, makkelijker aan te tikken opzegknop in de check

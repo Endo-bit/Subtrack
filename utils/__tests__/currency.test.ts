@@ -1,4 +1,4 @@
-import { convertAmount, ExchangeRates } from '../currency';
+import { convertAmount, detectDeviceCurrency, ExchangeRates } from '../currency';
 
 const rates: ExchangeRates = { EUR: 1, USD: 1.08, GBP: 0.86, JPY: 170 };
 
@@ -25,5 +25,51 @@ describe('convertAmount', () => {
   test('falls back to the raw amount when a currency is missing from the rates table', () => {
     const partialRates: ExchangeRates = { EUR: 1, USD: 1.08 };
     expect(convertAmount(20, 'EUR', 'CHF', partialRates)).toBe(20);
+  });
+});
+
+describe('detectDeviceCurrency', () => {
+  const resolvedOptions = Intl.DateTimeFormat.prototype.resolvedOptions;
+
+  const withLocale = (locale: string) => {
+    jest
+      .spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions')
+      .mockReturnValue({ ...resolvedOptions.call(new Intl.DateTimeFormat()), locale });
+  };
+
+  afterEach(() => jest.restoreAllMocks());
+
+  test('maps a region to the currency people there actually think in', () => {
+    withLocale('en-US');
+    expect(detectDeviceCurrency()).toBe('USD');
+    withLocale('ja-JP');
+    expect(detectDeviceCurrency()).toBe('JPY');
+    withLocale('en-GB');
+    expect(detectDeviceCurrency()).toBe('GBP');
+  });
+
+  test('falls back to EUR for the eurozone and anything unmapped', () => {
+    withLocale('de-DE');
+    expect(detectDeviceCurrency()).toBe('EUR');
+    withLocale('pt-BR');
+    expect(detectDeviceCurrency()).toBe('EUR');
+  });
+
+  test('falls back to EUR when the locale carries no region at all', () => {
+    withLocale('en');
+    expect(detectDeviceCurrency()).toBe('EUR');
+  });
+
+  test('does not mistake a lowercase extension subtag for a region', () => {
+    // The 'ca' here is the calendar extension key, not Canada.
+    withLocale('en-u-ca-gregory');
+    expect(detectDeviceCurrency()).toBe('EUR');
+  });
+
+  test('reads the region past a script subtag', () => {
+    withLocale('zh-Hant-TW');
+    expect(detectDeviceCurrency()).toBe('EUR');
+    withLocale('en-Latn-US');
+    expect(detectDeviceCurrency()).toBe('USD');
   });
 });

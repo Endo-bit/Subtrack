@@ -1,5 +1,13 @@
-Ez a frissítés néhány dolgot javít, amelyekről visszajelzést kaptunk:
+Kezdőképernyő-modul
+A havi költés és a következő három terhelés egyetlen pillantással — az app megnyitása nélkül.
 
-- Az emlékeztető értesítések többé nem ismétlik meg az emlékeztetési ablakban minden fizetést, amikor előfizetést ad hozzá, távolít el vagy módosít
-- A kezdőképernyő most minden egy héten belül esedékes fizetést jelez, nem csak a következőt, mindegyiket saját napszámlálóval
-- Az előfizetési terv módosításakor most automatikusan kitölti az aktuális árat, és megmutatja, melyik hivatalos csomagon van
+Megbízhatóbb emlékeztetők
+Az emlékeztetők mostantól maguktól érkeznek, a háttérben: a terhelés előtt, a terhelés napján és az ingyenes próbaidőszak vége előtt. A próbaidőszak lejárta utáni napon a SubTrack megkérdezi, lemondtad-e vagy folytatod, hogy semmi ne kezdjen észrevétlenül pénzt levonni.
+
+Megosztható összegzés
+Alakítsd a havi költést és az előfizetés-ellenőrzés eredményeit megosztható kártyává — a beállításokból vagy közvetlenül egy ellenőrzés után.
+
+További fejlesztések
+- A Pro árak mostantól a saját App Store-od pénznemében jelennek meg
+- A ma terhelt előfizetések jól láthatóan meg vannak jelölve
+- Nagyobb, könnyebben eltalálható lemondás gomb az ellenőrzésben

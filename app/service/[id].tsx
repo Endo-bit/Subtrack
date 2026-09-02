@@ -14,6 +14,7 @@ import { BillingDatePicker } from '@/components/BillingDatePicker';
 import { ServiceLogo } from '@/components/ServiceLogo';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { theme } from '@/constants/theme';
+import { track } from '@/utils/analytics';
 import { BillingCycle, Category, PresetService, ServicePlan, Subscription } from '@/types/subscription';
 import { CURRENCIES, currencySymbol, formatMoney } from '@/utils/currency';
 import { pickCustomIcon } from '@/utils/iconPicker';
@@ -39,9 +40,25 @@ function startOfDay(d: Date): Date {
 }
 
 export default function ServiceAddScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { t, locale, currency, isPro, addSubscription, presetServices, convert } = useSubTrack();
+  // `continueSubId` arrives from the post-trial prompt: instead of creating a subscription, this
+  // screen then re-prices an existing one onto the paid plan the user has moved to.
+  const { id, continueSubId } = useLocalSearchParams<{ id: string; continueSubId?: string }>();
+  const {
+    t,
+    locale,
+    currency,
+    isPro,
+    addSubscription,
+    updateSubscription,
+    subscriptions,
+    presetServices,
+    convert,
+  } = useSubTrack();
   const dark = useColorScheme() === 'dark';
+
+  const continuingSub = continueSubId
+    ? subscriptions.find((sub) => sub.id === continueSubId)
+    : undefined;
 
   const isManual = id === 'manual';
   const service: PresetService = isManual
@@ -51,20 +68,35 @@ export default function ServiceAddScreen() {
   const plans = service.plans ?? [];
   const defaultPlan = plans[0];
 
-  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(defaultPlan?.id ?? null);
-  const [customMode, setCustomMode] = useState(isManual || plans.length === 0);
-  const [price, setPrice] = useState(String(defaultPlan?.price ?? service.defaultPrice));
-  const [cycle, setCycle] = useState<BillingCycle>(
-    defaultPlan?.billingCycle ?? service.billingCycle,
+  // The plan the subscription was already on, so "continue" opens with it preselected rather
+  // than silently resetting the user to the cheapest tier.
+  const continuingPlan = continuingSub
+    ? plans.find((p) => p.name === continuingSub.planName)
+    : undefined;
+
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(
+    continuingPlan?.id ?? defaultPlan?.id ?? null,
   );
-  const [category, setCategory] = useState<Category>(service.category);
-  const [name, setName] = useState(service.name);
-  const [contractStart, setContractStart] = useState(() => startOfDay(new Date()));
-  const [note, setNote] = useState('');
-  const [customLogo, setCustomLogo] = useState<string | undefined>(undefined);
+  const [customMode, setCustomMode] = useState(
+    isManual || plans.length === 0 || (!!continuingSub && !continuingPlan),
+  );
+  const [price, setPrice] = useState(
+    String(continuingSub?.defaultPrice ?? defaultPlan?.price ?? service.defaultPrice),
+  );
+  const [cycle, setCycle] = useState<BillingCycle>(
+    continuingSub?.billingCycle ?? defaultPlan?.billingCycle ?? service.billingCycle,
+  );
+  const [category, setCategory] = useState<Category>(continuingSub?.category ?? service.category);
+  const [name, setName] = useState(continuingSub?.name ?? service.name);
+  const [contractStart, setContractStart] = useState(() =>
+    startOfDay(continuingSub ? new Date(continuingSub.startedAt) : new Date()),
+  );
+  const [note, setNote] = useState(continuingSub?.note ?? '');
+  const [customLogo, setCustomLogo] = useState<string | undefined>(continuingSub?.logo);
+  // The trial being over is the whole reason this screen is open, so never re-offer one here.
   const [freeTrial, setFreeTrial] = useState(false);
   const [trialDays, setTrialDays] = useState<number>(7);
-  const [subCurrency, setSubCurrency] = useState(currency);
+  const [subCurrency, setSubCurrency] = useState(continuingSub?.currency ?? currency);
 
   const selectedPlan = plans.find((p) => p.id === selectedPlanId);
   const displayService: PresetService = { ...service, logo: customLogo ?? service.logo };
@@ -144,6 +176,29 @@ export default function ServiceAddScreen() {
       Alert.alert(t.validationTitle, t.validationBody);
       return;
     }
+
+    if (continuingSub) {
+      updateSubscription(continuingSub.id, {
+        name: sub.name,
+        defaultPrice: sub.defaultPrice,
+        billingCycle: sub.billingCycle,
+        category: sub.category,
+        planName: sub.planName,
+        customPrice: sub.customPrice,
+        currency: sub.currency,
+        note: sub.note,
+        startedAt: sub.startedAt,
+        planChangedAt: new Date().toISOString(),
+        // The trial is spent and the user is staying: clearing it resumes normal billing and
+        // makes reminders start counting real charges again.
+        trialEndsAt: undefined,
+        trialFollowUpAnsweredAt: new Date().toISOString(),
+      });
+      track.planChanged({ name: sub.name, plan: sub.planName ?? t.customPlan, price: sub.defaultPrice });
+      router.replace('/');
+      return;
+    }
+
     const ok = addSubscription(sub);
     if (!ok) {
       Alert.alert(t.pro, t.limit, [
@@ -164,6 +219,15 @@ export default function ServiceAddScreen() {
       <Pressable onPress={() => router.back()} style={styles.back}>
         <Text style={[styles.backText, dark && styles.textLight]}>←</Text>
       </Pressable>
+
+      {!!continuingSub && (
+        <View style={styles.continueBanner}>
+          <Text style={styles.continueBannerTitle}>{t.continuePlanTitle}</Text>
+          <Text style={styles.continueBannerBody}>
+            {t.continuePlanBody.replace('{name}', continuingSub.name)}
+          </Text>
+        </View>
+      )}
 
       <View style={[styles.hero, dark && styles.cardDark]}>
         <ServiceLogo service={displayService} size={56} />
@@ -335,6 +399,7 @@ export default function ServiceAddScreen() {
         dark={dark}
       />
 
+      {!continuingSub && (
       <View style={styles.section}>
         <Pressable
           style={styles.trialToggle}
@@ -366,6 +431,7 @@ export default function ServiceAddScreen() {
           </>
         )}
       </View>
+      )}
 
       {preview && (
         <View style={styles.costRow}>
@@ -398,7 +464,7 @@ export default function ServiceAddScreen() {
       </View>
 
       <Pressable style={styles.save} onPress={save}>
-        <Text style={styles.saveText}>{t.save}</Text>
+        <Text style={styles.saveText}>{continuingSub ? t.continuePlanSave : t.save}</Text>
       </Pressable>
     </ScrollView>
   );
@@ -418,6 +484,16 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   cardDark: { backgroundColor: theme.cardDark },
+  continueBanner: {
+    backgroundColor: theme.accentSoft,
+    borderRadius: 18,
+    padding: 16,
+    gap: 6,
+    borderWidth: 1,
+    borderColor: theme.accent,
+  },
+  continueBannerTitle: { fontSize: 16, fontWeight: '700', color: theme.accent },
+  continueBannerBody: { fontSize: 14, lineHeight: 20, color: theme.text },
   heroName: { fontSize: 22, fontWeight: '700', color: theme.text },
   choosePhotoText: { color: theme.accent, fontWeight: '600', fontSize: 13 },
   trialToggle: { flexDirection: 'row', alignItems: 'center', gap: 10 },

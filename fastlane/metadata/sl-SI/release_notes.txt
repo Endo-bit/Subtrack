@@ -1,5 +1,13 @@
-Ta posodobitev odpravlja nekaj težav, o katerih ste nam poročali:
+Pripomoček na začetnem zaslonu
+Poraba tega meseca in naslednje tri bremenitve na prvi pogled — brez odpiranja aplikacije.
 
-- Opomniki zdaj ne prihajajo več večkrat za isto plačilo v vašem opomniškem oknu vsakič, ko dodate, odstranite ali spremenite paket naročnine
-- Domači zaslon zdaj prikazuje vsako prihajajoče plačilo v naslednjem tednu, ne le naslednjega, vsako s svojim števcem dni
-- Sprememba paketa naročnine zdaj samodejno izpolni trenutno ceno in pokaže, na katerem uradnem paketu ste
+Zanesljivejši opomniki
+Opomniki zdaj prihajajo sami, v ozadju: pred bremenitvijo, na dan bremenitve in pred koncem brezplačnega preizkusa. Dan po koncu preizkusa SubTrack vpraša, ali ste odpovedali ali nadaljujete, da se vam nič ne začne zaračunavati neopazno.
+
+Povzetek za deljenje
+Porabo v mesecu in rezultate pregleda naročnin spremenite v kartico, ki jo lahko delite — iz nastavitev ali takoj po pregledu.
+
+Prav tako izboljšano
+- Cene Pro so prikazane v valuti vašega App Storea
+- Naročnine z današnjo bremenitvijo so na seznamu jasno označene
+- Večji gumb za odpoved, ki ga je v pregledu lažje zadeti

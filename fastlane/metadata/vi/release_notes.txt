@@ -1,5 +1,13 @@
-Bản cập nhật này khắc phục một vài điều bạn đã phản hồi với chúng tôi:
+Tiện ích màn hình chính
+Xem chi tiêu tháng này và ba khoản thanh toán sắp tới chỉ trong một cái nhìn — không cần mở ứng dụng.
 
-- Thông báo nhắc nhở không còn lặp lại mỗi khoản thanh toán trong cửa sổ nhắc nhở mỗi khi bạn thêm, xóa, hoặc thay đổi gói của một đăng ký
-- Màn hình chính giờ đây đánh dấu mọi khoản thanh toán sắp tới đến hạn trong vòng một tuần, không chỉ khoản tiếp theo, mỗi khoản có số ngày đếm ngược riêng
-- Thay đổi gói đăng ký giờ đây tự động điền giá hiện tại của bạn và hiển thị bạn đang dùng gói chính thức nào
+Nhắc nhở đáng tin cậy hơn
+Nhắc nhở giờ tự động đến trong nền: trước khi bị trừ tiền, đúng ngày thanh toán và trước khi bản dùng thử miễn phí kết thúc. Ngày sau khi bản dùng thử kết thúc, SubTrack sẽ hỏi bạn đã hủy hay tiếp tục, để không có khoản nào âm thầm bắt đầu tính phí.
+
+Bản tóm tắt có thể chia sẻ
+Biến chi tiêu hằng tháng và kết quả kiểm tra đăng ký thành một thẻ bạn có thể chia sẻ — từ cài đặt hoặc ngay sau khi kiểm tra.
+
+Cải tiến khác
+- Giá Pro giờ hiển thị bằng đơn vị tiền tệ App Store của bạn
+- Các đăng ký bị trừ tiền hôm nay được đánh dấu rõ ràng trong danh sách
+- Nút hủy trong phần kiểm tra to hơn và dễ chạm hơn

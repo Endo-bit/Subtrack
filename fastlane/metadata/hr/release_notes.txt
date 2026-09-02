@@ -1,5 +1,13 @@
-Ova nadogradnja rješava nekoliko stvari o kojima ste nam javili:
+Widget na početnom zaslonu
+Potrošnja ovog mjeseca i sljedeća tri naplaćivanja na prvi pogled — bez otvaranja aplikacije.
 
-- Obavijesti s podsjetnikom više ne ponavljaju svako plaćanje unutar prozora podsjetnika svaki put kad dodate, uklonite ili promijenite plan pretplate
-- Početni zaslon sada označava sva nadolazeća plaćanja dospjela unutar tjedna, ne samo sljedeće, svako s vlastitim brojačem dana
-- Promjena plana pretplate sada unaprijed popunjava vašu trenutnu cijenu i pokazuje na kojem se službenom planu nalazite
+Pouzdaniji podsjetnici
+Podsjetnici sada stižu sami, u pozadini: prije naplate, na dan naplate i prije isteka besplatnog probnog razdoblja. Dan nakon isteka SubTrack pita jeste li otkazali ili nastavljate, kako vam ništa ne bi počelo naplaćivati neprimjetno.
+
+Sažetak za dijeljenje
+Pretvorite mjesečnu potrošnju i rezultate provjere pretplata u karticu koju možete podijeliti — iz postavki ili odmah nakon provjere.
+
+Također poboljšano
+- Pro cijene prikazuju se u valuti vašeg App Storea
+- Pretplate koje se naplaćuju danas jasno su označene na popisu
+- Veći gumb za otkazivanje koji je lakše pogoditi u provjeri

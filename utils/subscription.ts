@@ -30,6 +30,17 @@ export const dailyCost = (s: Subscription, convert?: ConvertFn): number => {
   return convert ? convert(raw, s.currency) : raw;
 };
 
+/**
+ * Whole calendar days from `from` to `to`, ignoring the time of day. Subtracting raw timestamps
+ * instead makes a charge dated today read as a fraction of a day in the past by mid-morning,
+ * which is how today's charges used to fall out of the dashboard's due-soon window entirely.
+ */
+export function calendarDaysUntil(from: Date, to: Date): number {
+  const a = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+  const b = new Date(to.getFullYear(), to.getMonth(), to.getDate());
+  return Math.round((b.getTime() - a.getTime()) / 86400000);
+}
+
 const monthIndex = (year: number, month: number) => year * 12 + month;
 
 function startOfDay(d: Date): Date {

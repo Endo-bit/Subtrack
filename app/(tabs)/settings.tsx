@@ -1,13 +1,16 @@
+import Constants from 'expo-constants';
 import { router } from 'expo-router';
-import { GraduationCap, MessageSquare, ShieldCheck } from 'lucide-react-native';
+import { GraduationCap, LayoutGrid, MessageSquare, Share2, ShieldCheck } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { Alert, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { FeedbackModal } from '@/components/FeedbackModal';
+import { ShareSummarySheet } from '@/components/ShareSummarySheet';
 import { TutorialModal } from '@/components/TutorialModal';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { theme } from '@/constants/theme';
 import { Language, VatMode } from '@/types/subscription';
 import { CURRENCIES } from '@/utils/currency';
+import { proPriceSummary } from '@/utils/proPricing';
 
 export default function SettingsScreen() {
   const {
@@ -25,10 +28,15 @@ export default function SettingsScreen() {
     resetAllData,
     notificationPermission,
     enableNotifications,
+    proPriceOptions,
   } = useSubTrack();
   const dark = useColorScheme() === 'dark';
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  // Storefront-localized, straight from the store. Null until the offering loads, or forever in
+  // Expo Go / on a device with no store access — the blurb alone still reads fine without it.
+  const priceSummary = proPriceSummary(proPriceOptions, t);
 
   const onNotificationsPress = () => {
     if (notificationPermission === 'denied') {
@@ -187,7 +195,7 @@ export default function SettingsScreen() {
           <Pressable style={styles.pro} onPress={() => router.push({ pathname: '/paywall', params: { source: 'settings' } })}>
             <Text style={styles.proTitle}>SubTrack Pro</Text>
             <Text style={styles.proText}>
-              {t.proPrice} · {t.proBlurb}
+              {priceSummary ? `${priceSummary} · ${t.proBlurb}` : t.proBlurb}
             </Text>
           </Pressable>
         )}
@@ -200,6 +208,30 @@ export default function SettingsScreen() {
           <Text style={[styles.rowText, { color: textCol }]}>{t.manageSubscription}</Text>
           <Text style={{ color: theme.textMuted, fontSize: 18 }}>›</Text>
         </Pressable>
+
+        {/* Share a summary — also offered at the end of a check-in */}
+        <Pressable
+          style={[styles.feedbackBtn, { backgroundColor: cardBg }]}
+          onPress={() => setShareOpen(true)}
+        >
+          <Share2 size={20} color={theme.accent} />
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.feedbackTitle, { color: textCol }]}>{t.share}</Text>
+            <Text style={[styles.feedbackSub, { color: mutedCol }]}>{t.shareSubtitle}</Text>
+          </View>
+          <Text style={{ color: theme.textMuted, fontSize: 18 }}>›</Text>
+        </Pressable>
+
+        {/* Widget — iOS only; there's no Android widget target in this build */}
+        {Platform.OS === 'ios' && (
+          <View style={[styles.feedbackBtn, { backgroundColor: cardBg }]}>
+            <LayoutGrid size={20} color={theme.accent} />
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.feedbackTitle, { color: textCol }]}>{t.widgetTitle}</Text>
+              <Text style={[styles.feedbackSub, { color: mutedCol }]}>{t.widgetBody}</Text>
+            </View>
+          </View>
+        )}
 
         {/* Tutorial */}
         <Pressable
@@ -230,11 +262,14 @@ export default function SettingsScreen() {
           <Text style={{ color: theme.textMuted, fontSize: 18 }}>›</Text>
         </Pressable>
 
-        <Text style={[styles.version, { color: mutedCol }]}>{t.version} 1.0.0</Text>
+        <Text style={[styles.version, { color: mutedCol }]}>
+          {t.version} {Constants.expoConfig?.version ?? ''}
+        </Text>
       </ScrollView>
 
       <FeedbackModal visible={feedbackOpen} onClose={() => setFeedbackOpen(false)} locale={locale} />
       <TutorialModal visible={tutorialOpen} onClose={() => setTutorialOpen(false)} />
+      <ShareSummarySheet visible={shareOpen} onClose={() => setShareOpen(false)} source="settings" />
     </>
   );
 }
