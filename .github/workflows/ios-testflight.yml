@@ -59,7 +59,11 @@ jobs:
 
       # Uploads the .ipa produced above to App Store Connect / TestFlight using the
       # App Store Connect API key already linked to this EAS project.
+      # --no-wait: the upload is the part CI is responsible for. Waiting for Apple to finish
+      # processing afterwards is what blew the 90-minute job timeout on the 1.0.2 run — the
+      # upload had already succeeded, and Apple finished processing 12 minutes after GitHub
+      # killed the job, so the "cancelled" run had in fact delivered the build.
       - name: Submit to TestFlight
-        run: eas submit --platform ios --path ./build.ipa --non-interactive
+        run: eas submit --platform ios --path ./build.ipa --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
