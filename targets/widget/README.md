@@ -106,3 +106,23 @@ Two prompts to expect along the way:
 Editing `index.swift` is enough — the target is regenerated on every prebuild. If you add a field
 to the payload, update all three of `utils/widget.ts` (`WidgetPayload`), the matching struct in
 `index.swift`, and `utils/__tests__/widget.test.ts`.
+
+## A warning you will see in every archive
+
+```
+The CFBundleVersion of an app extension ('1') must match that of
+its containing parent app ('1.0.12').
+```
+
+`@bacons/apple-targets` points the widget's Info.plist at `$(CURRENT_PROJECT_VERSION)` and
+`$(MARKETING_VERSION)` but hardcodes those build settings to `1` / `1.0`, and exposes no config
+key for them. Xcode reports the mismatch only as a warning, the archive succeeds, and builds
+carrying it have been accepted by App Store Connect (1.0.10 shipped this way) — so it is
+cosmetic today, not a submission blocker. It was briefly mistaken for one; the actual cause of
+builds not appearing was submissions sitting in the EAS queue.
+
+Fixing it properly is awkward: a plugin using the standard `withXcodeProject` mod runs before
+apple-targets has created the extension targets and matches nothing, and hooking apple-targets'
+own `xcodeProjectBeta2` mod from a later plugin fails with *"Provider must be the last mod
+added"*. If Apple ever starts enforcing this at ingestion, the route is a fork of the plugin or
+a post-prebuild patch of the generated `.pbxproj`, not another config plugin.

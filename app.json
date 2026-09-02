@@ -48,8 +48,7 @@
           "microphonePermission": false
         }
       ],
-      "@bacons/apple-targets",
-      "./plugins/withAppExtensionVersions"
+      "@bacons/apple-targets"
     ],
     "experiments": {
       "typedRoutes": true
