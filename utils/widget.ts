@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import { Subscription } from '@/types/subscription';
 import { CurrencyCode, formatMoney } from '@/utils/currency';
 import { chargeAmountInMonth, ConvertFn } from '@/utils/subscription';
-import { setWidgetPayload } from '@/modules/subtrack-widget';
+import { isWidgetBridgeAvailable, readWidgetPayload, setWidgetPayload } from '@/modules/subtrack-widget';
 
 /**
  * App Group the app and its widget extension share. Must match, byte for byte:
@@ -85,4 +85,35 @@ export async function syncWidgetData(
   if (Platform.OS !== 'ios') return;
   const payload = buildWidgetPayload(subscriptions, currency, locale, convert);
   setWidgetPayload(WIDGET_APP_GROUP, JSON.stringify(payload));
+}
+
+/**
+ * Where a "the widget shows nothing" report actually comes from. The three states are different
+ * faults with different fixes, and none of them is visible from inside the widget:
+ *   missing     - the native module is not in this build at all (autolinking / Expo Go)
+ *   unreachable - the App Group entitlement is wrong, so even the app cannot open the container
+ *   empty       - the app has never written a payload
+ *   ok          - the app wrote data and can read it back; any remaining fault is the extension's
+ */
+export type WidgetDiagnostics = {
+  state: 'not-ios' | 'missing' | 'unreachable' | 'empty' | 'ok';
+  monthTotal?: string;
+  upcomingCount?: number;
+};
+
+export function widgetDiagnostics(): WidgetDiagnostics {
+  if (Platform.OS !== 'ios') return { state: 'not-ios' };
+  if (!isWidgetBridgeAvailable) return { state: 'missing' };
+  const raw = readWidgetPayload(WIDGET_APP_GROUP);
+  if (raw === null) return { state: 'unreachable' };
+  try {
+    const parsed = JSON.parse(raw) as WidgetPayload;
+    return {
+      state: 'ok',
+      monthTotal: parsed.monthTotal,
+      upcomingCount: parsed.upcoming?.length ?? 0,
+    };
+  } catch {
+    return { state: 'empty' };
+  }
 }

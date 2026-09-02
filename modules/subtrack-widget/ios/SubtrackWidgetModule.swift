@@ -22,5 +22,13 @@ public class SubtrackWidgetModule: Module {
         WidgetCenter.shared.reloadAllTimelines()
       }
     }
+
+    // Diagnostic: reads back whatever is in the shared container. If this returns nil the app
+    // itself cannot reach the App Group (entitlement or identifier wrong), which is a different
+    // fault from the widget extension not being able to read a payload that is genuinely there.
+    Function("getData") { (appGroup: String) -> String? in
+      guard let defaults = UserDefaults(suiteName: appGroup) else { return nil }
+      return defaults.string(forKey: Self.payloadKey)
+    }
   }
 }

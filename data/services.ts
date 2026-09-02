@@ -120,6 +120,9 @@ const BRAND_LOGO: Record<string, string> = {
   'DB BahnCard':        gf('bahn.de'),
   'SNCF Max':           gf('sncf-connect.com'),
   'Amazon Prime':       gf('primevideo.com'),
+  Vercel:               gf('vercel.com'),
+  'Apple Developer':    gf('developer.apple.com'),
+  JetBrains:            gf('jetbrains.com'),
 };
 
 const getLogo = (name: string) => BRAND_LOGO[name] ?? undefined;
@@ -207,7 +210,7 @@ const rawServices: RawRow[] = [
   ['midjourney', 'Midjourney', 'MJ', '#000000', 10.0, 'productivity', 'monthly'],
   ['perplexity', 'Perplexity Pro', 'PX', '#20B2AA', 20.0, 'productivity', 'monthly'],
   ['babbel', 'Babbel', 'BB', '#FF6B35', 9.99, 'other', 'monthly'],
-  ['duolingo', 'Duolingo', 'DU', '#58CC02', 7.99, 'other', 'monthly'],
+  ['duolingo', 'Duolingo', 'DU', '#58CC02', 14.99, 'other', 'monthly'],
   ['headspace', 'Headspace', 'HS', '#F47D31', 12.99, 'health', 'monthly'],
   ['calm', 'Calm', 'CA', '#4A90D9', 14.99, 'health', 'monthly'],
   ['figma', 'Figma Professional', 'FI', '#A259FF', 15.0, 'productivity', 'monthly'],
@@ -219,6 +222,10 @@ const rawServices: RawRow[] = [
   ['hellofresh', 'HelloFresh', 'HF', '#99CC33', 49.99, 'other', 'monthly'],
   ['db-bahncard', 'DB BahnCard', 'DB', '#EC0016', 5.9, 'other', 'monthly'],
   ['sncf-max', 'SNCF Max', 'SN', '#9B0032', 79.0, 'other', 'monthly'],
+  // Developer tooling — the row price is the headline tier; full tiers live in EXTRA_PLANS.
+  ['vercel', 'Vercel', 'VC', '#000000', 20.0, 'productivity', 'monthly'],
+  ['apple-developer', 'Apple Developer', 'AD', '#111827', 99.0, 'productivity', 'annual'],
+  ['jetbrains', 'JetBrains', 'JB', '#FF318C', 29.9, 'productivity', 'monthly'],
 ];
 
 export const PRESET_SERVICES: PresetService[] = rawServices.map(
@@ -226,15 +233,18 @@ export const PRESET_SERVICES: PresetService[] = rawServices.map(
     const billingCycle = cycle;
     const defaultPrice = Number(price);
     const plans = buildPlans(id, name, defaultPrice, billingCycle);
-    const topPlan = plans[plans.length - 1] ?? plans[0];
+    // The headline price in the browse list is the curated row price above — not something
+    // derived from the plan ladder. Deriving it picked whichever tier happened to sit last,
+    // which as ladders grew meant Claude advertised its Team seat and Apple Developer its
+    // Enterprise tier. EXTRA_PLANS now only drives the plan picker.
     return {
       id,
       name,
       initials,
       color,
-      defaultPrice: topPlan?.price ?? defaultPrice,
+      defaultPrice,
       category: cat,
-      billingCycle: topPlan?.billingCycle ?? billingCycle,
+      billingCycle,
       logo: getLogo(name),
       plans,
       cancelUrl: CANCEL_URLS[id],

@@ -11,6 +11,7 @@ import { theme } from '@/constants/theme';
 import { Language, VatMode } from '@/types/subscription';
 import { CURRENCIES } from '@/utils/currency';
 import { proPriceSummary } from '@/utils/proPricing';
+import { widgetDiagnostics } from '@/utils/widget';
 
 export default function SettingsScreen() {
   const {
@@ -37,6 +38,18 @@ export default function SettingsScreen() {
   // Storefront-localized, straight from the store. Null until the offering loads, or forever in
   // Expo Go / on a device with no store access — the blurb alone still reads fine without it.
   const priceSummary = proPriceSummary(proPriceOptions, t);
+  // Recomputed on every render so it reflects the container as it is right now, not at mount.
+  const widgetDiag = widgetDiagnostics();
+  const widgetStatusText =
+    widgetDiag.state === 'ok'
+      ? t.widgetDiagOk
+          .replace('{total}', widgetDiag.monthTotal ?? '')
+          .replace('{n}', String(widgetDiag.upcomingCount ?? 0))
+      : widgetDiag.state === 'missing'
+        ? t.widgetDiagMissing
+        : widgetDiag.state === 'unreachable'
+          ? t.widgetDiagUnreachable
+          : t.widgetDiagEmpty;
 
   const onNotificationsPress = () => {
     if (notificationPermission === 'denied') {
@@ -222,13 +235,19 @@ export default function SettingsScreen() {
           <Text style={{ color: theme.textMuted, fontSize: 18 }}>›</Text>
         </Pressable>
 
-        {/* Widget — iOS only; there's no Android widget target in this build */}
+        {/* Widget — iOS only; there's no Android widget target in this build.
+            The status line turns an invisible failure ("the widget just shows dashes") into
+            something reportable: it says whether the bridge exists, whether the App Group is
+            reachable, and what the app last wrote there. */}
         {Platform.OS === 'ios' && (
           <View style={[styles.feedbackBtn, { backgroundColor: cardBg }]}>
             <LayoutGrid size={20} color={theme.accent} />
             <View style={{ flex: 1 }}>
               <Text style={[styles.feedbackTitle, { color: textCol }]}>{t.widgetTitle}</Text>
               <Text style={[styles.feedbackSub, { color: mutedCol }]}>{t.widgetBody}</Text>
+              <Text style={[styles.feedbackSub, { color: widgetDiag.state === 'ok' ? theme.success : '#D64545' }]}>
+                {t.widgetDiagLabel}: {widgetStatusText}
+              </Text>
             </View>
           </View>
         )}

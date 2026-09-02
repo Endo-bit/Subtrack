@@ -395,13 +395,32 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     }
   }, []);
 
-  // Pro-only: keep FX rates fresh so converted totals stay accurate.
+  // Rates are fetched for everyone, not just Pro: the preset catalogue is priced in EUR, so
+  // without them a JPY user browsing Add sees "EUR 20" rendered as a bare 20 with a yen sign.
+  // Pro still gates per-subscription FX (see `convert`); this only makes the catalogue honest.
   useEffect(() => {
-    if (!hasLoaded || !state.isPro) return;
+    if (!hasLoaded) return;
     if (ratesAreStale(state.exchangeRatesUpdatedAt)) {
       refreshExchangeRates().catch(() => {});
     }
-  }, [hasLoaded, state.isPro, state.exchangeRatesUpdatedAt, refreshExchangeRates]);
+  }, [hasLoaded, state.exchangeRatesUpdatedAt, refreshExchangeRates]);
+
+  /**
+   * Converts a preset catalogue price (always EUR — see data/servicePlans.ts) into the display
+   * currency. Returns the currency actually used, because when no rate is available it is far
+   * better to show a true "EUR 19.99" than a false "JPY 19.99".
+   */
+  const catalogPrice = useCallback(
+    (eurAmount: number): { amount: number; currency: CurrencyCode } => {
+      const rate = state.exchangeRates?.[state.currency];
+      if (state.currency === 'EUR' || !rate) return { amount: eurAmount, currency: 'EUR' };
+      const converted = convertAmount(eurAmount, 'EUR', state.currency, state.exchangeRates);
+      // Currencies without minor units read as noise at two decimals.
+      const rounded = state.currency === 'JPY' ? Math.round(converted) : Math.round(converted * 100) / 100;
+      return { amount: rounded, currency: state.currency };
+    },
+    [state.currency, state.exchangeRates],
+  );
 
   return {
     ...state,
@@ -421,6 +440,7 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     resetAllData,
     recordDiagnosis,
     convert,
+    catalogPrice,
     refreshExchangeRates,
     notificationPermission,
     enableNotifications,

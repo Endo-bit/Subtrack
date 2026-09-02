@@ -53,6 +53,7 @@ export default function ServiceAddScreen() {
     subscriptions,
     presetServices,
     convert,
+    catalogPrice,
   } = useSubTrack();
   const dark = useColorScheme() === 'dark';
 
@@ -80,8 +81,13 @@ export default function ServiceAddScreen() {
   const [customMode, setCustomMode] = useState(
     isManual || plans.length === 0 || (!!continuingSub && !continuingPlan),
   );
+  // Catalogue prices are EUR; the field is denominated in `subCurrency`, so convert on the way
+  // in. An existing subscription's price is already in its own currency and passes through.
   const [price, setPrice] = useState(
-    String(continuingSub?.defaultPrice ?? defaultPlan?.price ?? service.defaultPrice),
+    String(
+      continuingSub?.defaultPrice ??
+        catalogPrice(defaultPlan?.price ?? service.defaultPrice).amount,
+    ),
   );
   const [cycle, setCycle] = useState<BillingCycle>(
     continuingSub?.billingCycle ?? defaultPlan?.billingCycle ?? service.billingCycle,
@@ -104,7 +110,7 @@ export default function ServiceAddScreen() {
   const pickPlan = (plan: ServicePlan) => {
     setSelectedPlanId(plan.id);
     setCustomMode(false);
-    setPrice(String(plan.price));
+    setPrice(String(catalogPrice(plan.price).amount));
     setCycle(plan.billingCycle ?? service.billingCycle);
   };
 
@@ -279,7 +285,9 @@ export default function ServiceAddScreen() {
                     </Text>
                   )}
                 </View>
-                <Text style={styles.planPrice}>{money(plan.price)}</Text>
+                <Text style={styles.planPrice}>
+                  {(({ amount, currency: c }) => formatMoney(amount, c))(catalogPrice(plan.price))}
+                </Text>
               </Pressable>
             ))}
             <Pressable

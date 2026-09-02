@@ -200,6 +200,11 @@ export type Strings = {
   rateLater: string;
   widgetTitle: string;
   widgetBody: string;
+  widgetDiagLabel: string;
+  widgetDiagMissing: string;
+  widgetDiagUnreachable: string;
+  widgetDiagEmpty: string;
+  widgetDiagOk: string;
   diagnosisAlreadyDoneTitle: string;
   diagnosisAlreadyDoneBody: string;
   diagnosisViewHistory: string;
@@ -451,6 +456,11 @@ export const strings: Record<Language, Strings> = {
     rateLater: 'Jetzt nicht',
     widgetTitle: 'Home-Bildschirm-Widget',
     widgetBody: 'Home-Bildschirm gedrückt halten, auf + tippen und nach SubTrack suchen.',
+    widgetDiagLabel: 'Widget-Daten',
+    widgetDiagMissing: 'In diesem Build nicht verfügbar',
+    widgetDiagUnreachable: 'Gemeinsamer Speicher nicht erreichbar',
+    widgetDiagEmpty: 'Noch nichts geschrieben',
+    widgetDiagOk: '{total} · {n} anstehend',
     diagnosisAlreadyDoneTitle: 'Bereits geprüft',
     diagnosisAlreadyDoneBody: 'Du hast alle Abos schon einmal geprüft. Mit Pro kannst du sie erneut prüfen.',
     diagnosisViewHistory: 'Frühere Ergebnisse ansehen',
@@ -700,6 +710,11 @@ export const strings: Record<Language, Strings> = {
     rateLater: 'Pas maintenant',
     widgetTitle: 'Widget écran d’accueil',
     widgetBody: 'Appuyez longuement sur l’écran d’accueil, touchez +, puis cherchez SubTrack.',
+    widgetDiagLabel: 'Données du widget',
+    widgetDiagMissing: 'Indisponible dans cette version',
+    widgetDiagUnreachable: 'Stockage partagé inaccessible',
+    widgetDiagEmpty: 'Rien encore écrit',
+    widgetDiagOk: '{total} · {n} à venir',
     diagnosisAlreadyDoneTitle: 'Déjà vérifié',
     diagnosisAlreadyDoneBody: 'Vous avez déjà vérifié tous vos abonnements. Passez à Pro pour recommencer.',
     diagnosisViewHistory: 'Voir les résultats précédents',
@@ -949,6 +964,11 @@ export const strings: Record<Language, Strings> = {
     rateLater: 'Not now',
     widgetTitle: 'Home Screen widget',
     widgetBody: 'Touch and hold your Home Screen, tap +, then search for SubTrack.',
+    widgetDiagLabel: 'Widget data',
+    widgetDiagMissing: 'Not available in this build',
+    widgetDiagUnreachable: 'Shared storage unreachable',
+    widgetDiagEmpty: 'Nothing written yet',
+    widgetDiagOk: '{total} · {n} upcoming',
     diagnosisAlreadyDoneTitle: 'Already checked',
     diagnosisAlreadyDoneBody: 'You\'ve already checked all your subscriptions once. Upgrade to Pro to re-check them.',
     diagnosisViewHistory: 'View past results',
@@ -1199,6 +1219,11 @@ export const strings: Record<Language, Strings> = {
     rateLater: 'Ahora no',
     widgetTitle: 'Widget en la pantalla de inicio',
     widgetBody: 'Mantén pulsada la pantalla de inicio, toca + y busca SubTrack.',
+    widgetDiagLabel: 'Datos del widget',
+    widgetDiagMissing: 'No disponible en esta versión',
+    widgetDiagUnreachable: 'Almacenamiento compartido inaccesible',
+    widgetDiagEmpty: 'Aún no se ha escrito nada',
+    widgetDiagOk: '{total} · {n} próximos',
     diagnosisAlreadyDoneTitle: 'Ya revisado',
     diagnosisAlreadyDoneBody: 'Ya revisaste todas tus suscripciones una vez. Pásate a Pro para volver a revisarlas.',
     diagnosisViewHistory: 'Ver resultados anteriores',

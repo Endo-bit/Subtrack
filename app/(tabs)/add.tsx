@@ -48,7 +48,7 @@ const categoryColor: Record<Category, string> = {
 
 // ── Component ──────────────────────────────────────────────────────────────
 export default function AddScreen() {
-  const { t, presetServices, currency } = useSubTrack();
+  const { t, presetServices, catalogPrice } = useSubTrack();
   const dark = useColorScheme() === 'dark';
   const [query, setQuery] = useState('');
   const [listMode, setListMode] = useState<AddListMode>('alpha');
@@ -277,7 +277,9 @@ export default function AddScreen() {
                 {item.name}
               </Text>
               <Text style={styles.serviceMeta}>
-                {formatMoney(item.defaultPrice, currency)} · {categoryLabel(t, item.category)}
+                {(({ amount, currency }) => formatMoney(amount, currency))(catalogPrice(item.defaultPrice))}
+                {' · '}
+                {categoryLabel(t, item.category)}
               </Text>
             </View>
           </Pressable>
