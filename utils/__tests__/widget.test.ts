@@ -23,9 +23,9 @@ function makeSub(overrides: Partial<Subscription> = {}): Subscription {
 const now = new Date(2026, 8, 5, 12);
 
 describe('buildWidgetPayload', () => {
-  test('totals what is actually charged this calendar month, not the monthly run rate', () => {
-    // An annual plan renewing in March contributes nothing to a September widget, even though
-    // it carries a non-zero monthly equivalent everywhere else in the app.
+  test('reports the same monthly figure the dashboard does', () => {
+    // The widget used to sum only what is charged in the current calendar month, so this annual
+    // plan counted as zero in September and the two screens disagreed under one label.
     const annual = makeSub({
       id: 'adobe-1',
       name: 'Adobe',
@@ -34,8 +34,23 @@ describe('buildWidgetPayload', () => {
       startedAt: '2026-03-10T12:00:00.000Z',
       nextBillingDate: '2027-03-10T12:00:00.000Z',
     });
-    const payload = buildWidgetPayload([makeSub(), annual], 'EUR', 'en-US', noConvert, now);
-    expect(payload.monthTotal).toBe('€10.00');
+    const payload = buildWidgetPayload([makeSub(), annual], 'EUR', 'en-US', noConvert, 'Monthly', now);
+    // 10 monthly + 120/12 annual, exactly as context's monthlyTotal computes it.
+    expect(payload.monthTotal).toBe('€20.00');
+  });
+
+  test('carries the dashboard label rather than a month name', () => {
+    const payload = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monatlich', now);
+    expect(payload.totalLabel).toBe('Monatlich');
+  });
+
+  test('passes each service logo through so the widget can draw the real icon', () => {
+    const withLogo = makeSub({ logo: 'https://example.com/icon.png' });
+    const payload = buildWidgetPayload([withLogo], 'EUR', 'en-US', noConvert, 'Monthly', now);
+    expect(payload.upcoming[0].logo).toBe('https://example.com/icon.png');
+    // Absent logos stay undefined so the widget knows to fall back to the initials chip.
+    const noLogo = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monthly', now);
+    expect(noLogo.upcoming[0].logo).toBeUndefined();
   });
 
   test('lists the three soonest charges, soonest first', () => {
@@ -45,7 +60,7 @@ describe('buildWidgetPayload', () => {
       makeSub({ id: 'b-1', name: 'Middle', nextBillingDate: '2026-09-12T12:00:00.000Z' }),
       makeSub({ id: 'd-1', name: 'Last', nextBillingDate: '2026-09-30T12:00:00.000Z' }),
     ];
-    const payload = buildWidgetPayload(subs, 'EUR', 'en-US', noConvert, now);
+    const payload = buildWidgetPayload(subs, 'EUR', 'en-US', noConvert, 'Monthly', now);
     expect(payload.upcoming.map((u) => u.name)).toEqual(['Soonest', 'Middle', 'Later']);
   });
 
@@ -55,19 +70,20 @@ describe('buildWidgetPayload', () => {
       'EUR',
       'en-US',
       noConvert,
+      'Monthly',
       now,
     );
     expect(payload.upcoming).toEqual([]);
   });
 
   test('pre-formats every money value, since the widget process cannot format currency itself', () => {
-    const payload = buildWidgetPayload([makeSub()], 'JPY', 'en-US', noConvert, now);
+    const payload = buildWidgetPayload([makeSub()], 'JPY', 'en-US', noConvert, 'Monthly', now);
     expect(payload.monthTotal).toBe('¥10');
     expect(payload.upcoming[0].amount).toBe('¥10');
   });
 
   test('carries the badge colour and initials the widget draws with', () => {
-    const payload = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, now);
+    const payload = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monthly', now);
     expect(payload.upcoming[0]).toMatchObject({ initials: 'NF', color: '#FF3B30' });
   });
 });

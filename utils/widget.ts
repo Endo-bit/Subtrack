@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import { Subscription } from '@/types/subscription';
 import { CurrencyCode, formatMoney } from '@/utils/currency';
-import { chargeAmountInMonth, ConvertFn } from '@/utils/subscription';
+import { ConvertFn, monthly } from '@/utils/subscription';
 import { isWidgetBridgeAvailable, readWidgetPayload, setWidgetPayload } from '@/modules/subtrack-widget';
 
 /**
@@ -19,7 +19,8 @@ const UPCOMING_COUNT = 3;
 
 /** Mirrors `WidgetPayload` in targets/widget/index.swift — keep the two in step. */
 export type WidgetPayload = {
-  monthLabel: string;
+  /** Localized word for the headline figure, matching the dashboard's own label. */
+  totalLabel: string;
   monthTotal: string;
   upcoming: {
     name: string;
@@ -28,6 +29,8 @@ export type WidgetPayload = {
     color: string;
     dateLabel: string;
     amount: string;
+    /** Remote icon URL; the widget falls back to the initials chip when absent or unreachable. */
+    logo?: string;
   }[];
   updatedAt: string;
 };
@@ -37,14 +40,16 @@ export function buildWidgetPayload(
   currency: CurrencyCode,
   locale: string,
   convert: ConvertFn,
+  totalLabel: string,
   now: Date = new Date(),
 ): WidgetPayload {
-  // "Spend this month" means what actually gets charged between the 1st and the 31st — not the
-  // normalised monthly run rate — so an annual plan only counts in its renewal month.
-  const monthTotal = subscriptions.reduce(
-    (sum, s) => sum + chargeAmountInMonth(s, now.getFullYear(), now.getMonth(), convert),
-    0,
-  );
+  // Must be the same figure the dashboard shows. This used to sum what actually gets charged in
+  // the current calendar month, which is a defensible metric on its own but made an annual plan
+  // count as zero in eleven months out of twelve — so the widget and the home screen disagreed
+  // under the same label. Whichever metric is better, showing two of them is the bug.
+  const monthTotal = subscriptions
+    .filter((s) => !s.isCancelled)
+    .reduce((sum, s) => sum + monthly(s, convert), 0);
 
   const upcoming = subscriptions
     .filter((s) => !s.isCancelled)
@@ -59,10 +64,11 @@ export function buildWidgetPayload(
         day: 'numeric',
       }),
       amount: formatMoney(convert(s.defaultPrice, s.currency), currency),
+      logo: s.logo,
     }));
 
   return {
-    monthLabel: now.toLocaleDateString(locale, { month: 'long' }),
+    totalLabel,
     monthTotal: formatMoney(monthTotal, currency),
     upcoming,
     updatedAt: now.toISOString(),
@@ -81,9 +87,10 @@ export async function syncWidgetData(
   currency: CurrencyCode,
   locale: string,
   convert: ConvertFn,
+  totalLabel: string,
 ): Promise<void> {
   if (Platform.OS !== 'ios') return;
-  const payload = buildWidgetPayload(subscriptions, currency, locale, convert);
+  const payload = buildWidgetPayload(subscriptions, currency, locale, convert, totalLabel);
   setWidgetPayload(WIDGET_APP_GROUP, JSON.stringify(payload));
 }
 

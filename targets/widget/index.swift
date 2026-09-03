@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import WidgetKit
 
 // MARK: - Shared contract with the app
@@ -9,29 +10,26 @@ private let appGroupIdentifier = "group.com.cutedogstoryai.subtrack"
 private let payloadKey = "subtrack.widget.payload"
 
 /// Mirrors `WidgetPayload` in utils/widget.ts. Every money value arrives pre-formatted: the
-/// widget process can't see the user's currency preference or the app's FX rates, so the app
-/// does all formatting and this side only lays text out.
+/// widget process can't see the user's currency setting or the app's FX rates, so the app does
+/// all formatting and this side only lays text out.
 private struct UpcomingCharge: Decodable, Identifiable {
   let name: String
   let initials: String
   let color: String
   let dateLabel: String
   let amount: String
+  let logo: String?
 
   var id: String { "\(name)-\(dateLabel)" }
 }
 
 private struct WidgetPayload: Decodable {
-  let monthLabel: String
+  let totalLabel: String
   let monthTotal: String
   let upcoming: [UpcomingCharge]
 
   /// Shown before the app has ever written a payload, and in the widget gallery preview.
-  static let placeholder = WidgetPayload(
-    monthLabel: "—",
-    monthTotal: "—",
-    upcoming: []
-  )
+  static let placeholder = WidgetPayload(totalLabel: "—", monthTotal: "—", upcoming: [])
 
   static func load() -> WidgetPayload {
     guard
@@ -56,8 +54,8 @@ private enum Palette {
 }
 
 private extension Color {
-  /// Parses the `#RRGGBB` strings the app stores on each service. Falls back to the brand
-  /// accent for anything unparseable rather than rendering an invisible swatch.
+  /// Parses the `#RRGGBB` strings the app stores on each service. Falls back to the brand accent
+  /// for anything unparseable rather than rendering an invisible swatch.
   init(hexString: String) {
     let cleaned = hexString.hasPrefix("#") ? String(hexString.dropFirst()) : hexString
     guard cleaned.count == 6, let value = UInt64(cleaned, radix: 16) else {
@@ -87,61 +85,57 @@ private extension View {
 
 // MARK: - Views
 
+/// The service's real icon where one could be fetched, otherwise the same coloured initials chip
+/// the app falls back to (see components/ServiceLogo.tsx, which makes the identical choice).
 private struct ServiceBadge: View {
-  let initials: String
-  let color: String
+  let charge: UpcomingCharge
+  let icon: Data?
+  let size: CGFloat
 
   var body: some View {
-    RoundedRectangle(cornerRadius: 8, style: .continuous)
-      .fill(Color(hexString: color))
-      .frame(width: 26, height: 26)
-      .overlay(
-        Text(initials.prefix(2))
-          .font(.system(size: 11, weight: .bold))
-          .foregroundColor(.white)
-      )
+    Group {
+      if let icon, let image = UIImage(data: icon) {
+        Image(uiImage: image)
+          .resizable()
+          .aspectRatio(contentMode: .fill)
+      } else {
+        Color(hexString: charge.color)
+          .overlay(
+            Text(charge.initials.prefix(2))
+              .font(.system(size: size * 0.42, weight: .bold))
+              .foregroundColor(.white)
+          )
+      }
+    }
+    .frame(width: size, height: size)
+    .clipShape(RoundedRectangle(cornerRadius: size * 0.3, style: .continuous))
   }
 }
 
 private struct ChargeRow: View {
   let charge: UpcomingCharge
-
-  var body: some View {
-    HStack(spacing: 8) {
-      ServiceBadge(initials: charge.initials, color: charge.color)
-      VStack(alignment: .leading, spacing: 1) {
-        Text(charge.name)
-          .font(.system(size: 12, weight: .semibold))
-          .foregroundColor(Palette.primaryText)
-          .lineLimit(1)
-        Text(charge.dateLabel)
-          .font(.system(size: 10, weight: .medium))
-          .foregroundColor(Palette.secondaryText)
-      }
-      Spacer(minLength: 4)
-      Text(charge.amount)
-        .font(.system(size: 12, weight: .bold))
-        .foregroundColor(Palette.primaryText)
-        .lineLimit(1)
-    }
-  }
-}
-
-private struct MonthTotal: View {
-  let payload: WidgetPayload
+  let icon: Data?
   let compact: Bool
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 2) {
-      Text(payload.monthLabel.uppercased())
-        .font(.system(size: 9, weight: .semibold))
-        .tracking(0.6)
-        .foregroundColor(Palette.secondaryText)
-      Text(payload.monthTotal)
-        .font(.system(size: compact ? 24 : 28, weight: .bold, design: .rounded))
-        .minimumScaleFactor(0.6)
-        .lineLimit(1)
+    HStack(spacing: compact ? 6 : 8) {
+      ServiceBadge(charge: charge, icon: icon, size: compact ? 20 : 26)
+      VStack(alignment: .leading, spacing: 0) {
+        Text(charge.name)
+          .font(.system(size: compact ? 11 : 12, weight: .semibold))
+          .foregroundColor(Palette.primaryText)
+          .lineLimit(1)
+        Text(charge.dateLabel)
+          .font(.system(size: compact ? 9 : 10, weight: .medium))
+          .foregroundColor(Palette.secondaryText)
+          .lineLimit(1)
+      }
+      Spacer(minLength: 2)
+      Text(charge.amount)
+        .font(.system(size: compact ? 11 : 12, weight: .bold))
         .foregroundColor(Palette.primaryText)
+        .lineLimit(1)
+        .minimumScaleFactor(0.8)
     }
   }
 }
@@ -149,17 +143,26 @@ private struct MonthTotal: View {
 private struct SubTrackWidgetView: View {
   @Environment(\.widgetFamily) private var family
   let payload: WidgetPayload
+  let icons: [String: Data]
 
-  /// Small only has room for the very next charge; medium fits the full top three.
-  private var visibleCharges: [UpcomingCharge] {
-    family == .systemSmall ? Array(payload.upcoming.prefix(1)) : payload.upcoming
-  }
+  private var compact: Bool { family == .systemSmall }
 
   var body: some View {
-    VStack(alignment: .leading, spacing: family == .systemSmall ? 8 : 10) {
-      MonthTotal(payload: payload, compact: family == .systemSmall)
+    VStack(alignment: .leading, spacing: compact ? 6 : 10) {
+      VStack(alignment: .leading, spacing: 1) {
+        Text(payload.totalLabel.uppercased())
+          .font(.system(size: 9, weight: .semibold))
+          .tracking(0.6)
+          .foregroundColor(Palette.secondaryText)
+          .lineLimit(1)
+        Text(payload.monthTotal)
+          .font(.system(size: compact ? 22 : 28, weight: .bold, design: .rounded))
+          .minimumScaleFactor(0.6)
+          .lineLimit(1)
+          .foregroundColor(Palette.primaryText)
+      }
 
-      if visibleCharges.isEmpty {
+      if payload.upcoming.isEmpty {
         Spacer(minLength: 0)
         Text("No upcoming charges")
           .font(.system(size: 11, weight: .medium))
@@ -168,8 +171,12 @@ private struct SubTrackWidgetView: View {
         Rectangle()
           .fill(Color.white.opacity(0.12))
           .frame(height: 0.5)
-        VStack(spacing: 8) {
-          ForEach(visibleCharges) { ChargeRow(charge: $0) }
+        // Every upcoming charge on both sizes — small used to show only the first, which hid
+        // the very information the widget exists for.
+        VStack(spacing: compact ? 5 : 8) {
+          ForEach(payload.upcoming) { charge in
+            ChargeRow(charge: charge, icon: icons[charge.id], compact: compact)
+          }
         }
       }
 
@@ -185,40 +192,82 @@ private struct SubTrackWidgetView: View {
 private struct Entry: TimelineEntry {
   let date: Date
   let payload: WidgetPayload
+  let icons: [String: Data]
 }
 
 private struct Provider: TimelineProvider {
+  /// Icons are the app's own remote logos. Fetching them here rather than shipping them through
+  /// the App Group keeps the app side unchanged and lets URLCache do the caching; a slow or
+  /// failed request just leaves the initials chip in place.
+  private static func loadIcons(for payload: WidgetPayload) -> [String: Data] {
+    let wanted = payload.upcoming.compactMap { charge -> (String, URL)? in
+      guard let raw = charge.logo, let url = URL(string: raw) else { return nil }
+      return (charge.id, url)
+    }
+    guard !wanted.isEmpty else { return [:] }
+
+    var result: [String: Data] = [:]
+    let lock = NSLock()
+    let group = DispatchGroup()
+    let config = URLSessionConfiguration.default
+    config.requestCachePolicy = .returnCacheDataElseLoad
+    let session = URLSession(configuration: config)
+
+    for (id, url) in wanted {
+      group.enter()
+      session.dataTask(with: url) { data, _, _ in
+        defer { group.leave() }
+        guard let data, UIImage(data: data) != nil else { return }
+        lock.lock()
+        result[id] = data
+        lock.unlock()
+      }.resume()
+    }
+
+    // A widget must never hang on the network; render without icons if this takes too long.
+    _ = group.wait(timeout: .now() + 6)
+    lock.lock()
+    defer { lock.unlock() }
+    return result
+  }
+
   func placeholder(in context: Context) -> Entry {
-    Entry(date: Date(), payload: .placeholder)
+    Entry(date: Date(), payload: .placeholder, icons: [:])
   }
 
   func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
-    completion(Entry(date: Date(), payload: WidgetPayload.load()))
+    completion(Entry(date: Date(), payload: WidgetPayload.load(), icons: [:]))
   }
 
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-    let now = Date()
-    // The app reloads timelines itself whenever subscriptions change, so this refresh only has
-    // to cover dates rolling over while the app is never opened. Next midnight is enough.
-    let nextMidnight = Calendar.current.nextDate(
-      after: now,
-      matching: DateComponents(hour: 0, minute: 5),
-      matchingPolicy: .nextTime
-    ) ?? now.addingTimeInterval(3600)
+    // loadIcons blocks on a DispatchGroup, so it must not run on the calling thread.
+    DispatchQueue.global(qos: .userInitiated).async {
+      let now = Date()
+      let payload = WidgetPayload.load()
+      let icons = Self.loadIcons(for: payload)
 
-    completion(
-      Timeline(
-        entries: [Entry(date: now, payload: WidgetPayload.load())],
-        policy: .after(nextMidnight)
+      // The app reloads timelines itself whenever subscriptions change, so this refresh only has
+      // to cover dates rolling over while the app is never opened. Next midnight is enough.
+      let nextMidnight = Calendar.current.nextDate(
+        after: now,
+        matching: DateComponents(hour: 0, minute: 5),
+        matchingPolicy: .nextTime
+      ) ?? now.addingTimeInterval(3600)
+
+      completion(
+        Timeline(
+          entries: [Entry(date: now, payload: payload, icons: icons)],
+          policy: .after(nextMidnight)
+        )
       )
-    )
+    }
   }
 }
 
 struct SubTrackWidget: Widget {
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: "SubTrackWidget", provider: Provider()) { entry in
-      SubTrackWidgetView(payload: entry.payload)
+      SubTrackWidgetView(payload: entry.payload, icons: entry.icons)
     }
     .configurationDisplayName("SubTrack")
     .description("This month's spend and your next charges.")
