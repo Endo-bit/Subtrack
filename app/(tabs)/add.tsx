@@ -72,10 +72,13 @@ export default function AddScreen() {
   }, [showTopBtn, topBtnOpacity]);
 
   // ── Data ─────────────────────────────────────────────────────────────────
+  // No cap: this was `.slice(0, 80)`, applied *before* sorting, so it kept whichever 80 services
+  // happened to come first in data/services.ts. Every service added after the 80th — the whole
+  // developer-tooling group — was unreachable by browsing and only appeared once a search query
+  // narrowed the list back under the limit. SectionList virtualises, so the full catalogue costs
+  // nothing to render.
   const filtered = useMemo(
-    () => presetServices
-      .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()))
-      .slice(0, 80),
+    () => presetServices.filter((s) => s.name.toLowerCase().includes(query.toLowerCase())),
     [presetServices, query],
   );
 
