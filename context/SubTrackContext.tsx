@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { PRESET_SERVICES } from '@/data/services';
 import { localeForLanguage, strings } from '@/i18n/strings';
-import { Language, Subscription, VatMode } from '@/types/subscription';
+import { Language, LocalPrices, Subscription, VatMode } from '@/types/subscription';
 import { track } from '@/utils/analytics';
 import { convertAmount, CurrencyCode, detectDeviceCurrency, ExchangeRates } from '@/utils/currency';
 import { exportBackupFile, exportCsvFile, pickBackupFile } from '@/utils/dataExport';
@@ -30,6 +30,12 @@ import {
 import { computeCancelEffectiveMonth, ConvertFn, monthly, normalizeSubscription } from '@/utils/subscription';
 
 const storageKey = 'subtrack-eu-state-v2';
+
+/**
+ * A catalogue price ready to display. `exact` is false when it came from converting the euro
+ * price rather than from that market's published one, so the UI can mark it as approximate.
+ */
+export type CatalogPrice = { amount: number; currency: CurrencyCode; exact: boolean };
 
 /** How long after a free trial ends the "did you cancel?" prompt stays worth asking. */
 const TRIAL_FOLLOW_UP_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
@@ -411,13 +417,19 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
    * better to show a true "EUR 19.99" than a false "JPY 19.99".
    */
   const catalogPrice = useCallback(
-    (eurAmount: number): { amount: number; currency: CurrencyCode } => {
+    (eurAmount: number, localPrices?: LocalPrices): CatalogPrice => {
+      // What the vendor actually charges in that market beats anything an exchange rate can
+      // produce: Netflix Standard is EUR 13.99 / USD 19.99 / JPY 1590, and no rate maps between
+      // them. Only fall back to converting when that market's price isn't known.
+      const local = localPrices?.[state.currency];
+      if (local !== undefined) return { amount: local, currency: state.currency, exact: true };
+
       const rate = state.exchangeRates?.[state.currency];
-      if (state.currency === 'EUR' || !rate) return { amount: eurAmount, currency: 'EUR' };
+      if (state.currency === 'EUR' || !rate) return { amount: eurAmount, currency: 'EUR', exact: true };
       const converted = convertAmount(eurAmount, 'EUR', state.currency, state.exchangeRates);
       // Currencies without minor units read as noise at two decimals.
       const rounded = state.currency === 'JPY' ? Math.round(converted) : Math.round(converted * 100) / 100;
-      return { amount: rounded, currency: state.currency };
+      return { amount: rounded, currency: state.currency, exact: false };
     },
     [state.currency, state.exchangeRates],
   );

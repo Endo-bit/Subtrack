@@ -1,5 +1,5 @@
 import { CANCEL_URLS } from '@/data/cancelUrls';
-import { buildPlans } from '@/data/servicePlans';
+import { buildPlans, HEADLINE_PRICES } from '@/data/servicePlans';
 import { PresetService } from '@/types/subscription';
 
 /**
@@ -247,6 +247,7 @@ export const PRESET_SERVICES: PresetService[] = rawServices.map(
       billingCycle,
       logo: getLogo(name),
       plans,
+      prices: HEADLINE_PRICES[id],
       cancelUrl: CANCEL_URLS[id],
     };
   },

@@ -28,6 +28,12 @@ import { theme, type as t_ } from '@/constants/theme';
 import { AddListMode, Category, PresetService } from '@/types/subscription';
 import { Strings } from '@/i18n/strings';
 import { formatMoney } from '@/utils/currency';
+import type { CatalogPrice } from '@/context/SubTrackContext';
+
+/** Marks a converted price with a leading "≈" — language-neutral, so it needs no translation. */
+function catalogPriceLabel({ amount, currency, exact }: CatalogPrice): string {
+  return `${exact ? '' : '≈'}${formatMoney(amount, currency)}`;
+}
 
 // ── Layout constants (must match StyleSheet below) ─────────────────────────
 // serviceRow: padding 12×2 + max(logo 40, text ~40) + marginBottom 8 = 72
@@ -280,7 +286,7 @@ export default function AddScreen() {
                 {item.name}
               </Text>
               <Text style={styles.serviceMeta}>
-                {(({ amount, currency }) => formatMoney(amount, currency))(catalogPrice(item.defaultPrice))}
+                {catalogPriceLabel(catalogPrice(item.defaultPrice, item.prices))}
                 {' · '}
                 {categoryLabel(t, item.category)}
               </Text>

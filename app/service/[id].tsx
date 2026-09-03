@@ -86,7 +86,8 @@ export default function ServiceAddScreen() {
   const [price, setPrice] = useState(
     String(
       continuingSub?.defaultPrice ??
-        catalogPrice(defaultPlan?.price ?? service.defaultPrice).amount,
+        catalogPrice(defaultPlan?.price ?? service.defaultPrice, defaultPlan?.prices ?? service.prices)
+          .amount,
     ),
   );
   const [cycle, setCycle] = useState<BillingCycle>(
@@ -110,7 +111,7 @@ export default function ServiceAddScreen() {
   const pickPlan = (plan: ServicePlan) => {
     setSelectedPlanId(plan.id);
     setCustomMode(false);
-    setPrice(String(catalogPrice(plan.price).amount));
+    setPrice(String(catalogPrice(plan.price, plan.prices).amount));
     setCycle(plan.billingCycle ?? service.billingCycle);
   };
 
@@ -286,7 +287,9 @@ export default function ServiceAddScreen() {
                   )}
                 </View>
                 <Text style={styles.planPrice}>
-                  {(({ amount, currency: c }) => formatMoney(amount, c))(catalogPrice(plan.price))}
+                  {(({ amount, currency: c, exact }) => `${exact ? '' : '≈'}${formatMoney(amount, c)}`)(
+                    catalogPrice(plan.price, plan.prices),
+                  )}
                 </Text>
               </Pressable>
             ))}

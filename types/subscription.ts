@@ -5,12 +5,22 @@ export type BillingCycle = 'monthly' | 'quarterly' | 'annual';
 export type Category = 'streaming' | 'music' | 'productivity' | 'gaming' | 'health' | 'news' | 'other';
 export type VatMode = 'de' | 'fr' | 'none';
 
+/**
+ * Published list prices in other markets, keyed by currency. A subscription costs what the vendor
+ * charges in that country, which is rarely the euro price run through an exchange rate — Netflix
+ * Standard is EUR 13.99, USD 19.99 and JPY 1590, and no FX rate reconciles those. Where a market
+ * is missing here the euro price is converted instead, which is an approximation.
+ */
+export type LocalPrices = Partial<Record<CurrencyCode, number>>;
+
 export type ServicePlan = {
   id: string;
   name: string;
+  /** The euro list price. Other markets live in `prices`. */
   price: number;
   currency?: string;
   billingCycle?: BillingCycle;
+  prices?: LocalPrices;
 };
 
 export type PresetService = {
@@ -24,6 +34,8 @@ export type PresetService = {
   billingCycle: BillingCycle;
   plans: ServicePlan[];
   cancelUrl?: string;
+  /** Local prices for the headline figure shown while browsing. */
+  prices?: LocalPrices;
 };
 
 export type Subscription = PresetService & {
