@@ -7,6 +7,7 @@ import {
   dailyCost,
   isInTrial,
   monthly,
+  nextRelevantDate,
   normalizeSubscription,
   spendingTrendForYear,
   yearly,
@@ -150,6 +151,19 @@ describe('free trial billing', () => {
     });
     expect(chargeAmountInMonth(sub, 2026, 1)).toBe(0);
     expect(chargeAmountInMonth(sub, 2026, 3)).toBe(15);
+  });
+
+  test('nextRelevantDate is the trial end while in trial, not the cycle-anchored nextBillingDate', () => {
+    // A monthly cycle anchored on startedAt rolls nextBillingDate to well before a longer trial
+    // ends — that date is still free, so it is not the next thing worth showing the user.
+    const future = new Date(Date.now() + 60 * 86400000).toISOString();
+    const sub = makeSub({ nextBillingDate: new Date(Date.now() + 5 * 86400000).toISOString(), trialEndsAt: future });
+    expect(nextRelevantDate(sub).toISOString()).toBe(future);
+  });
+
+  test('nextRelevantDate falls back to nextBillingDate once there is no trial in progress', () => {
+    const sub = makeSub({ nextBillingDate: '2026-05-01T12:00:00.000Z' });
+    expect(nextRelevantDate(sub).toISOString()).toBe('2026-05-01T12:00:00.000Z');
   });
 });
 

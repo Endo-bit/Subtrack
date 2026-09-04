@@ -4,9 +4,23 @@ import { CurrencyCode } from '@/utils/currency';
 /** Converts a native amount (in `fromCurrency`, or the app's display currency if unset) to the display currency. No-op when omitted. */
 export type ConvertFn = (amount: number, fromCurrency?: CurrencyCode) => number;
 
-/** True while `trialEndsAt` is set and in the future — billing is treated as €0 until then. */
-export function isInTrial(s: Subscription): boolean {
-  return !!s.trialEndsAt && new Date(s.trialEndsAt).getTime() > Date.now();
+/**
+ * True while `trialEndsAt` is set and in the future — billing is treated as €0 until then.
+ * Accepts `now` so callers that already have a reference time (a fixed `now` passed through a
+ * render or a test) get a deterministic answer instead of a fresh real-clock read.
+ */
+export function isInTrial(s: Subscription, now: Date = new Date()): boolean {
+  return !!s.trialEndsAt && new Date(s.trialEndsAt).getTime() > now.getTime();
+}
+
+/**
+ * The next date actually worth showing the user. `nextBillingDate` is anchored to the billing
+ * cycle from `startedAt` regardless of any trial, so for a trial longer than one cycle it can
+ * land well inside the trial — a date nothing will be charged on, and often much sooner than
+ * the trial itself ends. While in trial, the trial's end is the next thing that matters.
+ */
+export function nextRelevantDate(s: Subscription, now: Date = new Date()): Date {
+  return isInTrial(s, now) ? new Date(s.trialEndsAt!) : new Date(s.nextBillingDate);
 }
 
 export const monthly = (s: Subscription, convert?: ConvertFn) => {

@@ -283,8 +283,8 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
   // Keep the Home Screen widget in step with whatever the app is showing.
   useEffect(() => {
     if (!hasLoaded) return;
-    syncWidgetData(state.subscriptions, state.currency, locale, convert, t.monthly).catch(() => {});
-  }, [hasLoaded, state.subscriptions, state.currency, locale, convert, t.monthly]);
+    syncWidgetData(state.subscriptions, state.currency, locale, convert, t.monthly, t.freeTrialBadge).catch(() => {});
+  }, [hasLoaded, state.subscriptions, state.currency, locale, convert, t.monthly, t.freeTrialBadge]);
 
   const enableNotifications = useCallback(async (): Promise<NotificationPermissionStatus> => {
     await requestNotificationPermission();

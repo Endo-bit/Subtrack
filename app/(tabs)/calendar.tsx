@@ -12,7 +12,7 @@ import { Subscription } from '@/types/subscription';
 
 import { CurrencyCode, formatMoney } from '@/utils/currency';
 
-import { ConvertFn, monthly, subsOnBillingDay } from '@/utils/subscription';
+import { ConvertFn, monthly, nextRelevantDate, subsOnBillingDay } from '@/utils/subscription';
 
 
 
@@ -132,9 +132,9 @@ export default function CalendarScreen() {
 
       active
 
-        .filter((s) => new Date(s.nextBillingDate).getTime() < Date.now() + 30 * 86400000)
+        .filter((s) => nextRelevantDate(s).getTime() < Date.now() + 30 * 86400000)
 
-        .sort((a, b) => new Date(a.nextBillingDate).getTime() - new Date(b.nextBillingDate).getTime()),
+        .sort((a, b) => nextRelevantDate(a).getTime() - nextRelevantDate(b).getTime()),
 
     [active],
 
@@ -282,7 +282,7 @@ export default function CalendarScreen() {
 
       {upcoming.map((s) => {
 
-        const days = daysUntil(new Date(s.nextBillingDate));
+        const days = daysUntil(nextRelevantDate(s));
 
         const countdown = days <= 0 ? t.billingPresetToday : t.daysUntilTemplate.replace('{n}', String(days));
 
@@ -296,7 +296,7 @@ export default function CalendarScreen() {
 
               <Text style={[styles.rowTitle, dark && styles.light]} numberOfLines={1}>
 
-                {new Date(s.nextBillingDate).toLocaleDateString(locale)} · {s.name}
+                {nextRelevantDate(s).toLocaleDateString(locale)} · {s.name}
 
               </Text>
 

@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import { Subscription } from '@/types/subscription';
 import { CurrencyCode, formatMoney } from '@/utils/currency';
-import { ConvertFn, monthly } from '@/utils/subscription';
+import { ConvertFn, isInTrial, monthly, nextRelevantDate } from '@/utils/subscription';
 import { isWidgetBridgeAvailable, readWidgetPayload, setWidgetPayload } from '@/modules/subtrack-widget';
 
 /**
@@ -41,6 +41,8 @@ export function buildWidgetPayload(
   locale: string,
   convert: ConvertFn,
   totalLabel: string,
+  /** Short trial-badge word (e.g. "Trial") shown instead of a price while a subscription's free trial hasn't ended. */
+  trialLabel: string,
   now: Date = new Date(),
 ): WidgetPayload {
   // Must be the same figure the dashboard shows. This used to sum what actually gets charged in
@@ -53,17 +55,20 @@ export function buildWidgetPayload(
 
   const upcoming = subscriptions
     .filter((s) => !s.isCancelled)
-    .sort((a, b) => new Date(a.nextBillingDate).getTime() - new Date(b.nextBillingDate).getTime())
+    .sort((a, b) => nextRelevantDate(a, now).getTime() - nextRelevantDate(b, now).getTime())
     .slice(0, UPCOMING_COUNT)
     .map((s) => ({
       name: s.name,
       initials: s.initials,
       color: s.color,
-      dateLabel: new Date(s.nextBillingDate).toLocaleDateString(locale, {
+      dateLabel: nextRelevantDate(s, now).toLocaleDateString(locale, {
         month: 'short',
         day: 'numeric',
       }),
-      amount: formatMoney(convert(s.defaultPrice, s.currency), currency),
+      // A trial never actually charges, so the widget must not show its real plan price — that
+      // reads as a bill about to hit. Show the trial badge instead; the date above is already
+      // the trial's end, not some interim cycle date that happens to fall inside it.
+      amount: isInTrial(s, now) ? trialLabel : formatMoney(convert(s.defaultPrice, s.currency), currency),
       logo: s.logo,
     }));
 
@@ -88,9 +93,10 @@ export async function syncWidgetData(
   locale: string,
   convert: ConvertFn,
   totalLabel: string,
+  trialLabel: string,
 ): Promise<void> {
   if (Platform.OS !== 'ios') return;
-  const payload = buildWidgetPayload(subscriptions, currency, locale, convert, totalLabel);
+  const payload = buildWidgetPayload(subscriptions, currency, locale, convert, totalLabel, trialLabel);
   setWidgetPayload(WIDGET_APP_GROUP, JSON.stringify(payload));
 }
 

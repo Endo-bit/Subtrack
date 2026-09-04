@@ -35,6 +35,7 @@ import {
   dailyCost,
   isInTrial,
   monthly,
+  nextRelevantDate,
   subscriptionStartedAt,
 } from '@/utils/subscription';
 
@@ -91,9 +92,9 @@ export default function DashboardScreen() {
           ? monthly(b, convert) - monthly(a, convert)
           : sort === 'alpha'
             ? a.name.localeCompare(b.name)
-            : new Date(a.nextBillingDate).getTime() - new Date(b.nextBillingDate).getTime(),
+            : nextRelevantDate(a, today).getTime() - nextRelevantDate(b, today).getTime(),
       ),
-    [visible, sort, convert],
+    [visible, sort, convert, today],
   );
 
   const confirmDelete = (s: Subscription) => {
@@ -243,7 +244,7 @@ export default function DashboardScreen() {
       ) : (
         /* ── Subscription list — Apple store-utility-card style ── */
         sorted.map((s) => {
-          const daysUntil = calendarDaysUntil(today, new Date(s.nextBillingDate));
+          const daysUntil = calendarDaysUntil(today, nextRelevantDate(s, today));
           const isDueSoon = daysUntil < 7 && daysUntil >= 0;
           return (
             <Pressable
@@ -264,7 +265,7 @@ export default function DashboardScreen() {
                   >
                     {s.name}
                   </Text>
-                  {isInTrial(s) && (
+                  {isInTrial(s, today) && (
                     <View style={styles.trialBadge}>
                       <Text style={styles.trialBadgeText}>{t.freeTrialBadge}</Text>
                     </View>

@@ -34,22 +34,22 @@ describe('buildWidgetPayload', () => {
       startedAt: '2026-03-10T12:00:00.000Z',
       nextBillingDate: '2027-03-10T12:00:00.000Z',
     });
-    const payload = buildWidgetPayload([makeSub(), annual], 'EUR', 'en-US', noConvert, 'Monthly', now);
+    const payload = buildWidgetPayload([makeSub(), annual], 'EUR', 'en-US', noConvert, 'Monthly', 'Trial', now);
     // 10 monthly + 120/12 annual, exactly as context's monthlyTotal computes it.
     expect(payload.monthTotal).toBe('€20.00');
   });
 
   test('carries the dashboard label rather than a month name', () => {
-    const payload = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monatlich', now);
+    const payload = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monatlich', 'Test', now);
     expect(payload.totalLabel).toBe('Monatlich');
   });
 
   test('passes each service logo through so the widget can draw the real icon', () => {
     const withLogo = makeSub({ logo: 'https://example.com/icon.png' });
-    const payload = buildWidgetPayload([withLogo], 'EUR', 'en-US', noConvert, 'Monthly', now);
+    const payload = buildWidgetPayload([withLogo], 'EUR', 'en-US', noConvert, 'Monthly', 'Trial', now);
     expect(payload.upcoming[0].logo).toBe('https://example.com/icon.png');
     // Absent logos stay undefined so the widget knows to fall back to the initials chip.
-    const noLogo = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monthly', now);
+    const noLogo = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monthly', 'Trial', now);
     expect(noLogo.upcoming[0].logo).toBeUndefined();
   });
 
@@ -60,7 +60,7 @@ describe('buildWidgetPayload', () => {
       makeSub({ id: 'b-1', name: 'Middle', nextBillingDate: '2026-09-12T12:00:00.000Z' }),
       makeSub({ id: 'd-1', name: 'Last', nextBillingDate: '2026-09-30T12:00:00.000Z' }),
     ];
-    const payload = buildWidgetPayload(subs, 'EUR', 'en-US', noConvert, 'Monthly', now);
+    const payload = buildWidgetPayload(subs, 'EUR', 'en-US', noConvert, 'Monthly', 'Trial', now);
     expect(payload.upcoming.map((u) => u.name)).toEqual(['Soonest', 'Middle', 'Later']);
   });
 
@@ -71,19 +71,56 @@ describe('buildWidgetPayload', () => {
       'en-US',
       noConvert,
       'Monthly',
+      'Trial',
       now,
     );
     expect(payload.upcoming).toEqual([]);
   });
 
+  test('shows the trial badge and the trial end date instead of a real charge while in trial', () => {
+    // now = 2026-09-05; a monthly cycle anchored on startedAt would land a "next billing" date
+    // inside the trial, which is not when anything actually gets charged.
+    const trialSub = makeSub({
+      startedAt: '2026-09-01T12:00:00.000Z',
+      nextBillingDate: '2026-10-01T12:00:00.000Z',
+      trialEndsAt: '2026-12-07T12:00:00.000Z',
+    });
+    const payload = buildWidgetPayload([trialSub], 'EUR', 'en-US', noConvert, 'Monthly', 'Trial', now);
+    expect(payload.upcoming[0].amount).toBe('Trial');
+    expect(payload.upcoming[0].dateLabel).toBe('Dec 7');
+  });
+
+  test('sorts a trial subscription by its trial end date, not its in-trial billing date', () => {
+    const trialSub = makeSub({
+      id: 'trial-1',
+      name: 'InTrial',
+      startedAt: '2026-09-01T12:00:00.000Z',
+      nextBillingDate: '2026-09-10T12:00:00.000Z', // earlier than "Middle" below, but inside the trial
+      trialEndsAt: '2026-12-07T12:00:00.000Z',
+    });
+    const middle = makeSub({ id: 'b-1', name: 'Middle', nextBillingDate: '2026-09-12T12:00:00.000Z' });
+    const payload = buildWidgetPayload([trialSub, middle], 'EUR', 'en-US', noConvert, 'Monthly', 'Trial', now);
+    expect(payload.upcoming.map((u) => u.name)).toEqual(['Middle', 'InTrial']);
+  });
+
+  test('judges trial status against the injected `now`, not the real system clock', () => {
+    // Fixed reference time after this fixture's trial has already ended — the payload must
+    // read as "trial over" here even though the trial end date is in the future relative to
+    // whatever the real wall clock says when this test happens to run.
+    const later = new Date(2027, 0, 1, 12);
+    const trialSub = makeSub({ trialEndsAt: '2026-12-07T12:00:00.000Z' });
+    const payload = buildWidgetPayload([trialSub], 'EUR', 'en-US', noConvert, 'Monthly', 'Trial', later);
+    expect(payload.upcoming[0].amount).toBe('€10.00');
+  });
+
   test('pre-formats every money value, since the widget process cannot format currency itself', () => {
-    const payload = buildWidgetPayload([makeSub()], 'JPY', 'en-US', noConvert, 'Monthly', now);
+    const payload = buildWidgetPayload([makeSub()], 'JPY', 'en-US', noConvert, 'Monthly', 'Trial', now);
     expect(payload.monthTotal).toBe('¥10');
     expect(payload.upcoming[0].amount).toBe('¥10');
   });
 
   test('carries the badge colour and initials the widget draws with', () => {
-    const payload = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monthly', now);
+    const payload = buildWidgetPayload([makeSub()], 'EUR', 'en-US', noConvert, 'Monthly', 'Trial', now);
     expect(payload.upcoming[0]).toMatchObject({ initials: 'NF', color: '#FF3B30' });
   });
 });
