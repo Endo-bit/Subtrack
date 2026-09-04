@@ -9,7 +9,7 @@ import { TutorialModal } from '@/components/TutorialModal';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { theme } from '@/constants/theme';
 import { Language, VatMode } from '@/types/subscription';
-import { CURRENCIES } from '@/utils/currency';
+import { CURRENCIES, CurrencyCode } from '@/utils/currency';
 import { proPriceSummary } from '@/utils/proPricing';
 import { widgetDiagnostics } from '@/utils/widget';
 
@@ -23,6 +23,7 @@ export default function SettingsScreen() {
     isPro,
     locale,
     updateSettings,
+    changeCurrency,
     exportCsv,
     exportBackup,
     importBackup,
@@ -65,6 +66,18 @@ export default function SettingsScreen() {
       return;
     }
     action();
+  };
+
+  // Full currency choice is a Pro perk; everyone else can still toggle between the two most
+  // common ones, but picking anything further sends them to the same upsell as any other
+  // Pro-gated row instead of silently doing nothing.
+  const onCurrencyPress = async (code: CurrencyCode) => {
+    const result = await changeCurrency(code);
+    if (result === 'requires-pro') {
+      router.push({ pathname: '/paywall', params: { source: 'settings' } });
+    } else if (result === 'rates-unavailable') {
+      Alert.alert(t.currencyChangeFailedTitle, t.currencyChangeFailedBody);
+    }
   };
 
   const onRestore = () =>
@@ -136,17 +149,22 @@ export default function SettingsScreen() {
           ))}
         </SettingGroup>
 
-        {/* Currency */}
+        {/* Currency — the full list is a Pro perk; everyone else only gets EUR/USD */}
         <SettingGroup title={t.currency} dark={dark}>
-          {CURRENCIES.map((c) => (
-            <Pill
-              key={c.code}
-              label={`${c.symbol} ${c.code}`}
-              active={currency === c.code}
-              onPress={() => updateSettings({ currency: c.code })}
-              dark={dark}
-            />
-          ))}
+          {CURRENCIES.map((c) => {
+            // Don't flag the currency already in use as "Pro" — e.g. a non-Pro device that
+            // auto-detected JPY as its default shouldn't see its own active currency locked.
+            const locked = !isPro && c.code !== currency && c.code !== 'EUR' && c.code !== 'USD';
+            return (
+              <Pill
+                key={c.code}
+                label={locked ? `${c.symbol} ${c.code} · Pro` : `${c.symbol} ${c.code}`}
+                active={currency === c.code}
+                onPress={() => onCurrencyPress(c.code)}
+                dark={dark}
+              />
+            );
+          })}
         </SettingGroup>
 
         {/* Reminders */}

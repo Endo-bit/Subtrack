@@ -138,6 +138,8 @@ export type Strings = {
   prevMonth: string;
   nextMonth: string;
   currency: string;
+  currencyChangeFailedTitle: string;
+  currencyChangeFailedBody: string;
   reminderNotificationTitle: string;
   reminderNotificationBody: string;
   paywallTitle: string;
@@ -393,6 +395,8 @@ export const strings: Record<Language, Strings> = {
     prevMonth: 'Vormonat',
     nextMonth: 'Nächster Monat',
     currency: 'Währung',
+    currencyChangeFailedTitle: 'Wechselkurs nicht verfügbar',
+    currencyChangeFailedBody: 'Bitte Internetverbindung prüfen und erneut versuchen.',
     reminderNotificationTitle: '{name} – Zahlung in {days} Tagen',
     reminderNotificationBody: '{price} wird abgebucht.',
     paywallTitle: 'SubTrack Pro',
@@ -647,6 +651,8 @@ export const strings: Record<Language, Strings> = {
     prevMonth: 'Mois précédent',
     nextMonth: 'Mois suivant',
     currency: 'Devise',
+    currencyChangeFailedTitle: 'Taux de change indisponible',
+    currencyChangeFailedBody: 'Vérifiez votre connexion internet et réessayez.',
     reminderNotificationTitle: '{name} – Paiement dans {days} jours',
     reminderNotificationBody: '{price} sera prélevé.',
     paywallTitle: 'SubTrack Pro',
@@ -901,6 +907,8 @@ export const strings: Record<Language, Strings> = {
     prevMonth: 'Previous month',
     nextMonth: 'Next month',
     currency: 'Currency',
+    currencyChangeFailedTitle: 'Exchange rate unavailable',
+    currencyChangeFailedBody: 'Check your internet connection and try again.',
     reminderNotificationTitle: '{name} – payment in {days} days',
     reminderNotificationBody: '{price} will be charged.',
     paywallTitle: 'SubTrack Pro',
@@ -1156,6 +1164,8 @@ export const strings: Record<Language, Strings> = {
     prevMonth: 'Mes anterior',
     nextMonth: 'Mes siguiente',
     currency: 'Moneda',
+    currencyChangeFailedTitle: 'Tipo de cambio no disponible',
+    currencyChangeFailedBody: 'Comprueba tu conexión a internet e inténtalo de nuevo.',
     reminderNotificationTitle: '{name}: pago en {days} días',
     reminderNotificationBody: 'Se cobrará {price}.',
     paywallTitle: 'SubTrack Pro',

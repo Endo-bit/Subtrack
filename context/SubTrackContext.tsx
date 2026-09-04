@@ -401,6 +401,45 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     }
   }, []);
 
+  /**
+   * Switching the display currency used to just relabel every amount with the new symbol — a
+   * subscription typed in as €20 read as "¥20" the moment someone switched to yen, because
+   * `defaultPrice` for a subscription with no explicit `currency` is stored *in whatever the
+   * display currency was when it was added*, not in a fixed unit. Only subscriptions with their
+   * own explicit `currency` (the Pro per-subscription billing-currency feature) are genuinely
+   * billed in another currency and are left untouched here — `convert()` already retargets those
+   * correctly on every render.
+   */
+  const changeCurrency = useCallback(
+    async (code: CurrencyCode): Promise<'ok' | 'requires-pro' | 'rates-unavailable'> => {
+      if (code === state.currency) return 'ok';
+      if (!state.isPro && code !== 'EUR' && code !== 'USD') return 'requires-pro';
+
+      // "Real-time" per the user's own request — always try a fresh rate rather than settling
+      // for whatever was cached up to 12h ago, but fall back to the cache if the fetch fails so
+      // a flaky connection doesn't block the change outright.
+      const fresh = await fetchExchangeRates();
+      const rates = fresh ?? state.exchangeRates;
+      if (!rates) return 'rates-unavailable';
+
+      const from = state.currency;
+      setState((prev) => ({
+        ...prev,
+        currency: code,
+        exchangeRates: rates,
+        exchangeRatesUpdatedAt: fresh ? new Date().toISOString() : prev.exchangeRatesUpdatedAt,
+        subscriptions: prev.subscriptions.map((s) => {
+          if (s.currency) return s;
+          const converted = convertAmount(s.defaultPrice, from, code, rates);
+          const rounded = code === 'JPY' ? Math.round(converted) : Math.round(converted * 100) / 100;
+          return { ...s, defaultPrice: rounded };
+        }),
+      }));
+      return 'ok';
+    },
+    [state.currency, state.isPro, state.exchangeRates],
+  );
+
   // Rates are fetched for everyone, not just Pro: the preset catalogue is priced in EUR, so
   // without them a JPY user browsing Add sees "EUR 20" rendered as a bare 20 with a yen sign.
   // Pro still gates per-subscription FX (see `convert`); this only makes the catalogue honest.
@@ -445,6 +484,7 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     cancelSubscription,
     removeSubscription,
     updateSettings,
+    changeCurrency,
     restorePurchases,
     exportCsv,
     exportBackup,
