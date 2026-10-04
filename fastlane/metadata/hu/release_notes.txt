@@ -1,13 +1,4 @@
-Kezdőképernyő-modul
-A havi költés és a következő három terhelés egyetlen pillantással — az app megnyitása nélkül.
-
-Megbízhatóbb emlékeztetők
-Az emlékeztetők mostantól maguktól érkeznek, a háttérben: a terhelés előtt, a terhelés napján és az ingyenes próbaidőszak vége előtt. A próbaidőszak lejárta utáni napon a SubTrack megkérdezi, lemondtad-e vagy folytatod, hogy semmi ne kezdjen észrevétlenül pénzt levonni.
-
-Megosztható összegzés
-Alakítsd a havi költést és az előfizetés-ellenőrzés eredményeit megosztható kártyává — a beállításokból vagy közvetlenül egy ellenőrzés után.
-
-További fejlesztések
-- A Pro árak mostantól a saját App Store-od pénznemében jelennek meg
-- A ma terhelt előfizetések jól láthatóan meg vannak jelölve
-- Nagyobb, könnyebben eltalálható lemondás gomb az ellenőrzésben
+Hibajavítások
+- Az emlékeztetők most maguktól érkeznek, akkor is, ha hosszú ideig nem nyitod meg a SubTrackot.
+- A fizetés napján érkező értesítések nem szorítják ki a beállított előzetes emlékeztetőt.
+- Javítva: előfordulhatott, hogy az emlékeztetők hiányoztak vagy duplán érkeztek az előfizetések szerkesztése után.

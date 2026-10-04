@@ -1,13 +1,4 @@
-Widget en la pantalla de inicio
-Tu gasto del mes y tus tres próximos cobros de un vistazo, sin abrir la app.
-
-Recordatorios más confiables
-Los recordatorios ahora llegan solos, en segundo plano: antes de un cobro, el mismo día del cargo y antes de que termine una prueba gratis. Al día siguiente de terminar la prueba, SubTrack te pregunta si la cancelaste o sigues con ella, para que nada empiece a cobrarte sin que te des cuenta.
-
-Resumen para compartir
-Convierte tu gasto mensual y los resultados del chequeo en una tarjeta que puedes compartir, desde los ajustes o justo después de un chequeo.
-
-También mejorado
-- Los precios de Pro se muestran en la moneda de tu App Store
-- Las suscripciones que se cobran hoy se señalan claramente
-- Botón de cancelar más grande y fácil de tocar en el chequeo
+Correcciones
+- Los recordatorios ahora llegan solos, aunque no abras SubTrack durante mucho tiempo.
+- Los avisos del día del cobro ya no reemplazan el recordatorio previo que elegiste.
+- Corregido: podían faltar o duplicarse recordatorios tras editar suscripciones.

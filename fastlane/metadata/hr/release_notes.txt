@@ -1,13 +1,4 @@
-Widget na početnom zaslonu
-Potrošnja ovog mjeseca i sljedeća tri naplaćivanja na prvi pogled — bez otvaranja aplikacije.
-
-Pouzdaniji podsjetnici
-Podsjetnici sada stižu sami, u pozadini: prije naplate, na dan naplate i prije isteka besplatnog probnog razdoblja. Dan nakon isteka SubTrack pita jeste li otkazali ili nastavljate, kako vam ništa ne bi počelo naplaćivati neprimjetno.
-
-Sažetak za dijeljenje
-Pretvorite mjesečnu potrošnju i rezultate provjere pretplata u karticu koju možete podijeliti — iz postavki ili odmah nakon provjere.
-
-Također poboljšano
-- Pro cijene prikazuju se u valuti vašeg App Storea
-- Pretplate koje se naplaćuju danas jasno su označene na popisu
-- Veći gumb za otkazivanje koji je lakše pogoditi u provjeri
+Ispravci pogrešaka
+- Podsjetnici sada stižu sami, čak i ako dugo ne otvarate SubTrack.
+- Obavijesti na dan naplate više ne potiskuju podsjetnik unaprijed koji ste odabrali.
+- Ispravljeno: podsjetnici su mogli nedostajati ili se udvostručiti nakon uređivanja pretplata.

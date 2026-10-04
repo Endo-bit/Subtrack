@@ -1,1 +1,1 @@
-Nuevo: un widget en la pantalla de inicio con tu gasto del mes y tus tres próximos cobros, además de recordatorios que ahora te llegan solos.
+No te pierdas ningún cobro. Los recordatorios de SubTrack ahora te llegan solos, aunque abras la app poco.

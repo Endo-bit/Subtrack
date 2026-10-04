@@ -1,13 +1,4 @@
-Widget pe ecranul principal
-Cheltuielile lunii și următoarele trei plăți dintr-o privire — fără să deschizi aplicația.
-
-Mementouri mai sigure
-Mementourile ajung acum de la sine, în fundal: înainte de o plată, în ziua plății și înainte să se termine o perioadă de probă gratuită. A doua zi după încheierea probei, SubTrack te întreabă dacă ai anulat sau continui, ca nimic să nu înceapă să te coste pe nesimțite.
-
-Rezumat de partajat
-Transformă cheltuielile lunare și rezultatele verificării abonamentelor într-un card pe care îl poți partaja — din setări sau imediat după o verificare.
-
-De asemenea, îmbunătățit
-- Prețurile Pro apar acum în moneda propriului tău App Store
-- Abonamentele care se plătesc azi sunt marcate clar în listă
-- Buton de anulare mai mare și mai ușor de atins în verificare
+Remedieri de erori
+- Mementourile ajung acum singure, chiar dacă nu deschizi SubTrack mult timp.
+- Notificările din ziua plății nu mai înlocuiesc mementoul anticipat pe care l-ai ales.
+- Remediat: mementourile puteau lipsi sau se puteau dubla după editarea abonamentelor.

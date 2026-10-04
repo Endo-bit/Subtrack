@@ -1,13 +1,4 @@
-Widget no ecrã principal
-Os gastos do mês e os três próximos débitos num relance, sem abrir a app.
-
-Lembretes mais fiáveis
-Os lembretes chegam agora sozinhos, em segundo plano: antes de um débito, no próprio dia e antes de terminar um período experimental gratuito. No dia seguinte ao fim do período experimental, o SubTrack pergunta se cancelou ou continuou, para que nada comece a ser cobrado sem dar por isso.
-
-Resumo para partilhar
-Transforme os gastos mensais e os resultados da avaliação num cartão para partilhar, a partir das definições ou logo após uma avaliação.
-
-Também melhorado
-- Os preços Pro aparecem na moeda da sua App Store
-- As subscrições debitadas hoje ficam claramente assinaladas
-- Botão de cancelamento maior e mais fácil de tocar na avaliação
+Correções de erros
+- Os lembretes passam a chegar automaticamente, mesmo que não abra o SubTrack durante muito tempo.
+- Os avisos no dia da cobrança já não substituem o lembrete antecipado que escolheu.
+- Corrigido: os lembretes podiam faltar ou ficar duplicados depois de editar subscrições.

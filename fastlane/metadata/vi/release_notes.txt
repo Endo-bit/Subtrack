@@ -1,13 +1,4 @@
-Tiện ích màn hình chính
-Xem chi tiêu tháng này và ba khoản thanh toán sắp tới chỉ trong một cái nhìn — không cần mở ứng dụng.
-
-Nhắc nhở đáng tin cậy hơn
-Nhắc nhở giờ tự động đến trong nền: trước khi bị trừ tiền, đúng ngày thanh toán và trước khi bản dùng thử miễn phí kết thúc. Ngày sau khi bản dùng thử kết thúc, SubTrack sẽ hỏi bạn đã hủy hay tiếp tục, để không có khoản nào âm thầm bắt đầu tính phí.
-
-Bản tóm tắt có thể chia sẻ
-Biến chi tiêu hằng tháng và kết quả kiểm tra đăng ký thành một thẻ bạn có thể chia sẻ — từ cài đặt hoặc ngay sau khi kiểm tra.
-
-Cải tiến khác
-- Giá Pro giờ hiển thị bằng đơn vị tiền tệ App Store của bạn
-- Các đăng ký bị trừ tiền hôm nay được đánh dấu rõ ràng trong danh sách
-- Nút hủy trong phần kiểm tra to hơn và dễ chạm hơn
+Sửa lỗi
+- Nhắc nhở giờ tự đến, ngay cả khi bạn không mở SubTrack trong thời gian dài.
+- Thông báo vào ngày thanh toán không còn đẩy mất lời nhắc trước mà bạn đã chọn.
+- Đã sửa lỗi nhắc nhở bị thiếu hoặc trùng lặp sau khi chỉnh sửa đăng ký.

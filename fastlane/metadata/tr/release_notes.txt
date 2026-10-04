@@ -1,13 +1,4 @@
-Ana ekran araç takımı
-Bu ayki harcamanızı ve sıradaki üç ödemeyi uygulamayı açmadan tek bakışta görün.
-
-Daha güvenilir hatırlatmalar
-Hatırlatmalar artık arka planda kendiliğinden geliyor: ödemeden önce, ödeme günü ve ücretsiz deneme bitmeden önce. Deneme bittikten sonraki gün SubTrack iptal mi ettiğinizi yoksa devam mı ettiğinizi sorar; böylece farkında olmadan ücret alınmaya başlanmaz.
-
-Paylaşılabilir özet
-Aylık harcamanızı ve abonelik kontrolü sonuçlarınızı paylaşabileceğiniz bir karta dönüştürün — ayarlardan ya da kontrolün hemen ardından.
-
-Ayrıca iyileştirildi
-- Pro fiyatları artık kendi App Store para biriminizde görünüyor
-- Bugün ödemesi olan abonelikler listede açıkça işaretleniyor
-- Kontrol ekranındaki iptal düğmesi daha büyük ve kolay dokunulur
+Hata düzeltmeleri
+- Hatırlatmalar artık SubTrack'i uzun süre açmasanız bile kendiliğinden gelir.
+- Ödeme günü bildirimleri, seçtiğiniz önceden hatırlatmanın yerini artık almıyor.
+- Düzeltildi: abonelikleri düzenledikten sonra hatırlatmalar eksik kalabiliyor ya da çift gelebiliyordu.

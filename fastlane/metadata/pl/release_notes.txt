@@ -1,13 +1,4 @@
-Widżet na ekranie początkowym
-Wydatki z tego miesiąca i trzy najbliższe obciążenia na pierwszy rzut oka — bez otwierania aplikacji.
-
-Bardziej niezawodne przypomnienia
-Przypomnienia docierają teraz same, w tle: przed obciążeniem, w dniu obciążenia i przed końcem bezpłatnego okresu próbnego. Dzień po jego zakończeniu SubTrack zapyta, czy anulowałeś subskrypcję, czy ją kontynuujesz, żeby nic nie zaczęło pobierać opłat niezauważenie.
-
-Podsumowanie do udostępnienia
-Zamień miesięczne wydatki i wyniki przeglądu subskrypcji w kartę, którą możesz udostępnić — z ustawień lub od razu po przeglądzie.
-
-Ponadto
-- Ceny Pro pokazują się w walucie Twojego App Store
-- Subskrypcje obciążane dzisiaj są wyraźnie oznaczone na liście
-- Większy i łatwiejszy do trafienia przycisk anulowania w przeglądzie
+Poprawki błędów
+- Przypomnienia docierają teraz same, nawet jeśli długo nie otwierasz SubTrack.
+- Powiadomienia w dniu płatności nie wypierają już wybranego przypomnienia z wyprzedzeniem.
+- Naprawiono brakujące lub zduplikowane przypomnienia po edycji subskrypcji.

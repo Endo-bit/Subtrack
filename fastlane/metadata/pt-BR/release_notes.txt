@@ -1,13 +1,4 @@
-Widget na tela de início
-Seus gastos do mês e as três próximas cobranças num relance, sem abrir o app.
-
-Lembretes mais confiáveis
-Os lembretes agora chegam sozinhos, em segundo plano: antes de uma cobrança, no dia da cobrança e antes de um teste grátis terminar. No dia seguinte ao fim do teste, o SubTrack pergunta se você cancelou ou continuou, para que nada comece a ser cobrado sem você perceber.
-
-Resumo para compartilhar
-Transforme seus gastos mensais e os resultados da avaliação num cartão para compartilhar, pelos ajustes ou logo após uma avaliação.
-
-Também melhorado
-- Os preços do Pro aparecem na moeda da sua App Store
-- Assinaturas cobradas hoje ficam claramente marcadas
-- Botão de cancelar maior e mais fácil de tocar na avaliação
+Correções de bugs
+- Os lembretes agora chegam sozinhos, mesmo se você não abrir o SubTrack por muito tempo.
+- Os avisos do dia da cobrança não substituem mais o lembrete antecipado que você escolheu.
+- Corrigido: lembretes podiam faltar ou duplicar depois de editar assinaturas.

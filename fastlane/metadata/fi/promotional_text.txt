@@ -1,1 +1,1 @@
-Uutta: koti-valikon widget, jossa näet kuun menot ja kolme seuraavaa veloitusta. Muistutukset saapuvat nyt itsestään.
+Älä missaa yhtään maksua. SubTrackin muistutukset tulevat nyt itsestään, vaikka avaisit sovelluksen harvoin.

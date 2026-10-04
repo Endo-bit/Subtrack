@@ -1,13 +1,4 @@
-Widget på hjemskjermen
-Månedens forbruk og de tre neste betalingene med ett blikk — uten å åpne appen.
-
-Mer pålitelige påminnelser
-Påminnelser kommer nå av seg selv, i bakgrunnen: før en betaling, på selve betalingsdagen og før en gratis prøveperiode tar slutt. Dagen etter at prøveperioden er over, spør SubTrack om du sa opp eller fortsatte, slik at ingenting begynner å koste uten at du merker det.
-
-Oversikt du kan dele
-Gjør månedens forbruk og resultatet av abonnementssjekken om til et kort du kan dele — fra innstillingene eller rett etter en sjekk.
-
-Også forbedret
-- Pro-priser vises nå i din egen App Store-valuta
-- Abonnementer som trekkes i dag, er tydelig merket i listen
-- Større og lettere å treffe oppsigelsesknapp i sjekken
+Feilrettinger
+- Påminnelser kommer nå av seg selv, selv om du ikke åpner SubTrack på lenge.
+- Varsler på betalingsdagen erstatter ikke lenger påminnelsen på forhånd du valgte.
+- Rettet: påminnelser kunne mangle eller komme to ganger etter redigering av abonnementer.

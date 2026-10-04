@@ -1,13 +1,4 @@
-Widget Skrin Utama
-Perbelanjaan bulan ini dan tiga caj berikutnya dalam satu pandangan — tanpa membuka apl.
-
-Peringatan yang lebih boleh dipercayai
-Peringatan kini sampai dengan sendirinya di latar belakang: sebelum caj, pada hari caj itu sendiri, dan sebelum percubaan percuma tamat. Sehari selepas percubaan tamat, SubTrack bertanya sama ada anda membatalkan atau meneruskan, supaya tiada apa-apa mula mengecaj anda tanpa disedari.
-
-Ringkasan untuk dikongsi
-Tukarkan perbelanjaan bulanan dan keputusan pemeriksaan langganan anda menjadi kad yang boleh dikongsi — daripada tetapan atau sebaik selepas pemeriksaan.
-
-Turut ditambah baik
-- Harga Pro kini dipaparkan dalam mata wang App Store anda sendiri
-- Langganan yang dicaj hari ini ditanda dengan jelas dalam senarai
-- Butang batal dalam pemeriksaan lebih besar dan lebih mudah disentuh
+Pembetulan pepijat
+- Peringatan kini datang sendiri, walaupun anda tidak membuka SubTrack untuk tempoh yang lama.
+- Pemberitahuan pada hari bil tidak lagi menolak peringatan awal yang anda pilih.
+- Dibetulkan: peringatan boleh hilang atau berganda selepas langganan diedit.

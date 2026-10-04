@@ -1,13 +1,4 @@
-Widget na plochu
-Útrata za tento mesiac a tri najbližšie platby na jeden pohľad — bez otvárania aplikácie.
-
-Spoľahlivejšie pripomienky
-Pripomienky teraz chodia samy, na pozadí: pred platbou, v deň stiahnutia aj pred koncom bezplatnej skúšobnej verzie. Deň po jej skončení sa SubTrack spýta, či si zrušil, alebo pokračuješ, aby ti nič nezačalo strhávať peniaze nepozorovane.
-
-Zhrnutie na zdieľanie
-Premeň mesačnú útratu a výsledky kontroly predplatných na kartu, ktorú môžeš zdieľať — z nastavení alebo hneď po kontrole.
-
-Ďalej vylepšené
-- Ceny Pro sa zobrazujú v mene tvojho App Store
-- Predplatné sťahované dnes je v zozname jasne označené
-- Väčšie a ľahšie trafiteľné tlačidlo zrušenia v kontrole
+Opravy chýb
+- Pripomienky teraz chodia samy, aj keď SubTrack dlho neotvoríte.
+- Upozornenia v deň platby už nevytláčajú zvolenú pripomienku vopred.
+- Opravené: po úprave predplatných mohli pripomienky chýbať alebo sa zdvojovať.

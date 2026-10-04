@@ -1,1 +1,1 @@
-Nouveau : un widget d'écran d'accueil avec vos dépenses du mois et vos trois prochains prélèvements - et des rappels qui arrivent tout seuls.
+Ne ratez plus aucun prélèvement. Les rappels de SubTrack vous parviennent désormais tout seuls, même si vous ouvrez rarement l'app.

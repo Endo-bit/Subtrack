@@ -1,13 +1,4 @@
-Home-Bildschirm-Widget
-Ausgaben dieses Monats und die nächsten drei Abbuchungen auf einen Blick - ohne die App zu öffnen.
-
-Zuverlässigere Erinnerungen
-Erinnerungen kommen jetzt von selbst, im Hintergrund: vor einer Zahlung, am Abbuchungstag und bevor eine kostenlose Testphase endet. Am Tag nach dem Ende der Testphase fragt SubTrack, ob du gekündigt hast oder weitermachst - damit nichts unbemerkt kostenpflichtig wird.
-
-Übersicht teilen
-Mach aus deinen Monatsausgaben und den Ergebnissen des Abo-Checks eine Karte zum Teilen - über die Einstellungen oder direkt nach einem Check.
-
-Außerdem verbessert
-- Pro-Preise erscheinen jetzt in deiner eigenen App Store-Währung
-- Heute fällige Abos sind in der Übersicht klar markiert
-- Größerer, leichter treffbarer Kündigen-Button im Abo-Check
+Fehlerbehebungen
+- Erinnerungen kommen jetzt auch dann von selbst, wenn du SubTrack lange nicht öffnest.
+- Hinweise am Abbuchungstag verdrängen nicht mehr die Erinnerung vor der Zahlung, die du eingestellt hast.
+- Behoben: Erinnerungen konnten nach dem Bearbeiten von Abos fehlen oder doppelt erscheinen.

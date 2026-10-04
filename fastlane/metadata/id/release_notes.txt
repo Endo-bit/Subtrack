@@ -1,13 +1,4 @@
-Widget Layar Utama
-Pengeluaran bulan ini dan tiga tagihan berikutnya dalam sekali lihat — tanpa membuka aplikasi.
-
-Pengingat yang lebih andal
-Pengingat kini datang sendiri di latar belakang: sebelum tagihan, pada hari penagihan, dan sebelum masa uji coba gratis berakhir. Sehari setelah uji coba berakhir, SubTrack menanyakan apakah kamu membatalkan atau melanjutkan, agar tidak ada yang mulai menagihmu tanpa kamu sadari.
-
-Ringkasan yang bisa dibagikan
-Ubah pengeluaran bulanan dan hasil pemeriksaan langgananmu menjadi kartu yang bisa dibagikan — dari pengaturan atau langsung setelah pemeriksaan.
-
-Peningkatan lain
-- Harga Pro kini tampil dalam mata uang App Store-mu sendiri
-- Langganan yang ditagih hari ini ditandai jelas di daftar
-- Tombol batal di pemeriksaan lebih besar dan lebih mudah disentuh
+Perbaikan bug
+- Pengingat kini datang otomatis, meski Anda tidak membuka SubTrack dalam waktu lama.
+- Pemberitahuan di hari tagihan tidak lagi menggeser pengingat sebelumnya yang Anda pilih.
+- Diperbaiki: pengingat bisa hilang atau terduplikasi setelah mengedit langganan.

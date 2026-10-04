@@ -1,1 +1,1 @@
-Novetat: un widget a la pantalla d'inici amb la despesa d'aquest mes i els tres propers càrrecs. Els recordatoris ara arriben sols.
+No perdis cap cobrament. Els recordatoris de SubTrack ara arriben sols, encara que obris poc l'app.

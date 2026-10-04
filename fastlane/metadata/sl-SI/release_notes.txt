@@ -1,13 +1,4 @@
-Pripomoček na začetnem zaslonu
-Poraba tega meseca in naslednje tri bremenitve na prvi pogled — brez odpiranja aplikacije.
-
-Zanesljivejši opomniki
-Opomniki zdaj prihajajo sami, v ozadju: pred bremenitvijo, na dan bremenitve in pred koncem brezplačnega preizkusa. Dan po koncu preizkusa SubTrack vpraša, ali ste odpovedali ali nadaljujete, da se vam nič ne začne zaračunavati neopazno.
-
-Povzetek za deljenje
-Porabo v mesecu in rezultate pregleda naročnin spremenite v kartico, ki jo lahko delite — iz nastavitev ali takoj po pregledu.
-
-Prav tako izboljšano
-- Cene Pro so prikazane v valuti vašega App Storea
-- Naročnine z današnjo bremenitvijo so na seznamu jasno označene
-- Večji gumb za odpoved, ki ga je v pregledu lažje zadeti
+Popravki napak
+- Opomniki zdaj prihajajo sami, tudi če SubTrack dolgo ne odprete.
+- Obvestila na dan zaračunavanja ne nadomeščajo več izbranega opomnika vnaprej.
+- Odpravljeno: po urejanju naročnin so lahko opomniki manjkali ali se podvajali.

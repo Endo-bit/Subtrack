@@ -1,1 +1,1 @@
-Nou: un widget pe ecranul principal cu cheltuielile lunii și următoarele trei plăți. Mementourile ajung acum de la sine.
+Nu mai rata nicio plată. Mementourile SubTrack ajung acum singure, chiar dacă deschizi aplicația rar.
