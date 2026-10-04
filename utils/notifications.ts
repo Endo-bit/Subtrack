@@ -102,9 +102,28 @@ async function saveCatchUpLedger(ledger: Set<string>): Promise<void> {
  * free trial — a warning, a last-day alert, and the next-day "did you cancel?" follow-up.
  *
  * These are OS-scheduled one-shot triggers, so they keep arriving whether or not the app is
- * ever reopened; this call only ever refreshes the queue.
+ * ever reopened; this call only ever refreshes the queue. It runs both from the app and from the
+ * background refresh task (utils/backgroundReminders.ts), so calls are queued: two interleaved
+ * cancel-then-schedule passes would leave duplicates behind.
  */
-export async function scheduleAllReminders(
+let pending: Promise<void> = Promise.resolve();
+
+export function scheduleAllReminders(
+  subscriptions: Subscription[],
+  reminderDays: 0 | 1 | 3 | 7,
+  t: Strings,
+  locale: string,
+  displayCurrency: CurrencyCode,
+  convert: ConvertFn,
+): Promise<void> {
+  const run = pending.then(() =>
+    rebuildReminders(subscriptions, reminderDays, t, locale, displayCurrency, convert),
+  );
+  pending = run.catch(() => {});
+  return run;
+}
+
+async function rebuildReminders(
   subscriptions: Subscription[],
   reminderDays: 0 | 1 | 3 | 7,
   t: Strings,
@@ -132,7 +151,7 @@ export async function scheduleAllReminders(
     displayCurrency,
     convert,
   );
-  const { scheduled, catchUpKeys } = selectReminders(candidates, ledger, now);
+  const { scheduled, catchUpKeys, refillNoticeAt } = selectReminders(candidates, ledger, now);
 
   for (const c of scheduled) {
     const isCatchUp = c.date.getTime() <= now;
@@ -142,6 +161,19 @@ export async function scheduleAllReminders(
         type: Notifications.SchedulableTriggerInputTypes.DATE,
         // Overdue slots can't be scheduled in the past — fire them in a few seconds instead.
         date: isCatchUp ? new Date(now + 15000) : c.date,
+        channelId: REMINDER_CHANNEL_ID,
+      },
+    });
+  }
+
+  // The queue couldn't hold every upcoming reminder. If the background refresh hasn't topped it
+  // up by the time it runs dry, ask the user to open the app rather than going silent.
+  if (refillNoticeAt) {
+    await Notifications.scheduleNotificationAsync({
+      content: { title: t.reminderRefillTitle, body: t.reminderRefillBody },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        date: refillNoticeAt,
         channelId: REMINDER_CHANNEL_ID,
       },
     });

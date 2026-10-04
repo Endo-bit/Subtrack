@@ -17,6 +17,7 @@ import {
   requestNotificationPermission,
   scheduleAllReminders,
 } from '@/utils/notifications';
+import { STATE_STORAGE_KEY as storageKey } from '@/utils/persistedState';
 import { syncWidgetData } from '@/utils/widget';
 import {
   addEntitlementListener,
@@ -27,9 +28,14 @@ import {
   ProPriceOption,
   restorePurchases as restorePurchasesRC,
 } from '@/utils/purchases';
-import { computeCancelEffectiveMonth, ConvertFn, monthly, normalizeSubscription } from '@/utils/subscription';
+import {
+  computeCancelEffectiveMonth,
+  ConvertFn,
+  makeConvert,
+  monthly,
+  normalizeSubscription,
+} from '@/utils/subscription';
 
-const storageKey = 'subtrack-eu-state-v2';
 
 /**
  * A catalogue price ready to display. `exact` is false when it came from converting the euro
@@ -134,13 +140,8 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
   const t = strings[state.language];
   const locale = localeForLanguage(state.language);
 
-  // Real-time FX conversion is a Pro perk; everyone else sees native amounts unconverted.
-  const convert: ConvertFn = useCallback(
-    (amount: number, fromCurrency?: CurrencyCode) => {
-      const from = fromCurrency ?? state.currency;
-      if (!state.isPro || from === state.currency) return amount;
-      return convertAmount(amount, from, state.currency, state.exchangeRates);
-    },
+  const convert: ConvertFn = useMemo(
+    () => makeConvert(state.isPro, state.currency, state.exchangeRates),
     [state.isPro, state.currency, state.exchangeRates],
   );
 

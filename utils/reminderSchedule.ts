@@ -44,6 +44,16 @@ export const MAX_TOTAL_NOTIFICATIONS = 58;
 /** A slot missed by less than this still fires (shortly) rather than being dropped for the cycle. */
 export const CATCH_UP_WINDOW_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * When the budget can't hold everything, billing-day alerts only compete for slots inside this
+ * window. Beyond it the budget goes to the days-before reminder the user actually configured
+ * (and trial warnings), which stretches how far ahead those keep arriving with the app closed.
+ */
+export const DAY_OF_PRIORITY_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
+
+/** How long after the last scheduled reminder the "open SubTrack to keep them coming" notice fires. */
+export const REFILL_NOTICE_DELAY_MS = 60 * 60 * 1000;
+
 function atHour(d: Date, hour: number): Date {
   const x = new Date(d);
   x.setHours(hour, 0, 0, 0);
@@ -162,12 +172,20 @@ export type ReminderSelection = {
   scheduled: ReminderCandidate[];
   /** Overdue slots being fired now, to be added to the persisted ledger so they don't repeat. */
   catchUpKeys: string[];
+  /**
+   * Set when reminders had to be left out for lack of budget: the moment the queue runs dry.
+   * A notice scheduled then asks the user to open the app, so a full queue never ends in
+   * silence. Null when everything fit.
+   */
+  refillNoticeAt: Date | null;
 };
 
 /**
  * Picks the reminders to actually schedule. Candidates from every subscription are pooled and
  * sorted by fire date before the cap is applied, so the notification budget goes to whatever
  * happens next rather than being exhausted by whichever subscription came first in the list.
+ * When they don't all fit, billing-day alerts past DAY_OF_PRIORITY_WINDOW_MS give way to the
+ * days-before reminders, and one slot is kept back for the refill notice.
  *
  * `firedCatchUpKeys` is the persisted record of overdue slots already fired once. Without it,
  * every rebuild — and a rebuild happens each time any subscription is touched — would re-fire
@@ -178,7 +196,7 @@ export function selectReminders(
   firedCatchUpKeys: ReadonlySet<string>,
   now: number = Date.now(),
 ): ReminderSelection {
-  const dueLater: ReminderCandidate[] = [];
+  let dueLater: ReminderCandidate[] = [];
   const catchUp: ReminderCandidate[] = [];
 
   for (const c of candidates) {
@@ -192,15 +210,29 @@ export function selectReminders(
     }
   }
 
+  const byDate = (a: ReminderCandidate, b: ReminderCandidate) => a.date.getTime() - b.date.getTime();
+  catchUp.sort(byDate);
+  dueLater.sort(byDate);
+
+  const overBudget = catchUp.length + dueLater.length > MAX_TOTAL_NOTIFICATIONS;
+  if (overBudget) {
+    dueLater = dueLater.filter(
+      (c) => c.data.kind !== 'dayOf' || c.date.getTime() - now <= DAY_OF_PRIORITY_WINDOW_MS,
+    );
+  }
   // Catch-ups first (already overdue), then everything else soonest-first.
-  const scheduled = [
-    ...catchUp.sort((a, b) => a.date.getTime() - b.date.getTime()),
-    ...dueLater.sort((a, b) => a.date.getTime() - b.date.getTime()),
-  ].slice(0, MAX_TOTAL_NOTIFICATIONS);
+  // Over budget, something is always left out, so one slot goes to the refill notice.
+  const scheduled = [...catchUp, ...dueLater].slice(
+    0,
+    overBudget ? MAX_TOTAL_NOTIFICATIONS - 1 : MAX_TOTAL_NOTIFICATIONS,
+  );
+  const last = scheduled[scheduled.length - 1];
 
   return {
     scheduled,
     catchUpKeys: scheduled.filter((c) => c.date.getTime() <= now).map((c) => c.key),
+    refillNoticeAt:
+      overBudget && last ? new Date(Math.max(last.date.getTime(), now) + REFILL_NOTICE_DELAY_MS) : null,
   };
 }
 

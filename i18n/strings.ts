@@ -142,6 +142,8 @@ export type Strings = {
   currencyChangeFailedBody: string;
   reminderNotificationTitle: string;
   reminderNotificationBody: string;
+  reminderRefillTitle: string;
+  reminderRefillBody: string;
   paywallTitle: string;
   paywallRestore: string;
   paywallRestoreSuccess: string;
@@ -399,6 +401,8 @@ export const strings: Record<Language, Strings> = {
     currencyChangeFailedBody: 'Bitte Internetverbindung prüfen und erneut versuchen.',
     reminderNotificationTitle: '{name} – Zahlung in {days} Tagen',
     reminderNotificationBody: '{price} wird abgebucht.',
+    reminderRefillTitle: 'Erinnerungen weiter erhalten',
+    reminderRefillBody: 'Öffne SubTrack, um deine nächsten Zahlungserinnerungen zu planen.',
     paywallTitle: 'SubTrack Pro',
     paywallRestore: 'Käufe wiederherstellen',
     paywallRestoreSuccess: 'Käufe wiederhergestellt',
@@ -655,6 +659,8 @@ export const strings: Record<Language, Strings> = {
     currencyChangeFailedBody: 'Vérifiez votre connexion internet et réessayez.',
     reminderNotificationTitle: '{name} – Paiement dans {days} jours',
     reminderNotificationBody: '{price} sera prélevé.',
+    reminderRefillTitle: 'Continuez à recevoir vos rappels',
+    reminderRefillBody: 'Ouvrez SubTrack pour programmer vos prochains rappels de paiement.',
     paywallTitle: 'SubTrack Pro',
     paywallRestore: 'Restaurer les achats',
     paywallRestoreSuccess: 'Achats restaurés',
@@ -911,6 +917,8 @@ export const strings: Record<Language, Strings> = {
     currencyChangeFailedBody: 'Check your internet connection and try again.',
     reminderNotificationTitle: '{name} – payment in {days} days',
     reminderNotificationBody: '{price} will be charged.',
+    reminderRefillTitle: 'Keep your reminders coming',
+    reminderRefillBody: 'Open SubTrack to schedule your next payment reminders.',
     paywallTitle: 'SubTrack Pro',
     paywallRestore: 'Restore purchases',
     paywallRestoreSuccess: 'Purchases restored',
@@ -1168,6 +1176,8 @@ export const strings: Record<Language, Strings> = {
     currencyChangeFailedBody: 'Comprueba tu conexión a internet e inténtalo de nuevo.',
     reminderNotificationTitle: '{name}: pago en {days} días',
     reminderNotificationBody: 'Se cobrará {price}.',
+    reminderRefillTitle: 'Sigue recibiendo tus recordatorios',
+    reminderRefillBody: 'Abre SubTrack para programar tus próximos avisos de pago.',
     paywallTitle: 'SubTrack Pro',
     paywallRestore: 'Restaurar compras',
     paywallRestoreSuccess: 'Compras restauradas',

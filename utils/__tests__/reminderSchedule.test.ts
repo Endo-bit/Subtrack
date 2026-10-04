@@ -2,7 +2,9 @@ import { strings } from '../../i18n/strings';
 import { Subscription } from '../../types/subscription';
 import {
   buildReminderCandidates,
+  DAY_OF_PRIORITY_WINDOW_MS,
   MAX_TOTAL_NOTIFICATIONS,
+  ReminderKind,
   parseReminderPayload,
   selectReminders,
 } from '../reminderSchedule';
@@ -114,25 +116,63 @@ describe('buildReminderCandidates', () => {
 describe('selectReminders', () => {
   const now = new Date('2026-09-01T12:00:00.000Z').getTime();
 
-  const candidate = (key: string, offsetMs: number) => ({
+  const DAY = 86400000;
+  const candidate = (key: string, offsetMs: number, kind: ReminderKind = 'dayOf') => ({
     key,
     date: new Date(now + offsetMs),
     title: key,
     body: key,
-    data: { kind: 'dayOf' as const, subscriptionId: key },
+    data: { kind, subscriptionId: key },
   });
 
   test('spends the notification budget on the soonest reminders across all subscriptions', () => {
     // Far-future entries first, so a naive implementation that keeps input order would fail.
     const candidates = [
       ...Array.from({ length: MAX_TOTAL_NOTIFICATIONS }, (_, i) =>
-        candidate(`far-${i}`, (i + 100) * 86400000),
+        candidate(`far-${i}`, (i + 100) * DAY, 'before'),
       ),
-      candidate('soon', 86400000),
+      candidate('soon', DAY),
     ];
     const { scheduled } = selectReminders(candidates, new Set(), now);
-    expect(scheduled).toHaveLength(MAX_TOTAL_NOTIFICATIONS);
+    // One slot is held back for the refill notice.
+    expect(scheduled).toHaveLength(MAX_TOTAL_NOTIFICATIONS - 1);
     expect(scheduled[0].key).toBe('soon');
+  });
+
+  test('schedules everything and no refill notice when it all fits', () => {
+    const candidates = Array.from({ length: MAX_TOTAL_NOTIFICATIONS }, (_, i) =>
+      candidate(`c-${i}`, (i + 1) * 30 * DAY),
+    );
+    const { scheduled, refillNoticeAt } = selectReminders(candidates, new Set(), now);
+    expect(scheduled).toHaveLength(MAX_TOTAL_NOTIFICATIONS);
+    expect(refillNoticeAt).toBeNull();
+  });
+
+  test('over budget, far-off billing-day alerts give way to the days-before reminders', () => {
+    // Interleaved before/dayOf pairs, as many subscriptions produce them.
+    const candidates = Array.from({ length: MAX_TOTAL_NOTIFICATIONS }, (_, i) => [
+      candidate(`before-${i}`, (i + 1) * 2 * DAY, 'before'),
+      candidate(`dayOf-${i}`, (i + 1) * 2 * DAY + 3 * DAY, 'dayOf'),
+    ]).flat();
+    const { scheduled } = selectReminders(candidates, new Set(), now);
+    const dayOf = scheduled.filter((c) => c.data.kind === 'dayOf');
+    expect(dayOf.length).toBeGreaterThan(0);
+    expect(dayOf.every((c) => c.date.getTime() - now <= DAY_OF_PRIORITY_WINDOW_MS)).toBe(true);
+    // The days-before reminders reach well past the billing-day window.
+    const lastBefore = scheduled.filter((c) => c.data.kind === 'before').pop()!;
+    expect(lastBefore.date.getTime() - now).toBeGreaterThan(90 * DAY);
+  });
+
+  test('when reminders are left out, the refill notice fires after the last scheduled one', () => {
+    const candidates = Array.from({ length: MAX_TOTAL_NOTIFICATIONS + 10 }, (_, i) =>
+      candidate(`b-${i}`, (i + 1) * DAY, 'before'),
+    );
+    const { scheduled, refillNoticeAt } = selectReminders(candidates, new Set(), now);
+    const last = scheduled[scheduled.length - 1];
+    expect(refillNoticeAt).not.toBeNull();
+    expect(refillNoticeAt!.getTime()).toBeGreaterThan(last.date.getTime());
+    // ...and before the first reminder that didn't make it in.
+    expect(refillNoticeAt!.getTime()).toBeLessThan(now + (scheduled.length + 1) * DAY);
   });
 
   test('fires a slot missed earlier today instead of dropping it', () => {

@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SubTrackProvider } from '@/context/SubTrackContext';
 import { posthog, track } from '@/utils/analytics';
+import { ensureReminderRefreshRegistered } from '@/utils/backgroundReminders';
 import { installGlobalErrorHandler } from '@/utils/crashReporting';
 import { parseReminderPayload } from '@/utils/notifications';
 
@@ -30,6 +31,7 @@ export default function RootLayout() {
   useEffect(() => {
     SplashScreen.hideAsync().catch(() => {});
     track.appOpened();
+    ensureReminderRefreshRegistered().catch(() => {});
   }, []);
 
   // Tapping a billing reminder should land on the subscription it's about, not just the

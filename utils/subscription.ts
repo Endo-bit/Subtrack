@@ -1,8 +1,21 @@
 import { BillingCycle, Subscription } from '@/types/subscription';
-import { CurrencyCode } from '@/utils/currency';
+import { convertAmount, CurrencyCode, ExchangeRates } from '@/utils/currency';
 
 /** Converts a native amount (in `fromCurrency`, or the app's display currency if unset) to the display currency. No-op when omitted. */
 export type ConvertFn = (amount: number, fromCurrency?: CurrencyCode) => number;
+
+/** Real-time FX conversion is a Pro perk; everyone else sees native amounts unconverted. */
+export function makeConvert(
+  isPro: boolean,
+  displayCurrency: CurrencyCode,
+  rates: ExchangeRates | null,
+): ConvertFn {
+  return (amount, fromCurrency) => {
+    const from = fromCurrency ?? displayCurrency;
+    if (!isPro || from === displayCurrency) return amount;
+    return convertAmount(amount, from, displayCurrency, rates);
+  };
+}
 
 /**
  * True while `trialEndsAt` is set and in the future — billing is treated as €0 until then.
