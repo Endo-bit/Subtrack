@@ -292,4 +292,8 @@ export const da: Strings = {
   altLibrary: "Gratis med lånerkort",
   altFamily: "Del et familieabonnement",
   altCheaper: "Billigere abonnement",
+  appearance: "Udseende",
+  themeSystem: "Automatisk",
+  themeLight: "Lyst",
+  themeDark: "Mørkt",
 };

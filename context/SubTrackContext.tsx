@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import createContextHook from '@nkzw/create-context-hook';
 import * as Haptics from 'expo-haptics';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { AppState } from 'react-native';
+import { Appearance, AppState } from 'react-native';
 import { PRESET_SERVICES } from '@/data/services';
 import { localeForLanguage, strings } from '@/i18n/strings';
 import { Language, LANGUAGES, LocalPrices, Subscription, VatMode } from '@/types/subscription';
@@ -71,6 +71,9 @@ const storage = {
   },
 };
 
+/** 'system' follows the phone; the others pin the app regardless of the phone's setting. */
+export type ThemeMode = 'system' | 'light' | 'dark';
+
 type State = {
   subscriptions: Subscription[];
   language: Language;
@@ -96,6 +99,7 @@ type State = {
   hourlyWage: number | null;
   /** PriceHike keys the user chose to ignore; a later, different price shows again. */
   dismissedPriceHikes: string[];
+  themeMode: ThemeMode;
 };
 
 const migrateState = (raw: State): State => ({
@@ -114,6 +118,7 @@ const migrateState = (raw: State): State => ({
   widgetTipDismissed: raw.widgetTipDismissed ?? false,
   hourlyWage: raw.hourlyWage ?? null,
   dismissedPriceHikes: raw.dismissedPriceHikes ?? [],
+  themeMode: raw.themeMode ?? 'system',
   subscriptions: raw.subscriptions.map(normalizeSubscription),
 });
 
@@ -158,6 +163,7 @@ const initialState: State = {
   widgetTipDismissed: false,
   hourlyWage: null,
   dismissedPriceHikes: [],
+  themeMode: 'system',
 };
 
 export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
@@ -209,6 +215,13 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     if (!hasLoaded) return;
     storage.setItem(storageKey, JSON.stringify(state)).catch(() => {});
   }, [state, hasLoaded]);
+
+  // Every screen reads useColorScheme(), so overriding the app-level scheme here re-themes the
+  // whole app at once; null hands control back to the phone's own setting.
+  useEffect(() => {
+    if (!hasLoaded) return;
+    Appearance.setColorScheme(state.themeMode === 'system' ? null : state.themeMode);
+  }, [hasLoaded, state.themeMode]);
 
   const monthlyTotal = useMemo(
     () =>

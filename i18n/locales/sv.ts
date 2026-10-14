@@ -292,4 +292,8 @@ export const sv: Strings = {
   altLibrary: "Gratis med lånekort",
   altFamily: "Dela ett familjeabonnemang",
   altCheaper: "Billigare abonnemang",
+  appearance: "Utseende",
+  themeSystem: "Automatiskt",
+  themeLight: "Ljust",
+  themeDark: "Mörkt",
 };

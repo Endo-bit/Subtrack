@@ -292,4 +292,8 @@ export const zhHans: Strings = {
   altLibrary: "凭借书证免费",
   altFamily: "合买家庭方案",
   altCheaper: "更便宜的方案",
+  appearance: "外观",
+  themeSystem: "自动",
+  themeLight: "浅色",
+  themeDark: "深色",
 };

@@ -292,4 +292,8 @@ export const ko: Strings = {
   altLibrary: "도서관 회원증으로 무료",
   altFamily: "가족 요금제 나눠 쓰기",
   altCheaper: "더 저렴한 요금제",
+  appearance: "화면 모드",
+  themeSystem: "자동",
+  themeLight: "라이트",
+  themeDark: "다크",
 };

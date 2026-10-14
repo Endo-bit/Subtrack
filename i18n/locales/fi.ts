@@ -292,4 +292,8 @@ export const fi: Strings = {
   altLibrary: "Ilmainen kirjastokortilla",
   altFamily: "Jaa perhetilaus",
   altCheaper: "Halvempi tilaus",
+  appearance: "Ulkoasu",
+  themeSystem: "Automaattinen",
+  themeLight: "Vaalea",
+  themeDark: "Tumma",
 };

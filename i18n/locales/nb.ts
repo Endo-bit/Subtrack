@@ -292,4 +292,8 @@ export const nb: Strings = {
   altLibrary: "Gratis med lånekort",
   altFamily: "Del et familieabonnement",
   altCheaper: "Billigere abonnement",
+  appearance: "Utseende",
+  themeSystem: "Automatisk",
+  themeLight: "Lyst",
+  themeDark: "Mørkt",
 };

@@ -292,4 +292,8 @@ export const nl: Strings = {
   altLibrary: "Gratis met een bibliotheekpas",
   altFamily: "Deel een gezinsabonnement",
   altCheaper: "Goedkoper abonnement",
+  appearance: "Weergave",
+  themeSystem: "Automatisch",
+  themeLight: "Licht",
+  themeDark: "Donker",
 };

@@ -292,4 +292,8 @@ export const pt: Strings = {
   altLibrary: "Grátis com cartão da biblioteca",
   altFamily: "Divida um plano família",
   altCheaper: "Plano mais barato",
+  appearance: "Aparência",
+  themeSystem: "Automático",
+  themeLight: "Claro",
+  themeDark: "Escuro",
 };

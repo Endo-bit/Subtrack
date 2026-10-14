@@ -292,4 +292,8 @@ export const zhHant: Strings = {
   altLibrary: "憑借書證免費",
   altFamily: "合購家庭方案",
   altCheaper: "更便宜的方案",
+  appearance: "外觀",
+  themeSystem: "自動",
+  themeLight: "淺色",
+  themeDark: "深色",
 };

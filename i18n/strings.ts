@@ -308,6 +308,10 @@ export type Strings = {
   altLibrary: string;
   altFamily: string;
   altCheaper: string;
+  appearance: string;
+  themeSystem: string;
+  themeLight: string;
+  themeDark: string;
 };
 
 export const strings: Record<Language, Strings> = {
@@ -607,6 +611,10 @@ export const strings: Record<Language, Strings> = {
     altLibrary: 'Gratis mit Bibliotheksausweis',
     altFamily: 'Familien-Abo teilen',
     altCheaper: 'Günstigerer Tarif',
+    appearance: 'Erscheinungsbild',
+    themeSystem: 'Automatisch',
+    themeLight: 'Hell',
+    themeDark: 'Dunkel',
   },
   fr: {
     overview: 'Accueil',
@@ -904,6 +912,10 @@ export const strings: Record<Language, Strings> = {
     altLibrary: 'Gratuit avec une carte de bibliothèque',
     altFamily: 'Partager une offre famille',
     altCheaper: 'Offre moins chère',
+    appearance: 'Apparence',
+    themeSystem: 'Automatique',
+    themeLight: 'Clair',
+    themeDark: 'Sombre',
   },
   en: {
     overview: 'Overview',
@@ -1201,6 +1213,10 @@ export const strings: Record<Language, Strings> = {
     altLibrary: 'Free with a library card',
     altFamily: 'Share a family plan',
     altCheaper: 'Cheaper plan',
+    appearance: 'Appearance',
+    themeSystem: 'Automatic',
+    themeLight: 'Light',
+    themeDark: 'Dark',
   },
   es: {
     overview: 'Resumen',
@@ -1499,6 +1515,10 @@ export const strings: Record<Language, Strings> = {
     altLibrary: 'Gratis con el carné de biblioteca',
     altFamily: 'Comparte un plan familiar',
     altCheaper: 'Plan más barato',
+    appearance: 'Apariencia',
+    themeSystem: 'Automático',
+    themeLight: 'Claro',
+    themeDark: 'Oscuro',
   },
   it,
   pt,

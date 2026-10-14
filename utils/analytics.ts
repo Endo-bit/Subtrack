@@ -111,4 +111,6 @@ export const track = {
 
   alternativeTapped: (service: string, alternative: string) =>
     posthog.capture('alternative_tapped', { service, alternative }),
+
+  themeChanged: (mode: string) => posthog.capture('theme_changed', { mode }),
 };

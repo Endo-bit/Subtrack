@@ -292,4 +292,8 @@ export const ru: Strings = {
   altLibrary: "Бесплатно с читательским билетом",
   altFamily: "Семейный тариф на нескольких",
   altCheaper: "Тариф дешевле",
+  appearance: "Оформление",
+  themeSystem: "Автоматически",
+  themeLight: "Светлое",
+  themeDark: "Тёмное",
 };

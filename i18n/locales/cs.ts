@@ -292,4 +292,8 @@ export const cs: Strings = {
   altLibrary: "Zdarma s průkazem knihovny",
   altFamily: "Sdílejte rodinný tarif",
   altCheaper: "Levnější tarif",
+  appearance: "Vzhled",
+  themeSystem: "Automaticky",
+  themeLight: "Světlý",
+  themeDark: "Tmavý",
 };

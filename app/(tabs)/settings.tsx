@@ -11,6 +11,7 @@ import { theme } from '@/constants/theme';
 import { LANGUAGE_NAMES } from '@/i18n/strings';
 import { Language, LANGUAGES, VatMode } from '@/types/subscription';
 import { CURRENCIES, CurrencyCode } from '@/utils/currency';
+import { track } from '@/utils/analytics';
 import { proPriceSummary } from '@/utils/proPricing';
 import { widgetDiagnostics } from '@/utils/widget';
 
@@ -32,6 +33,7 @@ export default function SettingsScreen() {
     notificationPermission,
     enableNotifications,
     proPriceOptions,
+    themeMode,
   } = useSubTrack();
   const dark = useColorScheme() === 'dark';
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -132,6 +134,28 @@ export default function SettingsScreen() {
               label={LANGUAGE_NAMES[l]}
               active={language === l}
               onPress={() => updateSettings({ language: l })}
+              dark={dark}
+            />
+          ))}
+        </SettingGroup>
+
+        {/* Appearance — follow the phone, or pin light/dark */}
+        <SettingGroup title={t.appearance} dark={dark}>
+          {(
+            [
+              ['system', t.themeSystem],
+              ['light', t.themeLight],
+              ['dark', t.themeDark],
+            ] as const
+          ).map(([mode, label]) => (
+            <Pill
+              key={mode}
+              label={label}
+              active={themeMode === mode}
+              onPress={() => {
+                track.themeChanged(mode);
+                updateSettings({ themeMode: mode });
+              }}
               dark={dark}
             />
           ))}

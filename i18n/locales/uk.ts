@@ -292,4 +292,8 @@ export const uk: Strings = {
   altLibrary: "Безкоштовно з читацьким квитком",
   altFamily: "Сімейний тариф на кількох",
   altCheaper: "Дешевший тариф",
+  appearance: "Вигляд",
+  themeSystem: "Автоматично",
+  themeLight: "Світлий",
+  themeDark: "Темний",
 };

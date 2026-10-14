@@ -292,4 +292,8 @@ export const ja: Strings = {
   altLibrary: "図書館カードで無料",
   altFamily: "ファミリープランを分け合う",
   altCheaper: "安いプラン",
+  appearance: "外観",
+  themeSystem: "自動",
+  themeLight: "ライト",
+  themeDark: "ダーク",
 };

@@ -292,4 +292,8 @@ export const tr: Strings = {
   altLibrary: "Kütüphane kartıyla ücretsiz",
   altFamily: "Aile planını paylaş",
   altCheaper: "Daha ucuz plan",
+  appearance: "Görünüm",
+  themeSystem: "Otomatik",
+  themeLight: "Açık",
+  themeDark: "Koyu",
 };
