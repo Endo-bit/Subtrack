@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { ExternalLink, Globe, Trash2 } from 'lucide-react-native';
+import { ExternalLink, Globe, Sparkles, Trash2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   Alert,
@@ -15,10 +15,12 @@ import {
 import { BillingDatePicker } from '@/components/BillingDatePicker';
 import { ServiceLogo } from '@/components/ServiceLogo';
 import { useSubTrack } from '@/context/SubTrackContext';
+import { AlternativeKind, ALTERNATIVES } from '@/data/alternatives';
 import { theme } from '@/constants/theme';
 import { track } from '@/utils/analytics';
 import { BillingCycle, ServicePlan } from '@/types/subscription';
 import { formatMoney } from '@/utils/currency';
+import { lifetimeSpend } from '@/utils/insights';
 import {
   computeNextBillingFromStart,
   dailyCost,
@@ -39,6 +41,8 @@ export default function SubscriptionDetailScreen() {
     updateSubscription,
     removeSubscription,
     convert,
+    priceHikes,
+    applyPriceHike,
   } = useSubTrack();
   const dark = useColorScheme() === 'dark';
   const sub = subscriptions.find((s) => s.id === id);
@@ -104,6 +108,16 @@ export default function SubscriptionDetailScreen() {
 
   const started = subscriptionStartedAt(sub);
   const money = (n: number) => formatMoney(n, currency);
+  const paidSoFar = lifetimeSpend(sub, convert);
+  const hike = priceHikes.find((h) => h.subscription.id === sub.id);
+  const alternatives = ALTERNATIVES[presetId] ?? [];
+  const altLabel: Record<AlternativeKind, string> = {
+    free: t.altFree,
+    freeTier: t.altFreeTier,
+    library: t.altLibrary,
+    family: t.altFamily,
+    cheaper: t.altCheaper,
+  };
 
   return (
     <ScrollView style={[styles.screen, dark && styles.dark]} contentContainerStyle={styles.content}>
@@ -135,6 +149,7 @@ export default function SubscriptionDetailScreen() {
         <Row label={t.dailyCostLabel} value={`${money(dailyCost(sub, convert))}${t.perDay}`} dark={dark} />
         <Row label={t.monthlyCostLabel} value={money(monthly(sub, convert))} dark={dark} />
         <Row label={t.yearlyCostLabel} value={money(yearly(sub, convert))} dark={dark} />
+        {paidSoFar > 0 && <Row label={t.lifetimeLabel} value={money(paidSoFar)} dark={dark} />}
         {sub.planChangedAt && (
           <Row
             label={t.planEffectiveDate}
@@ -143,6 +158,20 @@ export default function SubscriptionDetailScreen() {
           />
         )}
       </View>
+
+      {hike && (
+        <Pressable style={styles.hikeBox} onPress={() => applyPriceHike(hike)} accessibilityRole="button">
+          <Text style={styles.hikeText}>
+            {t.hikeCardTitle} ·{' '}
+            {t.hikeLine
+              .replace('{name}', sub.name)
+              .replace('{old}', money(hike.trackedPrice))
+              .replace('{new}', money(hike.currentPrice))
+              .replace('{pct}', String(hike.pct))}
+          </Text>
+          <Text style={styles.hikeCta}>{t.hikeUpdate} →</Text>
+        </Pressable>
+      )}
 
       {sub.note && (
         <View style={[styles.card, dark && styles.cardDark]}>
@@ -162,6 +191,25 @@ export default function SubscriptionDetailScreen() {
           <Text style={styles.cancelNoticeText}>
             {t.cancelPageUnavailable.replaceAll('{name}', sub.name)}
           </Text>
+        </View>
+      )}
+
+      {alternatives.length > 0 && (
+        <View style={[styles.card, dark && styles.cardDark]}>
+          <View style={styles.altHeader}>
+            <Sparkles size={16} color={theme.accent} />
+            <Text style={[styles.sectionTitle, dark && styles.textLight]}>{t.alternativesTitle}</Text>
+          </View>
+          {alternatives.map((alt) => (
+            <Pressable
+              key={alt.name}
+              style={styles.altRow}
+              onPress={() => track.alternativeTapped(sub.name, alt.name)}
+            >
+              <Text style={[styles.altName, dark && styles.textLight]}>{alt.name}</Text>
+              <Text style={styles.altKind}>{altLabel[alt.kind]}</Text>
+            </Pressable>
+          ))}
         </View>
       )}
 
@@ -231,6 +279,20 @@ function Row({ label, value, dark }: { label: string; value: string; dark: boole
 }
 
 const styles = StyleSheet.create({
+  hikeBox: {
+    borderRadius: 16,
+    padding: 14,
+    gap: 4,
+    backgroundColor: 'rgba(214,69,69,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(214,69,69,0.3)',
+  },
+  hikeText: { fontSize: 14, fontWeight: '600', color: '#B83232' },
+  hikeCta: { fontSize: 13, fontWeight: '700', color: theme.accent },
+  altHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 },
+  altRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, gap: 12 },
+  altName: { fontSize: 15, fontWeight: '600', color: theme.text, flexShrink: 1 },
+  altKind: { fontSize: 12, fontWeight: '700', color: theme.success },
   screen: { flex: 1, backgroundColor: theme.cream },
   dark: { backgroundColor: theme.creamDark },
   content: { padding: 20, paddingTop: 56, paddingBottom: 48, gap: 14 },

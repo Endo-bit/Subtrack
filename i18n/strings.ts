@@ -269,6 +269,29 @@ export type Strings = {
   popularServicesTitle: string;
   widgetTipTitle: string;
   widgetTipDismiss: string;
+  receiptButton: string;
+  receiptHeading: string;
+  receiptPerMonth: string;
+  receiptPerYear: string;
+  receiptLifetime: string;
+  receiptWorkHours: string;
+  receiptWageLabel: string;
+  receiptShare: string;
+  receiptFooter: string;
+  lifetimeLabel: string;
+  hikeCardTitle: string;
+  hikeLine: string;
+  hikeUpdate: string;
+  hikeIgnore: string;
+  rotationTitle: string;
+  rotationBody: string;
+  rotationHowTo: string;
+  alternativesTitle: string;
+  altFree: string;
+  altFreeTier: string;
+  altLibrary: string;
+  altFamily: string;
+  altCheaper: string;
 };
 
 export const strings: Record<Language, Strings> = {
@@ -545,6 +568,29 @@ export const strings: Record<Language, Strings> = {
     popularServicesTitle: 'Beliebt – zum Hinzufügen tippen',
     widgetTipTitle: 'Nächste Abbuchung sehen, ohne die App zu öffnen',
     widgetTipDismiss: 'Verstanden',
+    receiptButton: 'Mein Kassenbon',
+    receiptHeading: 'ABO-KASSENBON',
+    receiptPerMonth: 'Pro Monat',
+    receiptPerYear: 'Pro Jahr',
+    receiptLifetime: 'Bisher bezahlt',
+    receiptWorkHours: 'Das sind {hours} Arbeitsstunden im Jahr',
+    receiptWageLabel: 'Dein Stundenlohn (optional, bleibt auf diesem Handy)',
+    receiptShare: 'Kassenbon teilen',
+    receiptFooter: 'Und wie sieht deiner aus? · SubTrack',
+    lifetimeLabel: 'Bisher bezahlt (ca.)',
+    hikeCardTitle: 'Preis erhöht',
+    hikeLine: '{name}: {old} → {new} (+{pct} %)',
+    hikeUpdate: 'Aktualisieren',
+    hikeIgnore: 'Ignorieren',
+    rotationTitle: 'Rotieren statt stapeln',
+    rotationBody: 'Behalte immer nur einen Streamingdienst und wechsle jeden Monat – spare rund {amount} im Jahr.',
+    rotationHowTo: 'Vor der Verlängerung kündigen, dann den nächsten starten. SubTrack erinnert dich.',
+    alternativesTitle: 'Günstiger oder kostenlos',
+    altFree: 'Kostenlos',
+    altFreeTier: 'Gratis-Tarif',
+    altLibrary: 'Gratis mit Bibliotheksausweis',
+    altFamily: 'Familien-Abo teilen',
+    altCheaper: 'Günstigerer Tarif',
   },
   fr: {
     overview: 'Accueil',
@@ -819,6 +865,29 @@ export const strings: Record<Language, Strings> = {
     popularServicesTitle: 'Populaires — touchez pour ajouter',
     widgetTipTitle: 'Votre prochain prélèvement, sans ouvrir l’app',
     widgetTipDismiss: 'Compris',
+    receiptButton: 'Mon ticket',
+    receiptHeading: 'TICKET D’ABONNEMENTS',
+    receiptPerMonth: 'Par mois',
+    receiptPerYear: 'Par an',
+    receiptLifetime: 'Payé jusqu’ici',
+    receiptWorkHours: 'Soit {hours} heures de travail par an',
+    receiptWageLabel: 'Votre salaire horaire (facultatif, reste sur ce téléphone)',
+    receiptShare: 'Partager mon ticket',
+    receiptFooter: 'Et le vôtre ? · SubTrack',
+    lifetimeLabel: 'Payé jusqu’ici (env.)',
+    hikeCardTitle: 'Hausse de prix',
+    hikeLine: '{name} : {old} → {new} (+{pct} %)',
+    hikeUpdate: 'Mettre à jour',
+    hikeIgnore: 'Ignorer',
+    rotationTitle: 'Alternez au lieu de cumuler',
+    rotationBody: 'Gardez un seul service de streaming à la fois et changez chaque mois — environ {amount} d’économies par an.',
+    rotationHowTo: 'Résiliez avant le renouvellement, puis passez au suivant. SubTrack vous le rappelle.',
+    alternativesTitle: 'Options moins chères ou gratuites',
+    altFree: 'Gratuit',
+    altFreeTier: 'Offre gratuite',
+    altLibrary: 'Gratuit avec une carte de bibliothèque',
+    altFamily: 'Partager une offre famille',
+    altCheaper: 'Offre moins chère',
   },
   en: {
     overview: 'Overview',
@@ -1093,6 +1162,29 @@ export const strings: Record<Language, Strings> = {
     popularServicesTitle: 'Popular — tap to add',
     widgetTipTitle: 'See your next charge without opening the app',
     widgetTipDismiss: 'Got it',
+    receiptButton: 'My receipt',
+    receiptHeading: 'SUBSCRIPTION RECEIPT',
+    receiptPerMonth: 'Per month',
+    receiptPerYear: 'Per year',
+    receiptLifetime: 'Paid so far',
+    receiptWorkHours: 'That’s {hours} hours of work a year',
+    receiptWageLabel: 'Your hourly pay (optional, stays on this phone)',
+    receiptShare: 'Share my receipt',
+    receiptFooter: 'What’s on yours? · SubTrack',
+    lifetimeLabel: 'Paid so far (approx.)',
+    hikeCardTitle: 'Price went up',
+    hikeLine: '{name}: {old} → {new} (+{pct}%)',
+    hikeUpdate: 'Update',
+    hikeIgnore: 'Ignore',
+    rotationTitle: 'Rotate, don’t stack',
+    rotationBody: 'Keep one streaming service at a time and switch every month — save about {amount} a year.',
+    rotationHowTo: 'Cancel before it renews, then start the next one. SubTrack reminds you.',
+    alternativesTitle: 'Cheaper or free options',
+    altFree: 'Free',
+    altFreeTier: 'Free plan',
+    altLibrary: 'Free with a library card',
+    altFamily: 'Share a family plan',
+    altCheaper: 'Cheaper plan',
   },
   es: {
     overview: 'Resumen',
@@ -1368,6 +1460,29 @@ export const strings: Record<Language, Strings> = {
     popularServicesTitle: 'Populares: toca para añadir',
     widgetTipTitle: 'Tu próximo cobro sin abrir la app',
     widgetTipDismiss: 'Entendido',
+    receiptButton: 'Mi ticket',
+    receiptHeading: 'TICKET DE SUSCRIPCIONES',
+    receiptPerMonth: 'Al mes',
+    receiptPerYear: 'Al año',
+    receiptLifetime: 'Pagado hasta ahora',
+    receiptWorkHours: 'Son {hours} horas de trabajo al año',
+    receiptWageLabel: 'Tu sueldo por hora (opcional, se queda en este móvil)',
+    receiptShare: 'Compartir mi ticket',
+    receiptFooter: '¿Y el tuyo? · SubTrack',
+    lifetimeLabel: 'Pagado hasta ahora (aprox.)',
+    hikeCardTitle: 'Ha subido de precio',
+    hikeLine: '{name}: {old} → {new} (+{pct} %)',
+    hikeUpdate: 'Actualizar',
+    hikeIgnore: 'Ignorar',
+    rotationTitle: 'Rota, no acumules',
+    rotationBody: 'Ten solo un servicio de streaming a la vez y cambia cada mes: ahorrarás unos {amount} al año.',
+    rotationHowTo: 'Cancela antes de que se renueve y empieza el siguiente. SubTrack te lo recuerda.',
+    alternativesTitle: 'Opciones más baratas o gratis',
+    altFree: 'Gratis',
+    altFreeTier: 'Plan gratuito',
+    altLibrary: 'Gratis con el carné de biblioteca',
+    altFamily: 'Comparte un plan familiar',
+    altCheaper: 'Plan más barato',
   },
 };
 

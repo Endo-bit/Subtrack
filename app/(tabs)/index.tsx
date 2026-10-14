@@ -6,7 +6,7 @@
  */
 import { LinearGradient } from 'expo-linear-gradient';
 import { Href, router } from 'expo-router';
-import { BellOff, LayoutGrid, PackageOpen, Trash2, X } from 'lucide-react-native';
+import { BellOff, LayoutGrid, PackageOpen, ReceiptText, Trash2, X } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import {
   Alert,
@@ -23,8 +23,10 @@ import {
 import { MomDelta } from '@/components/MomDelta';
 import { NotificationPrimer } from '@/components/NotificationPrimer';
 import { PopularServicesGrid } from '@/components/PopularServicesGrid';
+import { PriceHikeCard } from '@/components/PriceHikeCard';
 import { QuickStart } from '@/components/QuickStart';
 import { RatePrompt } from '@/components/RatePrompt';
+import { ReceiptSheet } from '@/components/ReceiptSheet';
 import { ServiceLogo } from '@/components/ServiceLogo';
 import { TrialFollowUpModal } from '@/components/TrialFollowUpModal';
 import { TutorialSlides } from '@/components/TutorialSlides';
@@ -77,6 +79,7 @@ export default function DashboardScreen() {
   } = useSubTrack();
   // The tour ends on picking a first subscription rather than on an empty dashboard.
   const [onboardingStep, setOnboardingStep] = useState<'slides' | 'quickStart'>('slides');
+  const [receiptOpen, setReceiptOpen] = useState(false);
   const money = (n: number) => formatMoney(n, currency);
   const [sort, setSort] = useState<SortMode>('date');
   const [cycleFilter, setCycleFilter] = useState<CycleFilter>('all');
@@ -231,7 +234,20 @@ export default function DashboardScreen() {
             </Text>
           </View>
         </View>
+
+        {active.length > 0 && (
+          <Pressable
+            onPress={() => setReceiptOpen(true)}
+            style={styles.receiptBtn}
+            accessibilityRole="button"
+          >
+            <ReceiptText size={15} color="#FFFFFF" />
+            <Text style={styles.receiptBtnText}>{t.receiptButton}</Text>
+          </Pressable>
+        )}
       </LinearGradient>
+
+      <PriceHikeCard />
 
       {/* ── Reminders off — the one setting retention depends on ── */}
       {showRemindersOff && (
@@ -409,6 +425,7 @@ export default function DashboardScreen() {
 
       <TrialFollowUpModal />
       <NotificationPrimer />
+      <ReceiptSheet visible={receiptOpen} onClose={() => setReceiptOpen(false)} />
       <RatePrompt />
     </ScrollView>
   );
@@ -513,6 +530,19 @@ const styles = StyleSheet.create({
     height: 28,
     backgroundColor: 'rgba(255,255,255,0.15)',
   },
+
+  receiptBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: 6,
+    marginTop: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 9999,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+  },
+  receiptBtnText: { ...t_.captionBold, color: '#FFFFFF' },
 
   // Sort — Apple configurator-option-chip
   sortRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 20 },

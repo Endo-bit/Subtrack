@@ -11,6 +11,7 @@ import { convertAmount, CurrencyCode, detectDeviceCurrency, ExchangeRates } from
 import { exportBackupFile, exportCsvFile, pickBackupFile } from '@/utils/dataExport';
 import { DiagnosisRecord } from '@/utils/diagnosis';
 import { fetchExchangeRates, ratesAreStale } from '@/utils/exchangeRates';
+import { detectPriceHikes, PriceHike } from '@/utils/insights';
 import {
   getNotificationPermissionStatus,
   NotificationPermissionStatus,
@@ -91,6 +92,10 @@ type State = {
   notificationPrimerLastAskedAt: string | null;
   /** The Home Screen widget tip on the dashboard was dismissed. */
   widgetTipDismissed: boolean;
+  /** Optional, for the receipt's "hours of work" line. Never leaves the device. */
+  hourlyWage: number | null;
+  /** PriceHike keys the user chose to ignore; a later, different price shows again. */
+  dismissedPriceHikes: string[];
 };
 
 const migrateState = (raw: State): State => ({
@@ -107,6 +112,8 @@ const migrateState = (raw: State): State => ({
   notificationPrimerAskCount: raw.notificationPrimerAskCount ?? 0,
   notificationPrimerLastAskedAt: raw.notificationPrimerLastAskedAt ?? null,
   widgetTipDismissed: raw.widgetTipDismissed ?? false,
+  hourlyWage: raw.hourlyWage ?? null,
+  dismissedPriceHikes: raw.dismissedPriceHikes ?? [],
   subscriptions: raw.subscriptions.map(normalizeSubscription),
 });
 
@@ -147,6 +154,8 @@ const initialState: State = {
   notificationPrimerAskCount: 0,
   notificationPrimerLastAskedAt: null,
   widgetTipDismissed: false,
+  hourlyWage: null,
+  dismissedPriceHikes: [],
 };
 
 export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
@@ -538,6 +547,30 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     [state.currency, state.exchangeRates],
   );
 
+  const priceHikes = useMemo(
+    () =>
+      detectPriceHikes(state.subscriptions, PRESET_SERVICES, catalogPrice, state.currency, state.dismissedPriceHikes),
+    [state.subscriptions, catalogPrice, state.currency, state.dismissedPriceHikes],
+  );
+
+  /** Moves a subscription onto its plan's new price from today on. */
+  const applyPriceHike = useCallback((hike: PriceHike) => {
+    track.priceHikeAnswered(hike.subscription.name, hike.pct, true);
+    setState((prev) => ({
+      ...prev,
+      subscriptions: prev.subscriptions.map((s) =>
+        s.id === hike.subscription.id
+          ? normalizeSubscription({ ...s, defaultPrice: hike.currentPrice, planChangedAt: new Date().toISOString() })
+          : s,
+      ),
+    }));
+  }, []);
+
+  const dismissPriceHike = useCallback((hike: PriceHike) => {
+    track.priceHikeAnswered(hike.subscription.name, hike.pct, false);
+    setState((prev) => ({ ...prev, dismissedPriceHikes: [...prev.dismissedPriceHikes, hike.key] }));
+  }, []);
+
   return {
     ...state,
     t,
@@ -564,6 +597,9 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     shouldShowNotificationPrimer,
     answerNotificationPrimer,
     dismissWidgetTip,
+    priceHikes,
+    applyPriceHike,
+    dismissPriceHike,
     proPriceOptions,
     pendingTrialFollowUp,
     answerTrialFollowUp,

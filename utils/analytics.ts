@@ -96,4 +96,19 @@ export const track = {
   notificationOpened: (kind: string) => posthog.capture('notification_opened', { kind }),
 
   widgetTipDismissed: () => posthog.capture('widget_tip_dismissed'),
+
+  // ── Growth features ──
+  receiptOpened: () => posthog.capture('receipt_opened'),
+
+  receiptShared: (props: { subscriptions: number; yearly: number; hasWage: boolean }) =>
+    posthog.capture('receipt_shared', props),
+
+  priceHikeAnswered: (name: string, pct: number, updated: boolean) =>
+    posthog.capture('price_hike_answered', { name, pct, updated }),
+
+  rotationViewed: (members: number, yearlySaving: number) =>
+    posthog.capture('rotation_viewed', { members, yearlySaving: Math.round(yearlySaving) }),
+
+  alternativeTapped: (service: string, alternative: string) =>
+    posthog.capture('alternative_tapped', { service, alternative }),
 };

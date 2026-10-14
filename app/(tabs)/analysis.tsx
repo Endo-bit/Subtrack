@@ -13,6 +13,7 @@ import { MomDelta } from '@/components/MomDelta';
 import { MonthBreakdownSheet } from '@/components/MonthBreakdownSheet';
 
 import { SavingsCard } from '@/components/SavingsCard';
+import { RotationCard } from '@/components/RotationCard';
 
 import { ServiceLogo } from '@/components/ServiceLogo';
 
@@ -204,6 +205,8 @@ export default function AnalysisScreen() {
       </Pressable>
 
       <SavingsCard cancelledSubs={cancelledSubs} currency={currency} convert={convert} t={t} />
+
+      <RotationCard />
 
       <View style={styles.proSection}>
 
