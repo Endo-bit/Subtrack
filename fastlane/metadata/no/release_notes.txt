@@ -1,3 +1,14 @@
+Nytt i denne versjonen
+- Abonnementskvittering: del en kvittering med alle abonnementene dine, årssummen, hva du har betalt så langt og hvor mange arbeidstimer det koster.
+- Prisøkningsradar: SubTrack merker når en tjeneste øker prisen, og oppdaterer summene dine med ett trykk.
+- Roter i stedet for å stable: se hvor mye du sparer med én strømmetjeneste om gangen.
+- Billigere eller gratis alternativer til tjenestene dine: gratisnivåer, familieabonnementer og bibliotektjenester.
+- Hvert abonnement viser nå hva det har kostet deg så langt.
+- En kort månedsoversikt den 1.: månedens sum og hva som fornyes.
+- Legg til de første abonnementene dine med ett trykk.
+- Velg lyst, mørkt eller automatisk utseende i Innstillinger.
+- SubTrack snakker nå 20 språk.
+
 Feilrettinger
 - Påminnelser kommer nå av seg selv, selv om du ikke åpner SubTrack på lenge.
 - Varsler på betalingsdagen erstatter ikke lenger påminnelsen på forhånd du valgte.

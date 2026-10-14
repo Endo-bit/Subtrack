@@ -1,3 +1,14 @@
+Novità di questa versione
+- Scontrino degli abbonamenti: condividi uno scontrino con tutti i tuoi abbonamenti, il totale annuo, quanto hai già pagato e le ore di lavoro che costano.
+- Radar dei rincari: SubTrack si accorge quando un servizio aumenta il prezzo e aggiorna i totali con un tocco.
+- Alterna, non accumulare: scopri quanto risparmieresti con un solo servizio di streaming alla volta.
+- Alternative più economiche o gratuite ai servizi che paghi: piani gratuiti, piani famiglia e servizi delle biblioteche.
+- Ogni abbonamento ora mostra quanto ti è costato finora.
+- Un breve riepilogo mensile il giorno 1: il totale del mese e cosa si rinnova.
+- Aggiungi i tuoi primi abbonamenti con un tocco.
+- Scegli l'aspetto chiaro, scuro o automatico nelle Impostazioni.
+- SubTrack ora parla 20 lingue.
+
 Correzioni di bug
 - I promemoria ora arrivano da soli, anche se non apri SubTrack per molto tempo.
 - Gli avvisi del giorno di addebito non sostituiscono più il promemoria anticipato che hai scelto.

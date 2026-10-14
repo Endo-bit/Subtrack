@@ -1,3 +1,14 @@
+Nou în această versiune
+- Bonul abonamentelor: distribuie un bon cu toate abonamentele, totalul anual, cât ai plătit până acum și câte ore de muncă te costă.
+- Radarul scumpirilor: SubTrack observă când un serviciu se scumpește și îți actualizează totalurile cu o atingere.
+- Rotește, nu aduna: vezi cât ai economisi cu un singur serviciu de streaming o dată.
+- Variante mai ieftine sau gratuite pentru serviciile tale: planuri gratuite, planuri de familie și servicii ale bibliotecilor.
+- Fiecare abonament arată acum cât te-a costat până acum.
+- Un scurt rezumat lunar pe 1: totalul lunii și ce se reînnoiește.
+- Adaugă primele abonamente cu o atingere.
+- Alege aspectul luminos, întunecat sau automat din Setări.
+- SubTrack vorbește acum 20 de limbi.
+
 Remedieri de erori
 - Mementourile ajung acum singure, chiar dacă nu deschizi SubTrack mult timp.
 - Notificările din ziua plății nu mai înlocuiesc mementoul anticipat pe care l-ai ales.

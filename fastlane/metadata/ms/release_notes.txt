@@ -1,3 +1,14 @@
+Baharu dalam versi ini
+- Resit langganan: kongsi resit semua langganan anda, jumlah setahun, yang telah dibayar setakat ini dan berapa jam kerja kosnya.
+- Radar kenaikan harga: SubTrack mengesan apabila perkhidmatan menaikkan harga dan mengemas kini jumlah dengan satu ketikan.
+- Bergilir, jangan bertimbun: lihat berapa yang anda jimat dengan satu perkhidmatan penstriman pada satu masa.
+- Pilihan lebih murah atau percuma untuk perkhidmatan anda: pelan percuma, pelan keluarga dan perkhidmatan perpustakaan.
+- Setiap langganan kini menunjukkan kosnya kepada anda setakat ini.
+- Ringkasan bulanan ringkas pada 1hb: jumlah bulan ini dan yang akan diperbaharui.
+- Tambah langganan pertama anda dengan satu ketikan.
+- Pilih penampilan cerah, gelap atau automatik dalam Tetapan.
+- SubTrack kini tersedia dalam 20 bahasa.
+
 Pembetulan pepijat
 - Peringatan kini datang sendiri, walaupun anda tidak membuka SubTrack untuk tempoh yang lama.
 - Pemberitahuan pada hari bil tidak lagi menolak peringatan awal yang anda pilih.

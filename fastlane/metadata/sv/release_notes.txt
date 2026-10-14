@@ -1,3 +1,14 @@
+Nytt i den här versionen
+- Abonnemangskvitto: dela ett kvitto med alla dina abonnemang, årssumman, vad du betalat hittills och hur många arbetstimmar det kostar.
+- Prishöjningsradar: SubTrack märker när en tjänst höjer priset och uppdaterar dina summor med ett tryck.
+- Rotera i stället för att stapla: se hur mycket du sparar med en streamingtjänst i taget.
+- Billigare eller gratis alternativ till dina tjänster: gratisnivåer, familjeabonnemang och bibliotekstjänster.
+- Varje abonnemang visar nu vad det har kostat dig hittills.
+- En kort månadssammanfattning den 1:a: månadens summa och vad som förnyas.
+- Lägg till dina första abonnemang med ett tryck.
+- Välj ljust, mörkt eller automatiskt utseende i Inställningar.
+- SubTrack finns nu på 20 språk.
+
 Felrättningar
 - Påminnelser kommer nu av sig själva, även om du inte öppnar SubTrack på länge.
 - Aviseringar på betalningsdagen ersätter inte längre den förhandspåminnelse du valt.

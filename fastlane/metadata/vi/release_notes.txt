@@ -1,3 +1,14 @@
+Có gì mới trong phiên bản này
+- Hóa đơn gói đăng ký: chia sẻ hóa đơn gồm mọi gói đăng ký, tổng mỗi năm, số tiền đã trả đến nay và tương đương bao nhiêu giờ làm việc.
+- Radar tăng giá: SubTrack phát hiện khi dịch vụ tăng giá và cập nhật tổng tiền chỉ với một chạm.
+- Luân phiên, đừng chồng chất: xem bạn tiết kiệm bao nhiêu khi chỉ giữ một dịch vụ xem phim mỗi lần.
+- Lựa chọn rẻ hơn hoặc miễn phí cho dịch vụ bạn trả tiền: gói miễn phí, gói gia đình và dịch vụ thư viện.
+- Mỗi gói đăng ký giờ hiển thị số tiền bạn đã trả đến nay.
+- Bản tóm tắt ngắn vào ngày 1 hằng tháng: tổng tháng này và các gói sắp gia hạn.
+- Thêm các gói đăng ký đầu tiên chỉ với một chạm.
+- Chọn giao diện sáng, tối hoặc tự động trong Cài đặt.
+- SubTrack nay hỗ trợ 20 ngôn ngữ.
+
 Sửa lỗi
 - Nhắc nhở giờ tự đến, ngay cả khi bạn không mở SubTrack trong thời gian dài.
 - Thông báo vào ngày thanh toán không còn đẩy mất lời nhắc trước mà bạn đã chọn.

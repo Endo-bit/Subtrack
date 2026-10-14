@@ -1,3 +1,14 @@
+Nieuw in deze versie
+- Abonnementen-bonnetje: deel een bonnetje met al je abonnementen, het jaartotaal, wat je al betaald hebt en hoeveel uur werk dat kost.
+- Prijsverhogingsradar: SubTrack ziet wanneer een dienst duurder wordt en werkt je totalen met één tik bij.
+- Rouleren, niet stapelen: zie hoeveel je bespaart met één streamingdienst tegelijk.
+- Goedkopere of gratis opties voor je diensten: gratis abonnementen, gezinsabonnementen en bibliotheekdiensten.
+- Elk abonnement laat nu zien wat het je tot nu toe heeft gekost.
+- Een kort maandoverzicht op de 1e: het totaal van de maand en wat er verlengd wordt.
+- Voeg je eerste abonnementen met één tik toe.
+- Kies in Instellingen voor licht, donker of automatisch.
+- SubTrack spreekt nu 20 talen.
+
 Bugfixes
 - Herinneringen komen nu vanzelf binnen, ook als je SubTrack lange tijd niet opent.
 - Meldingen op de incassodag vervangen niet langer de herinnering vooraf die je hebt gekozen.

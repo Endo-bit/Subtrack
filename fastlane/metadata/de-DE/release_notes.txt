@@ -1,3 +1,14 @@
+Neu in dieser Version
+- Abo-Kassenbon: Teile einen Bon mit all deinen Abos, der Jahressumme, dem bisher Bezahlten und den Arbeitsstunden, die das kostet.
+- Preiserhöhungs-Radar: SubTrack erkennt, wenn ein Dienst teurer wird, und aktualisiert deine Summen mit einem Tipp.
+- Rotieren statt stapeln: Sieh, wie viel du sparst, wenn du immer nur einen Streamingdienst hast.
+- Günstigere oder kostenlose Alternativen zu deinen Diensten: Gratis-Tarife, Familien-Abos und Bibliotheksangebote.
+- Jedes Abo zeigt jetzt, was es dich bisher gekostet hat.
+- Eine kurze Monatsübersicht am 1.: die Summe des Monats und was sich verlängert.
+- Füge deine ersten Abos mit einem Tipp hinzu.
+- Wähle in den Einstellungen hell, dunkel oder automatisch.
+- SubTrack spricht jetzt 20 Sprachen.
+
 Fehlerbehebungen
 - Erinnerungen kommen jetzt auch dann von selbst, wenn du SubTrack lange nicht öffnest.
 - Hinweise am Abbuchungstag verdrängen nicht mehr die Erinnerung vor der Zahlung, die du eingestellt hast.

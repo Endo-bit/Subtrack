@@ -1,3 +1,14 @@
+Novidades desta versão
+- Talão de subscrições: partilhe um talão com todas as suas subscrições, o total anual, o que já pagou e as horas de trabalho que custam.
+- Radar de aumentos: o SubTrack deteta quando um serviço sobe de preço e atualiza os seus totais com um toque.
+- Alternar, não acumular: veja quanto pouparia com um só serviço de streaming de cada vez.
+- Opções mais baratas ou gratuitas para os serviços que paga: planos gratuitos, planos familiares e serviços de bibliotecas.
+- Cada subscrição mostra agora quanto já lhe custou.
+- Um breve resumo mensal no dia 1: o total do mês e o que vai renovar.
+- Adicione as suas primeiras subscrições com um toque.
+- Escolha o aspeto claro, escuro ou automático nas Definições.
+- O SubTrack fala agora 20 idiomas.
+
 Correções de erros
 - Os lembretes passam a chegar automaticamente, mesmo que não abra o SubTrack durante muito tempo.
 - Os avisos no dia da cobrança já não substituem o lembrete antecipado que escolheu.

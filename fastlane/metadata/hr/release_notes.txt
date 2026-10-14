@@ -1,3 +1,14 @@
+Novo u ovoj verziji
+- Račun pretplata: podijelite račun sa svim pretplatama, godišnjim iznosom, onim što ste dosad platili i koliko sati rada to košta.
+- Radar poskupljenja: SubTrack primijeti kad usluga poskupi i jednim dodirom ažurira vaše iznose.
+- Izmjenjujte, ne gomilajte: pogledajte koliko biste uštedjeli s jednom streaming uslugom odjednom.
+- Jeftinije ili besplatne opcije za vaše usluge: besplatni paketi, obiteljski paketi i usluge knjižnica.
+- Svaka pretplata sada pokazuje koliko vas je dosad koštala.
+- Kratki mjesečni sažetak 1. u mjesecu: ukupan iznos mjeseca i što se obnavlja.
+- Dodajte prve pretplate jednim dodirom.
+- U Postavkama odaberite svijetli, tamni ili automatski izgled.
+- SubTrack sada govori 20 jezika.
+
 Ispravci pogrešaka
 - Podsjetnici sada stižu sami, čak i ako dugo ne otvarate SubTrack.
 - Obavijesti na dan naplate više ne potiskuju podsjetnik unaprijed koji ste odabrali.

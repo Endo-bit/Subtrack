@@ -1,3 +1,14 @@
+Novinky v této verzi
+- Účtenka předplatných: sdílejte účtenku se všemi předplatnými, roční částkou, tím, co jste už zaplatili, a kolik hodin práce to stojí.
+- Radar zdražení: SubTrack pozná, když služba zdraží, a jedním klepnutím aktualizuje vaše součty.
+- Střídejte, nehromaďte: podívejte se, kolik ušetříte s jedinou streamovací službou naráz.
+- Levnější nebo bezplatné možnosti k vašim službám: bezplatné tarify, rodinné tarify a služby knihoven.
+- U každého předplatného teď uvidíte, kolik vás zatím stálo.
+- Krátký měsíční souhrn 1. dne v měsíci: částka za měsíc a co se obnoví.
+- Přidejte první předplatná jedním klepnutím.
+- V Nastavení si vyberte světlý, tmavý nebo automatický vzhled.
+- SubTrack teď mluví 20 jazyky.
+
 Opravy chyb
 - Upomínky nyní chodí samy, i když SubTrack dlouho neotevřete.
 - Upozornění v den platby už nevytlačují zvolenou upomínku předem.

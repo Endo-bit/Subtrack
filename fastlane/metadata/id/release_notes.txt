@@ -1,3 +1,14 @@
+Baru di versi ini
+- Struk langganan: bagikan struk berisi semua langgananmu, total setahun, yang sudah kamu bayar, dan berapa jam kerja biayanya.
+- Radar kenaikan harga: SubTrack tahu saat layanan menaikkan harga dan memperbarui totalmu dengan sekali ketuk.
+- Bergantian, jangan ditumpuk: lihat berapa yang bisa kamu hemat dengan satu layanan streaming dalam satu waktu.
+- Pilihan lebih murah atau gratis untuk layanan yang kamu bayar: paket gratis, paket keluarga, dan layanan perpustakaan.
+- Setiap langganan kini menampilkan berapa biaya yang sudah kamu keluarkan.
+- Ringkasan bulanan singkat setiap tanggal 1: total bulan ini dan yang akan diperpanjang.
+- Tambahkan langganan pertamamu dengan sekali ketuk.
+- Pilih tampilan terang, gelap, atau otomatis di Pengaturan.
+- SubTrack kini tersedia dalam 20 bahasa.
+
 Perbaikan bug
 - Pengingat kini datang otomatis, meski Anda tidak membuka SubTrack dalam waktu lama.
 - Pemberitahuan di hari tagihan tidak lagi menggeser pengingat sebelumnya yang Anda pilih.

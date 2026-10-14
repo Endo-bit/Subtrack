@@ -1,3 +1,14 @@
+New in this version
+- Subscription receipt: share a receipt of all your subscriptions with your yearly total, what you've paid so far and the hours of work it costs.
+- Price-hike radar: SubTrack spots when a service raises its price and updates your totals in one tap.
+- Rotate, don't stack: see how much you'd save by keeping one streaming service at a time.
+- Cheaper or free options for the services you pay for: free plans, family plans and library services.
+- Every subscription now shows what it has cost you so far.
+- A short monthly summary on the 1st: this month's total and what renews.
+- Add your first subscriptions with one tap.
+- Choose Light, Dark or Automatic appearance in Settings.
+- SubTrack now speaks 20 languages.
+
 Bug fixes
 - Reminders now arrive on their own, even if you don't open SubTrack for a long time.
 - Billing-day alerts no longer push out the days-before reminder you chose.

@@ -1,3 +1,14 @@
+Nouveautés de cette version
+- Ticket d'abonnements : partagez un ticket de tous vos abonnements avec le total annuel, ce que vous avez déjà payé et les heures de travail que cela représente.
+- Radar des hausses de prix : SubTrack repère quand un service augmente son prix et met vos totaux à jour en un geste.
+- Alternez au lieu de cumuler : voyez combien vous économiseriez avec un seul service de streaming à la fois.
+- Options moins chères ou gratuites pour vos services : offres gratuites, offres famille et services de bibliothèque.
+- Chaque abonnement affiche désormais ce qu'il vous a déjà coûté.
+- Un court résumé mensuel le 1er : le total du mois et ce qui se renouvelle.
+- Ajoutez vos premiers abonnements en un geste.
+- Choisissez l'apparence claire, sombre ou automatique dans les réglages.
+- SubTrack parle désormais 20 langues.
+
 Corrections de bugs
 - Les rappels arrivent désormais tout seuls, même si vous n'ouvrez pas SubTrack pendant longtemps.
 - Les alertes du jour du prélèvement ne remplacent plus le rappel avant paiement que vous avez choisi.

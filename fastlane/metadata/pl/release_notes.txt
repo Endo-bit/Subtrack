@@ -1,3 +1,14 @@
+Nowości w tej wersji
+- Paragon subskrypcji: udostępnij paragon ze wszystkimi subskrypcjami, sumą roczną, kwotą zapłaconą dotąd i liczbą godzin pracy, które to kosztuje.
+- Radar podwyżek: SubTrack wykrywa, gdy usługa podnosi cenę, i aktualizuje sumy jednym dotknięciem.
+- Rotuj, nie kumuluj: zobacz, ile zaoszczędzisz, mając jeden serwis streamingowy naraz.
+- Tańsze lub darmowe opcje dla Twoich usług: darmowe plany, plany rodzinne i usługi bibliotek.
+- Każda subskrypcja pokazuje teraz, ile już Cię kosztowała.
+- Krótkie podsumowanie miesiąca 1. dnia: suma miesiąca i to, co się odnawia.
+- Dodaj pierwsze subskrypcje jednym dotknięciem.
+- Wybierz jasny, ciemny lub automatyczny wygląd w Ustawieniach.
+- SubTrack mówi teraz w 20 językach.
+
 Poprawki błędów
 - Przypomnienia docierają teraz same, nawet jeśli długo nie otwierasz SubTrack.
 - Powiadomienia w dniu płatności nie wypierają już wybranego przypomnienia z wyprzedzeniem.

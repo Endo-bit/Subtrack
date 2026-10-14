@@ -1,3 +1,14 @@
+Novetats d'aquesta versió
+- Tiquet de subscripcions: comparteix un tiquet amb totes les teves subscripcions, el total anual, el que has pagat fins ara i les hores de feina que costen.
+- Radar de pujades de preu: el SubTrack detecta quan un servei apuja el preu i actualitza els totals amb un toc.
+- Alterna, no acumulis: mira quant estalviaries amb un sol servei de streaming alhora.
+- Opcions més barates o gratuïtes per als serveis que pagues: plans gratuïts, plans familiars i serveis de biblioteca.
+- Cada subscripció mostra ara el que t'ha costat fins avui.
+- Un breu resum mensual el dia 1: el total del mes i què es renova.
+- Afegeix les primeres subscripcions amb un toc.
+- Tria l'aparença clara, fosca o automàtica a Configuració.
+- El SubTrack ja parla 20 idiomes.
+
 Correccions d'errors
 - Els recordatoris ara arriben sols, encara que no obris SubTrack durant molt de temps.
 - Els avisos del dia del cobrament ja no substitueixen el recordatori previ que has triat.

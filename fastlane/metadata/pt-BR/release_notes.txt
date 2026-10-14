@@ -1,3 +1,14 @@
+Novidades desta versão
+- Recibo de assinaturas: compartilhe um recibo com todas as suas assinaturas, o total anual, o que você já pagou e as horas de trabalho que isso custa.
+- Radar de aumentos: o SubTrack percebe quando um serviço sobe de preço e atualiza seus totais com um toque.
+- Revezar, não acumular: veja quanto você economizaria com um streaming por vez.
+- Opções mais baratas ou grátis para os serviços que você paga: planos grátis, planos família e serviços de biblioteca.
+- Cada assinatura agora mostra quanto já custou até hoje.
+- Um resumo mensal curto no dia 1º: o total do mês e o que vai renovar.
+- Adicione suas primeiras assinaturas com um toque.
+- Escolha a aparência clara, escura ou automática nos Ajustes.
+- O SubTrack agora fala 20 idiomas.
+
 Correções de bugs
 - Os lembretes agora chegam sozinhos, mesmo se você não abrir o SubTrack por muito tempo.
 - Os avisos do dia da cobrança não substituem mais o lembrete antecipado que você escolheu.

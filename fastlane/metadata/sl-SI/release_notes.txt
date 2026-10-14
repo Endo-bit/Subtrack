@@ -1,3 +1,14 @@
+Novo v tej različici
+- Račun naročnin: delite račun z vsemi naročninami, letnim zneskom, tem, kar ste doslej plačali, in koliko ur dela to stane.
+- Radar podražitev: SubTrack opazi, ko se storitev podraži, in z enim dotikom posodobi vaše zneske.
+- Izmenjujte, ne kopičite: poglejte, koliko bi prihranili z eno pretočno storitvijo naenkrat.
+- Cenejše ali brezplačne možnosti za vaše storitve: brezplačni paketi, družinski paketi in storitve knjižnic.
+- Vsaka naročnina zdaj pokaže, koliko vas je doslej stala.
+- Kratek mesečni povzetek 1. v mesecu: skupni znesek meseca in kaj se podaljša.
+- Dodajte prve naročnine z enim dotikom.
+- V Nastavitvah izberite svetel, temen ali samodejni videz.
+- SubTrack zdaj govori 20 jezikov.
+
 Popravki napak
 - Opomniki zdaj prihajajo sami, tudi če SubTrack dolgo ne odprete.
 - Obvestila na dan zaračunavanja ne nadomeščajo več izbranega opomnika vnaprej.

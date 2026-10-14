@@ -1,3 +1,14 @@
+Uutta tässä versiossa
+- Tilauskuitti: jaa kuitti kaikista tilauksistasi, vuoden summasta, tähän mennessä maksetusta ja siitä, montako työtuntia ne maksavat.
+- Hinnannousututka: SubTrack huomaa, kun palvelu nostaa hintaa, ja päivittää summat yhdellä napautuksella.
+- Kierrätä, älä kasaa: näe, paljonko säästäisit pitämällä yhden suoratoistopalvelun kerrallaan.
+- Halvempia tai ilmaisia vaihtoehtoja palveluillesi: ilmaistasot, perhetilaukset ja kirjastojen palvelut.
+- Jokainen tilaus näyttää nyt, paljonko se on tähän mennessä maksanut.
+- Lyhyt kuukausikooste kuun 1. päivä: kuukauden summa ja mitä uusiutuu.
+- Lisää ensimmäiset tilauksesi yhdellä napautuksella.
+- Valitse vaalea, tumma tai automaattinen ulkoasu asetuksista.
+- SubTrack puhuu nyt 20 kieltä.
+
 Virheiden korjaukset
 - Muistutukset tulevat nyt itsestään, vaikka et avaisi SubTrackia pitkään aikaan.
 - Laskutuspäivän ilmoitukset eivät enää korvaa valitsemaasi etukäteismuistutusta.

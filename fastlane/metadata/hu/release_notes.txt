@@ -1,3 +1,14 @@
+Újdonságok ebben a verzióban
+- Előfizetési blokk: ossz meg egy blokkot az összes előfizetéseddel, az éves összeggel, az eddig kifizetettel és azzal, hány munkaórába kerül.
+- Áremelés-radar: a SubTrack észreveszi, ha egy szolgáltatás drágul, és egy koppintással frissíti az összegeket.
+- Váltogasd, ne halmozd: nézd meg, mennyit spórolnál, ha egyszerre csak egy streamingszolgáltatásod lenne.
+- Olcsóbb vagy ingyenes lehetőségek a szolgáltatásaidhoz: ingyenes csomagok, családi csomagok és könyvtári szolgáltatások.
+- Minden előfizetés megmutatja, mennyibe került eddig.
+- Rövid havi összefoglaló minden hónap 1-jén: a havi összeg és ami megújul.
+- Add hozzá az első előfizetéseidet egy koppintással.
+- Válassz világos, sötét vagy automatikus megjelenést a Beállításokban.
+- A SubTrack mostantól 20 nyelven beszél.
+
 Hibajavítások
 - Az emlékeztetők most maguktól érkeznek, akkor is, ha hosszú ideig nem nyitod meg a SubTrackot.
 - A fizetés napján érkező értesítések nem szorítják ki a beállított előzetes emlékeztetőt.

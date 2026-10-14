@@ -1,3 +1,14 @@
+Bu sürümde yeni
+- Abonelik fişi: tüm aboneliklerini, yıllık toplamı, şimdiye kadar ödediğini ve bunun kaç saatlik çalışmaya denk geldiğini gösteren bir fiş paylaş.
+- Zam radarı: SubTrack bir hizmetin fiyatı arttığında bunu fark eder ve toplamlarını tek dokunuşla günceller.
+- Biriktirme, sırayla kullan: aynı anda tek bir yayın hizmetiyle ne kadar tasarruf edeceğini gör.
+- Ödediğin hizmetler için daha ucuz veya ücretsiz seçenekler: ücretsiz planlar, aile planları ve kütüphane hizmetleri.
+- Her abonelik artık sana şimdiye kadar neye mal olduğunu gösteriyor.
+- Her ayın 1'inde kısa bir özet: ayın toplamı ve yenilenecekler.
+- İlk aboneliklerini tek dokunuşla ekle.
+- Ayarlar'dan açık, koyu veya otomatik görünümü seç.
+- SubTrack artık 20 dil konuşuyor.
+
 Hata düzeltmeleri
 - Hatırlatmalar artık SubTrack'i uzun süre açmasanız bile kendiliğinden gelir.
 - Ödeme günü bildirimleri, seçtiğiniz önceden hatırlatmanın yerini artık almıyor.
