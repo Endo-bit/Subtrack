@@ -1,6 +1,7 @@
 import { strings } from '../../i18n/strings';
 import { Subscription } from '../../types/subscription';
 import {
+  buildMonthlyDigestCandidates,
   buildReminderCandidates,
   DAY_OF_PRIORITY_WINDOW_MS,
   MAX_TOTAL_NOTIFICATIONS,
@@ -224,5 +225,41 @@ describe('parseReminderPayload', () => {
     expect(parseReminderPayload({})).toBeNull();
     expect(parseReminderPayload({ kind: 'made-up', subscriptionId: 'a-1' })).toBeNull();
     expect(parseReminderPayload({ kind: 'dayOf' })).toBeNull();
+  });
+});
+
+describe('buildMonthlyDigestCandidates', () => {
+  const now = new Date(2026, 9, 14, 12).getTime();
+  const digests = (subs: Subscription[], days: 0 | 1 | 3 | 7 = 3) =>
+    buildMonthlyDigestCandidates(subs, days, t, 'en-US', 'EUR', noConvert, now);
+
+  test('queues one digest on the 1st of each of the next three months', () => {
+    const out = digests([makeSub({ startedAt: '2026-01-15T12:00:00.000Z' })]);
+    expect(out.map((c) => [c.date.getMonth(), c.date.getDate()])).toEqual([
+      [10, 1],
+      [11, 1],
+      [0, 1],
+    ]);
+    expect(out.every((c) => c.data.kind === 'monthlyDigest')).toBe(true);
+  });
+
+  test('totals the month and counts renewals', () => {
+    const out = digests([
+      makeSub({ id: 'a', defaultPrice: 10 }),
+      makeSub({ id: 'b', defaultPrice: 5.5 }),
+    ]);
+    expect(out[0].title).toContain('November');
+    expect(out[0].title).toContain('15.50');
+    expect(out[0].body).toContain('2');
+  });
+
+  test('stays silent when reminders are off or nothing bills', () => {
+    expect(digests([makeSub()], 0)).toEqual([]);
+    expect(digests([])).toEqual([]);
+  });
+
+  test('round-trips through the payload parser so taps can route', () => {
+    const [first] = digests([makeSub()]);
+    expect(parseReminderPayload(first.data)).toEqual({ kind: 'monthlyDigest', subscriptionId: '' });
   });
 });

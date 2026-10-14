@@ -266,7 +266,7 @@ export default function AddScreen() {
         renderSectionHeader={({ section }) => (
           <View style={[styles.sectionHeaderWrap, { backgroundColor: bg }]}>
             {section.category && (
-              <View style={[styles.sectionDot, { backgroundColor: categoryColor[section.category] }]} />
+              <View style={[styles.sectionDot, { backgroundColor: categoryColor[section.category as Category] }]} />
             )}
             <Text style={[styles.sectionHeaderText, dark && { color: theme.textMuted }]}>
               {section.title}

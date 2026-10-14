@@ -5,6 +5,7 @@ import { Strings } from '@/i18n/strings';
 import { Subscription } from '@/types/subscription';
 import { CurrencyCode } from '@/utils/currency';
 import {
+  buildMonthlyDigestCandidates,
   buildReminderCandidates,
   dayKey,
   selectReminders,
@@ -99,7 +100,8 @@ async function saveCatchUpLedger(ledger: Set<string>): Promise<void> {
 /**
  * Cancels all scheduled reminders and reschedules the soonest ones across every active
  * subscription: the user's chosen days-before reminder, the billing day itself, and — for a
- * free trial — a warning, a last-day alert, and the next-day "did you cancel?" follow-up.
+ * free trial — a warning, a last-day alert, and the next-day "did you cancel?" follow-up. On top
+ * of those, a 1st-of-the-month digest of what the month's subscriptions add up to.
  *
  * These are OS-scheduled one-shot triggers, so they keep arriving whether or not the app is
  * ever reopened; this call only ever refreshes the queue. It runs both from the app and from the
@@ -143,14 +145,10 @@ async function rebuildReminders(
 
   const ledger = await loadCatchUpLedger();
   const now = Date.now();
-  const candidates = buildReminderCandidates(
-    subscriptions,
-    reminderDays,
-    t,
-    locale,
-    displayCurrency,
-    convert,
-  );
+  const candidates = [
+    ...buildReminderCandidates(subscriptions, reminderDays, t, locale, displayCurrency, convert),
+    ...buildMonthlyDigestCandidates(subscriptions, reminderDays, t, locale, displayCurrency, convert, now),
+  ];
   const { scheduled, catchUpKeys, refillNoticeAt } = selectReminders(candidates, ledger, now);
 
   for (const c of scheduled) {

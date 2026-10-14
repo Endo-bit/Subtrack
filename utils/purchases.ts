@@ -31,6 +31,15 @@ export function configurePurchases(): void {
   configured = true;
 }
 
+/**
+ * Ties this RevenueCat customer to the PostHog person, so the RevenueCat → PostHog integration
+ * can attach purchases and renewals to the same user whose in-app funnel PostHog already has.
+ */
+export function linkAnalyticsUser(posthogDistinctId: string): void {
+  if (!configured || !posthogDistinctId) return;
+  Purchases.setAttributes({ $posthogUserId: posthogDistinctId }).catch(() => {});
+}
+
 export function entitlementIsActive(info: CustomerInfo): boolean {
   return info.entitlements.active[PRO_ENTITLEMENT_ID] !== undefined;
 }

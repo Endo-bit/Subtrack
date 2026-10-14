@@ -6,7 +6,7 @@ import { AppState } from 'react-native';
 import { PRESET_SERVICES } from '@/data/services';
 import { localeForLanguage, strings } from '@/i18n/strings';
 import { Language, LocalPrices, Subscription, VatMode } from '@/types/subscription';
-import { track } from '@/utils/analytics';
+import { posthog, track } from '@/utils/analytics';
 import { convertAmount, CurrencyCode, detectDeviceCurrency, ExchangeRates } from '@/utils/currency';
 import { exportBackupFile, exportCsvFile, pickBackupFile } from '@/utils/dataExport';
 import { DiagnosisRecord } from '@/utils/diagnosis';
@@ -25,6 +25,7 @@ import {
   entitlementIsActive,
   fetchCustomerInfo,
   fetchProPriceOptions,
+  linkAnalyticsUser,
   ProPriceOption,
   restorePurchases as restorePurchasesRC,
 } from '@/utils/purchases';
@@ -45,6 +46,14 @@ export type CatalogPrice = { amount: number; currency: CurrencyCode; exact: bool
 
 /** How long after a free trial ends the "did you cancel?" prompt stays worth asking. */
 const TRIAL_FOLLOW_UP_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
+
+/**
+ * The pre-permission ("primer") sheet is asked at most this many times, this far apart. iOS shows
+ * its own notification prompt exactly once — a "Don't Allow" there is permanent — so the system
+ * prompt is only ever raised after someone has said yes to ours.
+ */
+const PRIMER_MAX_ASKS = 3;
+const PRIMER_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000;
 
 // On web, use localStorage directly so data survives tab close.
 // On native, AsyncStorage is persistent already.
@@ -76,6 +85,12 @@ type State = {
   subscriptionsAdded: number;
   /** Set once the App Store review prompt has been offered, so it's never shown twice. */
   hasAskedForReview: boolean;
+  /** Times the reminder primer was dismissed with "Not now". */
+  notificationPrimerAskCount: number;
+  /** ISO timestamp of the last "Not now" on the reminder primer. */
+  notificationPrimerLastAskedAt: string | null;
+  /** The Home Screen widget tip on the dashboard was dismissed. */
+  widgetTipDismissed: boolean;
 };
 
 const migrateState = (raw: State): State => ({
@@ -89,6 +104,9 @@ const migrateState = (raw: State): State => ({
   // passed the bar the review prompt is looking for.
   subscriptionsAdded: raw.subscriptionsAdded ?? raw.subscriptions.length,
   hasAskedForReview: raw.hasAskedForReview ?? false,
+  notificationPrimerAskCount: raw.notificationPrimerAskCount ?? 0,
+  notificationPrimerLastAskedAt: raw.notificationPrimerLastAskedAt ?? null,
+  widgetTipDismissed: raw.widgetTipDismissed ?? false,
   subscriptions: raw.subscriptions.map(normalizeSubscription),
 });
 
@@ -126,6 +144,9 @@ const initialState: State = {
   exchangeRatesUpdatedAt: null,
   subscriptionsAdded: 0,
   hasAskedForReview: false,
+  notificationPrimerAskCount: 0,
+  notificationPrimerLastAskedAt: null,
+  widgetTipDismissed: false,
 };
 
 export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
@@ -137,6 +158,8 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
   // Subscriptions whose post-trial prompt the user dismissed with "ask me later". Session-only
   // on purpose: "later" should mean the next launch, not never.
   const [deferredTrialFollowUps, setDeferredTrialFollowUps] = useState<string[]>([]);
+  // The primer stays down for the rest of the session once answered, whatever the cooldown says.
+  const [primerAnsweredThisSession, setPrimerAnsweredThisSession] = useState(false);
   const t = strings[state.language];
   const locale = localeForLanguage(state.language);
 
@@ -207,10 +230,11 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
         category: sub.category,
         billingCycle: sub.billingCycle,
         price: sub.defaultPrice,
+        isFirst: state.subscriptionsAdded === 0,
       });
       return true;
     },
-    [state.isPro, state.subscriptions, bumpAddTabReset],
+    [state.isPro, state.subscriptions, state.subscriptionsAdded, bumpAddTabReset],
   );
 
   const updateSubscription = useCallback((id: string, patch: Partial<Subscription>) => {
@@ -269,17 +293,6 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     scheduleAllReminders(state.subscriptions, state.reminderDays, t, locale, state.currency, convert).catch(() => {});
   }, [state.subscriptions, state.reminderDays, hasLoaded, t, notificationPermission, locale, state.currency, convert]);
 
-  // Reminders were the app's core promise but nothing ever asked the OS for permission unless
-  // the user happened to dig into Settings — so for most people no reminder was ever scheduled.
-  // Ask at the first moment a reminder could actually be useful: right after subscription #1.
-  useEffect(() => {
-    if (!hasLoaded) return;
-    if (notificationPermission !== 'undetermined') return;
-    if (state.subscriptions.length === 0) return;
-    requestNotificationPermission()
-      .then(() => refreshNotificationPermission())
-      .catch(() => {});
-  }, [hasLoaded, notificationPermission, state.subscriptions.length, refreshNotificationPermission]);
 
   // Keep the Home Screen widget in step with whatever the app is showing.
   useEffect(() => {
@@ -287,14 +300,20 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     syncWidgetData(state.subscriptions, state.currency, locale, convert, t.monthly, t.freeTrialBadge).catch(() => {});
   }, [hasLoaded, state.subscriptions, state.currency, locale, convert, t.monthly, t.freeTrialBadge]);
 
-  const enableNotifications = useCallback(async (): Promise<NotificationPermissionStatus> => {
-    await requestNotificationPermission();
-    return refreshNotificationPermission();
-  }, [refreshNotificationPermission]);
+  const enableNotifications = useCallback(
+    async (source: 'primer' | 'banner' | 'settings' = 'settings'): Promise<NotificationPermissionStatus> => {
+      await requestNotificationPermission();
+      const status = await refreshNotificationPermission();
+      track.notificationPermissionResult(status, source);
+      return status;
+    },
+    [refreshNotificationPermission],
+  );
 
   // Reconcile local isPro flag with the store's actual entitlement.
   useEffect(() => {
     configurePurchases();
+    linkAnalyticsUser(posthog.getDistinctId());
     fetchCustomerInfo().then((info) => {
       if (info) setState((prev) => ({ ...prev, isPro: entitlementIsActive(info) }));
     });
@@ -386,6 +405,51 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     },
     [state.subscriptions],
   );
+
+  /**
+   * Reminders are the only thing that brings anyone back to a subscription tracker, so the
+   * permission is asked for right after the first subscription is added — but through our own
+   * sheet first, which explains what they'll get and can be dismissed without consequence.
+   */
+  const shouldShowNotificationPrimer = useMemo(() => {
+    if (!hasLoaded || primerAnsweredThisSession || pendingTrialFollowUp) return false;
+    if (notificationPermission !== 'undetermined' || state.reminderDays === 0) return false;
+    if (!state.subscriptions.some((s) => !s.isCancelled)) return false;
+    if (state.notificationPrimerAskCount >= PRIMER_MAX_ASKS) return false;
+    const last = state.notificationPrimerLastAskedAt;
+    return !last || Date.now() - new Date(last).getTime() >= PRIMER_COOLDOWN_MS;
+  }, [
+    hasLoaded,
+    primerAnsweredThisSession,
+    pendingTrialFollowUp,
+    notificationPermission,
+    state.reminderDays,
+    state.subscriptions,
+    state.notificationPrimerAskCount,
+    state.notificationPrimerLastAskedAt,
+  ]);
+
+  const answerNotificationPrimer = useCallback(
+    async (accepted: boolean): Promise<void> => {
+      setPrimerAnsweredThisSession(true);
+      track.notificationPrimerAnswered(accepted);
+      if (accepted) {
+        await enableNotifications('primer');
+        return;
+      }
+      setState((prev) => ({
+        ...prev,
+        notificationPrimerAskCount: prev.notificationPrimerAskCount + 1,
+        notificationPrimerLastAskedAt: new Date().toISOString(),
+      }));
+    },
+    [enableNotifications],
+  );
+
+  const dismissWidgetTip = useCallback(() => {
+    track.widgetTipDismissed();
+    setState((prev) => ({ ...prev, widgetTipDismissed: true }));
+  }, []);
 
   const markReviewAsked = useCallback(() => {
     setState((prev) => ({ ...prev, hasAskedForReview: true }));
@@ -497,6 +561,9 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
     refreshExchangeRates,
     notificationPermission,
     enableNotifications,
+    shouldShowNotificationPrimer,
+    answerNotificationPrimer,
+    dismissWidgetTip,
     proPriceOptions,
     pendingTrialFollowUp,
     answerTrialFollowUp,

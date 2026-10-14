@@ -36,11 +36,17 @@ export default function RootLayout() {
 
   // Tapping a billing reminder should land on the subscription it's about, not just the
   // dashboard. The post-trial notification is the exception: TrialFollowUpModal asks its
-  // question from wherever the user ends up, so that one only needs to open the app.
+  // question from wherever the user ends up, so that one only needs to open the app. The
+  // monthly digest is about everything, so it opens on the dashboard's totals.
   useEffect(() => {
     const listener = Notifications.addNotificationResponseReceivedListener((response) => {
       const payload = parseReminderPayload(response.notification.request.content.data);
+      track.notificationOpened(payload?.kind ?? 'other');
       if (!payload || payload.kind === 'trialFollowUp') return;
+      if (payload.kind === 'monthlyDigest') {
+        router.push('/');
+        return;
+      }
       router.push(`/subscription/${payload.subscriptionId}` as Href);
     });
     return () => listener.remove();

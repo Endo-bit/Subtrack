@@ -1,7 +1,12 @@
 import { Strings } from '@/i18n/strings';
 import { Subscription } from '@/types/subscription';
 import { CurrencyCode, formatMoney } from '@/utils/currency';
-import { computeNextBillingFromStart, ConvertFn } from '@/utils/subscription';
+import {
+  chargeAmountInMonth,
+  chargesInMonth,
+  computeNextBillingFromStart,
+  ConvertFn,
+} from '@/utils/subscription';
 
 /**
  * Deciding *what* to remind someone about, kept free of expo-notifications so it can be
@@ -10,10 +15,26 @@ import { computeNextBillingFromStart, ConvertFn } from '@/utils/subscription';
  */
 
 /** What a scheduled reminder is about. Rides along in the notification's `data` so tapping one can route. */
-export type ReminderKind = 'before' | 'dayOf' | 'trialBefore' | 'trialEnd' | 'trialFollowUp';
+export type ReminderKind =
+  | 'before'
+  | 'dayOf'
+  | 'trialBefore'
+  | 'trialEnd'
+  | 'trialFollowUp'
+  | 'monthlyDigest';
+
+const REMINDER_KINDS: ReminderKind[] = [
+  'before',
+  'dayOf',
+  'trialBefore',
+  'trialEnd',
+  'trialFollowUp',
+  'monthlyDigest',
+];
 
 export type ReminderPayload = {
   kind: ReminderKind;
+  /** Empty for the monthly digest, which is about every subscription rather than one. */
   subscriptionId: string;
 };
 
@@ -29,6 +50,14 @@ export type ReminderCandidate = {
 /** Reminders and billing-day alerts land mid-morning; the trial follow-up an hour later so it reads as its own beat. */
 export const REMINDER_HOUR = 9;
 export const TRIAL_FOLLOW_UP_HOUR = 10;
+/** The monthly digest lands on the 1st, after the morning's billing reminders. */
+export const MONTHLY_DIGEST_HOUR = 11;
+
+/**
+ * How many upcoming month-starts get a digest queued. Few on purpose: they're rebuilt on every
+ * open and by the background refresh, and each one spends a slot of the 64-notification budget.
+ */
+export const MONTHLY_DIGEST_MONTHS = 3;
 
 /**
  * How many future billing occurrences to build per subscription. Local notifications are
@@ -167,6 +196,47 @@ export function buildReminderCandidates(
     .flatMap((s) => candidatesForSubscription(s, reminderDays, t, locale, displayCurrency, convert));
 }
 
+/**
+ * The 1st-of-the-month summary: what this month's subscriptions add up to and how many renew.
+ * Billing reminders only bring someone back when a charge is due; this is the one regular
+ * reason to open the app, and the moment people actually prune what they no longer use.
+ * Months with nothing to bill are skipped rather than announcing a zero.
+ */
+export function buildMonthlyDigestCandidates(
+  subscriptions: Subscription[],
+  reminderDays: 0 | 1 | 3 | 7,
+  t: Strings,
+  locale: string,
+  displayCurrency: CurrencyCode,
+  convert: ConvertFn,
+  now: number = Date.now(),
+): ReminderCandidate[] {
+  // "Reminders off" means off: the digest rides on the same switch as every other notification.
+  if (reminderDays === 0) return [];
+  const out: ReminderCandidate[] = [];
+  const today = new Date(now);
+  for (let i = 1; i <= MONTHLY_DIGEST_MONTHS; i++) {
+    const date = new Date(today.getFullYear(), today.getMonth() + i, 1, MONTHLY_DIGEST_HOUR, 0, 0, 0);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const renewals = subscriptions.filter((s) => chargesInMonth(s, year, month)).length;
+    const total = subscriptions.reduce((sum, s) => sum + chargeAmountInMonth(s, year, month, convert), 0);
+    if (renewals === 0 || total <= 0) continue;
+    // French and Spanish month names are lowercase, but this one opens the title.
+    const monthName = date.toLocaleDateString(locale, { month: 'long' });
+    out.push({
+      key: `digest|monthlyDigest|${dayKey(date)}`,
+      date,
+      title: t.digestNotificationTitle
+        .replace('{month}', monthName.charAt(0).toLocaleUpperCase(locale) + monthName.slice(1))
+        .replace('{total}', formatMoney(total, displayCurrency)),
+      body: t.digestNotificationBody.replace('{n}', String(renewals)),
+      data: { kind: 'monthlyDigest', subscriptionId: '' },
+    });
+  }
+  return out;
+}
+
 export type ReminderSelection = {
   /** In the order they should be handed to the OS. `catchUpKeys` members fire immediately. */
   scheduled: ReminderCandidate[];
@@ -241,7 +311,6 @@ export function parseReminderPayload(data: unknown): ReminderPayload | null {
   if (typeof data !== 'object' || data === null) return null;
   const { kind, subscriptionId } = data as Partial<ReminderPayload>;
   if (typeof subscriptionId !== 'string') return null;
-  const kinds: ReminderKind[] = ['before', 'dayOf', 'trialBefore', 'trialEnd', 'trialFollowUp'];
-  if (!kind || !kinds.includes(kind)) return null;
+  if (!kind || !REMINDER_KINDS.includes(kind)) return null;
   return { kind, subscriptionId };
 }

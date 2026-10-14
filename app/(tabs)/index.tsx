@@ -6,11 +6,13 @@
  */
 import { LinearGradient } from 'expo-linear-gradient';
 import { Href, router } from 'expo-router';
-import { PackageOpen, Trash2 } from 'lucide-react-native';
+import { BellOff, LayoutGrid, PackageOpen, Trash2, X } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import {
   Alert,
   Image,
+  Linking,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -19,6 +21,9 @@ import {
   View,
 } from 'react-native';
 import { MomDelta } from '@/components/MomDelta';
+import { NotificationPrimer } from '@/components/NotificationPrimer';
+import { PopularServicesGrid } from '@/components/PopularServicesGrid';
+import { QuickStart } from '@/components/QuickStart';
 import { RatePrompt } from '@/components/RatePrompt';
 import { ServiceLogo } from '@/components/ServiceLogo';
 import { TrialFollowUpModal } from '@/components/TrialFollowUpModal';
@@ -27,7 +32,7 @@ import { useSubTrack } from '@/context/SubTrackContext';
 import { theme, type as t_ } from '@/constants/theme';
 import { useFocusedNow } from '@/hooks/useFocusedNow';
 import { track } from '@/utils/analytics';
-import { BillingCycle, Category, SortMode, Subscription } from '@/types/subscription';
+import { BillingCycle, Category, PresetService, SortMode, Subscription } from '@/types/subscription';
 import { formatMoney } from '@/utils/currency';
 import {
   calendarDaysUntil,
@@ -63,7 +68,15 @@ export default function DashboardScreen() {
     updateSettings,
     removeSubscription,
     convert,
+    reminderDays,
+    notificationPermission,
+    enableNotifications,
+    shouldShowNotificationPrimer,
+    widgetTipDismissed,
+    dismissWidgetTip,
   } = useSubTrack();
+  // The tour ends on picking a first subscription rather than on an empty dashboard.
+  const [onboardingStep, setOnboardingStep] = useState<'slides' | 'quickStart'>('slides');
   const money = (n: number) => formatMoney(n, currency);
   const [sort, setSort] = useState<SortMode>('date');
   const [cycleFilter, setCycleFilter] = useState<CycleFilter>('all');
@@ -104,16 +117,54 @@ export default function DashboardScreen() {
     ]);
   };
 
+  const openService = (service: PresetService, source: 'onboarding' | 'empty_home') => {
+    track.quickStartPicked(service.id, source);
+    router.push(`/service/${service.id}` as Href);
+  };
+
   if (!hasSeenOnboarding) {
+    if (onboardingStep === 'slides') {
+      return (
+        <TutorialSlides
+          onDone={() => {
+            track.onboardingCompleted();
+            setOnboardingStep('quickStart');
+          }}
+        />
+      );
+    }
     return (
-      <TutorialSlides
-        onDone={() => {
-          track.onboardingCompleted();
+      <QuickStart
+        onPick={(service) => {
+          updateSettings({ hasSeenOnboarding: true });
+          openService(service, 'onboarding');
+        }}
+        onBrowse={() => {
+          track.quickStartSkipped('browse');
+          updateSettings({ hasSeenOnboarding: true });
+          router.push('/add');
+        }}
+        onSkip={() => {
+          track.quickStartSkipped('skip');
           updateSettings({ hasSeenOnboarding: true });
         }}
       />
     );
   }
+
+  // Without notifications nothing ever brings a user back, so say so plainly while it's the case.
+  // Not shown while the primer is about to ask anyway, nor when reminders were switched off on purpose.
+  const showRemindersOff =
+    active.length > 0 &&
+    reminderDays > 0 &&
+    !shouldShowNotificationPrimer &&
+    (notificationPermission === 'denied' || notificationPermission === 'undetermined');
+  const onRemindersOffPress = () => {
+    track.remindersBannerTapped(notificationPermission);
+    if (notificationPermission === 'denied') Linking.openSettings().catch(() => {});
+    else enableNotifications('banner').catch(() => {});
+  };
+  const showWidgetTip = Platform.OS === 'ios' && active.length > 0 && !widgetTipDismissed;
 
   const bg = dark ? theme.creamDark : theme.cream;
 
@@ -182,6 +233,47 @@ export default function DashboardScreen() {
         </View>
       </LinearGradient>
 
+      {/* ── Reminders off — the one setting retention depends on ── */}
+      {showRemindersOff && (
+        <Pressable
+          onPress={onRemindersOffPress}
+          style={[styles.notice, { backgroundColor: dark ? theme.cardDark : theme.card }]}
+          accessibilityRole="button"
+        >
+          <View style={styles.noticeIcon}>
+            <BellOff size={18} color={theme.accent} />
+          </View>
+          <View style={styles.noticeMain}>
+            <Text style={[styles.noticeTitle, dark && styles.textOnDark]}>{t.remindersOffTitle}</Text>
+            <Text style={styles.noticeBody}>{t.remindersOffBody}</Text>
+          </View>
+          <Text style={styles.noticeCta}>
+            {notificationPermission === 'denied' ? t.openSettingsBtn : t.remindersOffCta}
+          </Text>
+        </Pressable>
+      )}
+
+      {/* ── Widget tip — a glanceable reason to think of SubTrack without opening it ── */}
+      {showWidgetTip && (
+        <View style={[styles.notice, { backgroundColor: dark ? theme.cardDark : theme.card }]}>
+          <View style={styles.noticeIcon}>
+            <LayoutGrid size={18} color={theme.accent} />
+          </View>
+          <View style={styles.noticeMain}>
+            <Text style={[styles.noticeTitle, dark && styles.textOnDark]}>{t.widgetTipTitle}</Text>
+            <Text style={styles.noticeBody}>{t.widgetBody}</Text>
+          </View>
+          <Pressable
+            onPress={dismissWidgetTip}
+            hitSlop={12}
+            accessibilityRole="button"
+            accessibilityLabel={t.widgetTipDismiss}
+          >
+            <X size={16} color={theme.textMuted} />
+          </Pressable>
+        </View>
+      )}
+
       {/* ── Sort chips — Apple configurator-option-chip style ── */}
       <View style={styles.sortRow}>
         {(
@@ -237,8 +329,17 @@ export default function DashboardScreen() {
           </View>
           <Text style={[styles.emptyTitle, dark && styles.textOnDark]}>{t.emptyHomeTitle}</Text>
           <Text style={[styles.emptyBody]}>{t.emptyHomeBody}</Text>
+          {active.length === 0 && (
+            <View style={styles.emptyPopular}>
+              <Text style={styles.emptyPopularLabel}>{t.popularServicesTitle}</Text>
+              <PopularServicesGrid
+                onPick={(service) => openService(service, 'empty_home')}
+                variant={dark ? 'onLightDark' : 'onLight'}
+              />
+            </View>
+          )}
           <Pressable style={styles.emptyCta} onPress={() => router.push('/add')}>
-            <Text style={styles.emptyCtaText}>{t.addSub}</Text>
+            <Text style={styles.emptyCtaText}>{active.length === 0 ? t.quickStartBrowse : t.addSub}</Text>
           </Pressable>
         </View>
       ) : (
@@ -307,6 +408,7 @@ export default function DashboardScreen() {
       )}
 
       <TrialFollowUpModal />
+      <NotificationPrimer />
       <RatePrompt />
     </ScrollView>
   );
@@ -494,4 +596,30 @@ const styles = StyleSheet.create({
     borderRadius: 9999,  // Revolut pill
   },
   emptyCtaText: { ...t_.button, color: '#FFF' },
+  emptyPopular: { alignSelf: 'stretch', gap: 10, marginTop: 6 },
+  emptyPopularLabel: { ...t_.captionBold, color: theme.textMuted, textAlign: 'center' },
+
+  // Notices — reminders off, widget tip
+  notice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginHorizontal: 20,
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(0,0,0,0.07)',
+  },
+  noticeIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    backgroundColor: theme.accentSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noticeMain: { flex: 1, gap: 2 },
+  noticeTitle: { ...t_.captionBold, fontSize: 14, color: theme.text },
+  noticeBody: { ...t_.caption, color: theme.textMuted },
+  noticeCta: { ...t_.captionBold, color: theme.accent },
 });

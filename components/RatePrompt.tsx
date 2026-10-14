@@ -14,11 +14,11 @@ const WRITE_REVIEW_URL = 'itms-apps://apps.apple.com/app/id6791565138?action=wri
  * "now is a good moment" nudge, not a filter that routes unhappy users away from the store.
  */
 export function RatePrompt() {
-  const { t, shouldAskForReview, markReviewAsked, pendingTrialFollowUp } = useSubTrack();
+  const { t, shouldAskForReview, markReviewAsked, pendingTrialFollowUp, shouldShowNotificationPrimer } = useSubTrack();
   const dark = useColorScheme() === 'dark';
 
-  // Never stack on top of the post-trial question; that one is time-sensitive, this isn't.
-  if (!shouldAskForReview || pendingTrialFollowUp) return null;
+  // Never stack on top of the post-trial question or the reminder primer; both matter more.
+  if (!shouldAskForReview || pendingTrialFollowUp || shouldShowNotificationPrimer) return null;
 
   const onRate = async () => {
     markReviewAsked();

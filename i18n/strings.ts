@@ -253,6 +253,22 @@ export type Strings = {
   errorBoundaryBody: string;
   errorBoundaryRetry: string;
   scrollToTop: string;
+  digestNotificationTitle: string;
+  digestNotificationBody: string;
+  primerTitle: string;
+  primerBody: string;
+  primerEnable: string;
+  primerLater: string;
+  remindersOffTitle: string;
+  remindersOffBody: string;
+  remindersOffCta: string;
+  quickStartTitle: string;
+  quickStartBody: string;
+  quickStartBrowse: string;
+  quickStartSkip: string;
+  popularServicesTitle: string;
+  widgetTipTitle: string;
+  widgetTipDismiss: string;
 };
 
 export const strings: Record<Language, Strings> = {
@@ -513,6 +529,22 @@ export const strings: Record<Language, Strings> = {
     errorBoundaryBody: 'SubTrack ist auf einen unerwarteten Fehler gestoßen. Deine Daten sind auf diesem Gerät sicher.',
     errorBoundaryRetry: 'Erneut versuchen',
     scrollToTop: 'Nach oben scrollen',
+    digestNotificationTitle: '{month}: {total} für Abos',
+    digestNotificationBody: '{n} Abos verlängern sich diesen Monat. Nutzt du noch alle?',
+    primerTitle: 'Nie wieder überraschend abgebucht',
+    primerBody: 'Wir erinnern dich {days} Tage, bevor sich {name} verlängert – plus eine kurze Monatsübersicht. Sonst nichts.',
+    primerEnable: 'Erinnerungen aktivieren',
+    primerLater: 'Nicht jetzt',
+    remindersOffTitle: 'Erinnerungen sind aus',
+    remindersOffBody: 'Vor deiner nächsten Abbuchung hörst du nichts von SubTrack.',
+    remindersOffCta: 'Aktivieren',
+    quickStartTitle: 'Wofür zahlst du?',
+    quickStartBody: 'Tippe auf einen Dienst, um ihn hinzuzufügen – dauert 10 Sekunden. Den Rest kannst du später ergänzen.',
+    quickStartBrowse: 'Alle Dienste durchsuchen',
+    quickStartSkip: 'Später',
+    popularServicesTitle: 'Beliebt – zum Hinzufügen tippen',
+    widgetTipTitle: 'Nächste Abbuchung sehen, ohne die App zu öffnen',
+    widgetTipDismiss: 'Verstanden',
   },
   fr: {
     overview: 'Accueil',
@@ -771,6 +803,22 @@ export const strings: Record<Language, Strings> = {
     errorBoundaryBody: 'SubTrack a rencontré une erreur inattendue. Vos données restent en sécurité sur cet appareil.',
     errorBoundaryRetry: 'Réessayer',
     scrollToTop: 'Remonter en haut',
+    digestNotificationTitle: '{month} : {total} d’abonnements',
+    digestNotificationBody: '{n} renouvellements ce mois-ci. Vous les utilisez tous ?',
+    primerTitle: 'Plus jamais de prélèvement surprise',
+    primerBody: 'Nous vous prévenons {days} jours avant le renouvellement de {name}, avec un court résumé mensuel. Rien d’autre.',
+    primerEnable: 'Activer les rappels',
+    primerLater: 'Plus tard',
+    remindersOffTitle: 'Rappels désactivés',
+    remindersOffBody: 'SubTrack ne pourra pas vous prévenir avant votre prochain prélèvement.',
+    remindersOffCta: 'Activer',
+    quickStartTitle: 'Lesquels payez-vous ?',
+    quickStartBody: 'Touchez un service pour l’ajouter — 10 secondes suffisent. Ajoutez les autres plus tard.',
+    quickStartBrowse: 'Rechercher tous les services',
+    quickStartSkip: 'Plus tard',
+    popularServicesTitle: 'Populaires — touchez pour ajouter',
+    widgetTipTitle: 'Votre prochain prélèvement, sans ouvrir l’app',
+    widgetTipDismiss: 'Compris',
   },
   en: {
     overview: 'Overview',
@@ -1029,6 +1077,22 @@ export const strings: Record<Language, Strings> = {
     errorBoundaryBody: 'SubTrack ran into an unexpected error. Your data is safe on this device.',
     errorBoundaryRetry: 'Try again',
     scrollToTop: 'Scroll to top',
+    digestNotificationTitle: '{month}: {total} in subscriptions',
+    digestNotificationBody: '{n} renew this month. Still using all of them?',
+    primerTitle: 'Never get charged by surprise',
+    primerBody: 'We’ll remind you {days} days before {name} renews, plus a short monthly summary. Nothing else.',
+    primerEnable: 'Turn on reminders',
+    primerLater: 'Not now',
+    remindersOffTitle: 'Reminders are off',
+    remindersOffBody: 'You won’t hear from SubTrack before your next charge.',
+    remindersOffCta: 'Turn on',
+    quickStartTitle: 'Which ones do you pay for?',
+    quickStartBody: 'Tap one to add it — it takes 10 seconds. You can add the rest later.',
+    quickStartBrowse: 'Search all services',
+    quickStartSkip: 'Skip for now',
+    popularServicesTitle: 'Popular — tap to add',
+    widgetTipTitle: 'See your next charge without opening the app',
+    widgetTipDismiss: 'Got it',
   },
   es: {
     overview: 'Resumen',
@@ -1288,6 +1352,22 @@ export const strings: Record<Language, Strings> = {
     errorBoundaryBody: 'SubTrack encontró un error inesperado. Tus datos están a salvo en este dispositivo.',
     errorBoundaryRetry: 'Intentar de nuevo',
     scrollToTop: 'Desplazarse arriba',
+    digestNotificationTitle: '{month}: {total} en suscripciones',
+    digestNotificationBody: '{n} se renuevan este mes. ¿Sigues usándolas todas?',
+    primerTitle: 'Que ningún cobro te pille por sorpresa',
+    primerBody: 'Te avisaremos {days} días antes de que {name} se renueve, más un breve resumen mensual. Nada más.',
+    primerEnable: 'Activar recordatorios',
+    primerLater: 'Ahora no',
+    remindersOffTitle: 'Recordatorios desactivados',
+    remindersOffBody: 'SubTrack no podrá avisarte antes de tu próximo cobro.',
+    remindersOffCta: 'Activar',
+    quickStartTitle: '¿Cuáles pagas?',
+    quickStartBody: 'Toca un servicio para añadirlo: tardas 10 segundos. El resto, cuando quieras.',
+    quickStartBrowse: 'Buscar todos los servicios',
+    quickStartSkip: 'Ahora no',
+    popularServicesTitle: 'Populares: toca para añadir',
+    widgetTipTitle: 'Tu próximo cobro sin abrir la app',
+    widgetTipDismiss: 'Entendido',
   },
 };
 
