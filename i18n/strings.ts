@@ -1,3 +1,19 @@
+import { cs } from '@/i18n/locales/cs';
+import { da } from '@/i18n/locales/da';
+import { fi } from '@/i18n/locales/fi';
+import { it } from '@/i18n/locales/it';
+import { ja } from '@/i18n/locales/ja';
+import { ko } from '@/i18n/locales/ko';
+import { nb } from '@/i18n/locales/nb';
+import { nl } from '@/i18n/locales/nl';
+import { pl } from '@/i18n/locales/pl';
+import { pt } from '@/i18n/locales/pt';
+import { ru } from '@/i18n/locales/ru';
+import { sv } from '@/i18n/locales/sv';
+import { tr } from '@/i18n/locales/tr';
+import { uk } from '@/i18n/locales/uk';
+import { zhHans } from '@/i18n/locales/zhHans';
+import { zhHant } from '@/i18n/locales/zhHant';
 import { Language } from '@/types/subscription';
 
 export type Strings = {
@@ -1484,11 +1500,71 @@ export const strings: Record<Language, Strings> = {
     altFamily: 'Comparte un plan familiar',
     altCheaper: 'Plan más barato',
   },
+  it,
+  pt,
+  nl,
+  sv,
+  da,
+  nb,
+  fi,
+  pl,
+  cs,
+  tr,
+  ru,
+  uk,
+  ja,
+  ko,
+  'zh-Hans': zhHans,
+  'zh-Hant': zhHant,
+};
+
+const LOCALES: Record<Language, string> = {
+  en: 'en-GB',
+  de: 'de-DE',
+  fr: 'fr-FR',
+  es: 'es-ES',
+  it: 'it-IT',
+  pt: 'pt-BR',
+  nl: 'nl-NL',
+  sv: 'sv-SE',
+  da: 'da-DK',
+  nb: 'nb-NO',
+  fi: 'fi-FI',
+  pl: 'pl-PL',
+  cs: 'cs-CZ',
+  tr: 'tr-TR',
+  ru: 'ru-RU',
+  uk: 'uk-UA',
+  ja: 'ja-JP',
+  ko: 'ko-KR',
+  'zh-Hans': 'zh-CN',
+  'zh-Hant': 'zh-TW',
 };
 
 export function localeForLanguage(lang: Language): string {
-  if (lang === 'de') return 'de-DE';
-  if (lang === 'fr') return 'fr-FR';
-  if (lang === 'es') return 'es-ES';
-  return 'en-GB';
+  return LOCALES[lang] ?? 'en-GB';
 }
+
+/** Each language in its own name, for the picker in Settings. */
+export const LANGUAGE_NAMES: Record<Language, string> = {
+  en: 'English',
+  de: 'Deutsch',
+  fr: 'Français',
+  es: 'Español',
+  it: 'Italiano',
+  pt: 'Português',
+  nl: 'Nederlands',
+  sv: 'Svenska',
+  da: 'Dansk',
+  nb: 'Norsk',
+  fi: 'Suomi',
+  pl: 'Polski',
+  cs: 'Čeština',
+  tr: 'Türkçe',
+  ru: 'Русский',
+  uk: 'Українська',
+  ja: '日本語',
+  ko: '한국어',
+  'zh-Hans': '简体中文',
+  'zh-Hant': '繁體中文',
+};

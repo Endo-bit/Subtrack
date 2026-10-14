@@ -1,6 +1,11 @@
 import { CurrencyCode } from '@/utils/currency';
 
-export type Language = 'de' | 'fr' | 'en' | 'es';
+/** Every language the app ships in. Right-to-left scripts aren't supported by the layout yet. */
+export const LANGUAGES = [
+  'en', 'de', 'fr', 'es', 'it', 'pt', 'nl', 'sv', 'da', 'nb',
+  'fi', 'pl', 'cs', 'tr', 'ru', 'uk', 'ja', 'ko', 'zh-Hans', 'zh-Hant',
+] as const;
+export type Language = (typeof LANGUAGES)[number];
 export type BillingCycle = 'monthly' | 'quarterly' | 'annual';
 export type Category = 'streaming' | 'music' | 'productivity' | 'gaming' | 'health' | 'news' | 'other';
 export type VatMode = 'de' | 'fr' | 'none';

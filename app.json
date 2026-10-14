@@ -18,7 +18,30 @@
       "bundleIdentifier": "com.cutedogstoryai.subtrack",
       "appleTeamId": "Z824MPGK2X",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleLocalizations": [
+          "en",
+          "de",
+          "fr",
+          "es",
+          "it",
+          "pt-BR",
+          "nl",
+          "sv",
+          "da",
+          "nb",
+          "fi",
+          "pl",
+          "cs",
+          "tr",
+          "ru",
+          "uk",
+          "ja",
+          "ko",
+          "zh-Hans",
+          "zh-Hant"
+        ],
+        "CFBundleAllowMixedLocalizations": true
       },
       "entitlements": {
         "com.apple.security.application-groups": [

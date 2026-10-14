@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { PRESET_SERVICES } from '@/data/services';
 import { localeForLanguage, strings } from '@/i18n/strings';
-import { Language, LocalPrices, Subscription, VatMode } from '@/types/subscription';
+import { Language, LANGUAGES, LocalPrices, Subscription, VatMode } from '@/types/subscription';
 import { posthog, track } from '@/utils/analytics';
 import { convertAmount, CurrencyCode, detectDeviceCurrency, ExchangeRates } from '@/utils/currency';
 import { exportBackupFile, exportCsvFile, pickBackupFile } from '@/utils/dataExport';
@@ -121,10 +121,12 @@ export function detectDeviceLanguage(): Language {
   try {
     const locale = Intl.DateTimeFormat().resolvedOptions().locale;
     const lang = locale.split(/[-_]/)[0].toLowerCase();
-    if (lang === 'de') return 'de';
-    if (lang === 'fr') return 'fr';
-    if (lang === 'es') return 'es';
-    return 'en';
+    // Traditional script is what Taiwan, Hong Kong and Macau read, whether or not the locale
+    // spells out the script.
+    if (lang === 'zh') return /Hant|TW|HK|MO/i.test(locale) ? 'zh-Hant' : 'zh-Hans';
+    // Norwegian arrives as "no", "nb" or "nn"; Bokmål is the written standard most people use.
+    if (lang === 'no' || lang === 'nn') return 'nb';
+    return (LANGUAGES as readonly string[]).includes(lang) ? (lang as Language) : 'en';
   } catch {
     return 'en';
   }

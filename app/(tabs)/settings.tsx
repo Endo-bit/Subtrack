@@ -8,7 +8,8 @@ import { ShareSummarySheet } from '@/components/ShareSummarySheet';
 import { TutorialModal } from '@/components/TutorialModal';
 import { useSubTrack } from '@/context/SubTrackContext';
 import { theme } from '@/constants/theme';
-import { Language, VatMode } from '@/types/subscription';
+import { LANGUAGE_NAMES } from '@/i18n/strings';
+import { Language, LANGUAGES, VatMode } from '@/types/subscription';
 import { CURRENCIES, CurrencyCode } from '@/utils/currency';
 import { proPriceSummary } from '@/utils/proPricing';
 import { widgetDiagnostics } from '@/utils/widget';
@@ -125,10 +126,10 @@ export default function SettingsScreen() {
 
         {/* Language */}
         <SettingGroup title={t.language} dark={dark}>
-          {(['de', 'fr', 'en', 'es'] as Language[]).map((l) => (
+          {LANGUAGES.map((l) => (
             <Pill
               key={l}
-              label={l === 'de' ? 'Deutsch' : l === 'fr' ? 'Français' : l === 'es' ? 'Español' : 'English'}
+              label={LANGUAGE_NAMES[l]}
               active={language === l}
               onPress={() => updateSettings({ language: l })}
               dark={dark}
@@ -317,6 +318,22 @@ function feedbackLabel(lang: Language): string {
     fr: 'Envoyer un avis',
     es: 'Enviar opinión',
     en: 'Send feedback',
+    it: 'Invia feedback',
+    pt: 'Enviar feedback',
+    nl: 'Feedback sturen',
+    sv: 'Skicka feedback',
+    da: 'Send feedback',
+    nb: 'Send tilbakemelding',
+    fi: 'Lähetä palautetta',
+    pl: 'Wyślij opinię',
+    cs: 'Odeslat zpětnou vazbu',
+    tr: 'Geri bildirim gönder',
+    ru: 'Отправить отзыв',
+    uk: 'Надіслати відгук',
+    ja: 'フィードバックを送る',
+    ko: '피드백 보내기',
+    'zh-Hans': '发送反馈',
+    'zh-Hant': '傳送意見回饋',
   };
   return map[lang] ?? map.en;
 }
@@ -327,6 +344,22 @@ function feedbackSub(lang: Language): string {
     fr: 'Aidez-nous à améliorer SubTrack',
     es: 'Ayúdanos a mejorar SubTrack',
     en: 'Help us improve SubTrack',
+    it: 'Aiutaci a migliorare SubTrack',
+    pt: 'Ajude a melhorar o SubTrack',
+    nl: 'Help ons SubTrack te verbeteren',
+    sv: 'Hjälp oss att förbättra SubTrack',
+    da: 'Hjælp os med at forbedre SubTrack',
+    nb: 'Hjelp oss å gjøre SubTrack bedre',
+    fi: 'Auta meitä parantamaan SubTrackia',
+    pl: 'Pomóż nam ulepszyć SubTrack',
+    cs: 'Pomozte nám vylepšit SubTrack',
+    tr: 'SubTrack’i geliştirmemize yardım et',
+    ru: 'Помогите улучшить SubTrack',
+    uk: 'Допоможіть покращити SubTrack',
+    ja: 'SubTrackの改善にご協力ください',
+    ko: 'SubTrack 개선에 도움을 주세요',
+    'zh-Hans': '帮助我们改进 SubTrack',
+    'zh-Hant': '協助我們改善 SubTrack',
   };
   return map[lang] ?? map.en;
 }
