@@ -1,1 +1,1 @@
-Manage subscriptions: SubTrack
+Subslip: Subscription Manager

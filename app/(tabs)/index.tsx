@@ -187,8 +187,8 @@ export default function DashboardScreen() {
             />
           </View>
           <View>
-            {/* Apple display-md, SubTrack brand */}
-            <Text style={[styles.brand, dark && styles.textOnDark]}>SubTrack</Text>
+            {/* Apple display-md, Subslip brand */}
+            <Text style={[styles.brand, dark && styles.textOnDark]}>Subslip</Text>
             <Text style={styles.tagline}>{t.tagline}</Text>
           </View>
         </View>
@@ -269,7 +269,7 @@ export default function DashboardScreen() {
         </Pressable>
       )}
 
-      {/* ── Widget tip — a glanceable reason to think of SubTrack without opening it ── */}
+      {/* ── Widget tip — a glanceable reason to think of Subslip without opening it ── */}
       {showWidgetTip && (
         <View style={[styles.notice, { backgroundColor: dark ? theme.cardDark : theme.card }]}>
           <View style={styles.noticeIcon}>

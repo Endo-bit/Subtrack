@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "SubTrack EU",
+    "name": "Subslip",
     "slug": "subtrack-eu",
     "version": "1.0.3",
     "orientation": "portrait",
@@ -66,7 +66,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "SubTrack uses your photos to set a custom icon for a subscription you add manually.",
+          "photosPermission": "Subslip uses your photos to set a custom icon for a subscription you add manually.",
           "cameraPermission": false,
           "microphonePermission": false
         }

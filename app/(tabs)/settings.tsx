@@ -249,7 +249,7 @@ export default function SettingsScreen() {
           </Pressable>
         ) : (
           <Pressable style={styles.pro} onPress={() => router.push({ pathname: '/paywall', params: { source: 'settings' } })}>
-            <Text style={styles.proTitle}>SubTrack Pro</Text>
+            <Text style={styles.proTitle}>Subslip Pro</Text>
             <Text style={styles.proText}>
               {priceSummary ? `${priceSummary} · ${t.proBlurb}` : t.proBlurb}
             </Text>
@@ -364,26 +364,26 @@ function feedbackLabel(lang: Language): string {
 
 function feedbackSub(lang: Language): string {
   const map: Record<Language, string> = {
-    de: 'Hilf uns, SubTrack zu verbessern',
-    fr: 'Aidez-nous à améliorer SubTrack',
-    es: 'Ayúdanos a mejorar SubTrack',
-    en: 'Help us improve SubTrack',
-    it: 'Aiutaci a migliorare SubTrack',
-    pt: 'Ajude a melhorar o SubTrack',
-    nl: 'Help ons SubTrack te verbeteren',
-    sv: 'Hjälp oss att förbättra SubTrack',
-    da: 'Hjælp os med at forbedre SubTrack',
-    nb: 'Hjelp oss å gjøre SubTrack bedre',
-    fi: 'Auta meitä parantamaan SubTrackia',
-    pl: 'Pomóż nam ulepszyć SubTrack',
-    cs: 'Pomozte nám vylepšit SubTrack',
-    tr: 'SubTrack’i geliştirmemize yardım et',
-    ru: 'Помогите улучшить SubTrack',
-    uk: 'Допоможіть покращити SubTrack',
-    ja: 'SubTrackの改善にご協力ください',
-    ko: 'SubTrack 개선에 도움을 주세요',
-    'zh-Hans': '帮助我们改进 SubTrack',
-    'zh-Hant': '協助我們改善 SubTrack',
+    de: 'Hilf uns, Subslip zu verbessern',
+    fr: 'Aidez-nous à améliorer Subslip',
+    es: 'Ayúdanos a mejorar Subslip',
+    en: 'Help us improve Subslip',
+    it: 'Aiutaci a migliorare Subslip',
+    pt: 'Ajude a melhorar o Subslip',
+    nl: 'Help ons Subslip te verbeteren',
+    sv: 'Hjälp oss att förbättra Subslip',
+    da: 'Hjælp os med at forbedre Subslip',
+    nb: 'Hjelp oss å gjøre Subslip bedre',
+    fi: 'Auta meitä parantamaan SubslipiÃ¤',
+    pl: 'Pomóż nam ulepszyć Subslip',
+    cs: 'Pomozte nám vylepšit Subslip',
+    tr: 'Subslip’i geliştirmemize yardım et',
+    ru: 'Помогите улучшить Subslip',
+    uk: 'Допоможіть покращити Subslip',
+    ja: 'Subslipの改善にご協力ください',
+    ko: 'Subslip 개선에 도움을 주세요',
+    'zh-Hans': '帮助我们改进 Subslip',
+    'zh-Hant': '協助我們改善 Subslip',
   };
   return map[lang] ?? map.en;
 }

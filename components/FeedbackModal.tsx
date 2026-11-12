@@ -25,35 +25,35 @@ type Props = {
 const labels: Record<string, { title: string; placeholder: string; send: string; cancel: string; thanks: string; thanksBody: string }> = {
   de: {
     title: 'Feedback senden',
-    placeholder: 'Wie können wir SubTrack verbessern?',
+    placeholder: 'Wie können wir Subslip verbessern?',
     send: 'Senden',
     cancel: 'Abbrechen',
     thanks: 'Danke!',
-    thanksBody: 'Dein Feedback hilft uns, SubTrack besser zu machen.',
+    thanksBody: 'Dein Feedback hilft uns, Subslip besser zu machen.',
   },
   fr: {
     title: 'Envoyer un avis',
-    placeholder: 'Comment améliorer SubTrack ?',
+    placeholder: 'Comment améliorer Subslip ?',
     send: 'Envoyer',
     cancel: 'Annuler',
     thanks: 'Merci !',
-    thanksBody: 'Votre avis nous aide à améliorer SubTrack.',
+    thanksBody: 'Votre avis nous aide à améliorer Subslip.',
   },
   es: {
     title: 'Enviar opinión',
-    placeholder: '¿Cómo podemos mejorar SubTrack?',
+    placeholder: '¿Cómo podemos mejorar Subslip?',
     send: 'Enviar',
     cancel: 'Cancelar',
     thanks: '¡Gracias!',
-    thanksBody: 'Tu opinión nos ayuda a mejorar SubTrack.',
+    thanksBody: 'Tu opinión nos ayuda a mejorar Subslip.',
   },
   en: {
     title: 'Send feedback',
-    placeholder: 'How can we improve SubTrack?',
+    placeholder: 'How can we improve Subslip?',
     send: 'Send',
     cancel: 'Cancel',
     thanks: 'Thank you!',
-    thanksBody: 'Your feedback helps us improve SubTrack.',
+    thanksBody: 'Your feedback helps us improve Subslip.',
   },
 };
 
@@ -86,7 +86,7 @@ export function FeedbackModal({ visible, onClose, locale }: Props) {
 
     // Also send via email if comment provided
     if (comment.trim()) {
-      const subject = encodeURIComponent(`SubTrack Feedback — ${rating + 1}/5 stars`);
+      const subject = encodeURIComponent(`Subslip Feedback — ${rating + 1}/5 stars`);
       const body = encodeURIComponent(`Rating: ${EMOJIS[rating]} (${rating + 1}/5)\n\n${comment}`);
       Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`).catch(() => {});
     }

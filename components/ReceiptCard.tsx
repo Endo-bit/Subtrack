@@ -42,7 +42,7 @@ export function ReceiptCard({
 
   return (
     <View style={styles.paper} collapsable={false}>
-      <Text style={styles.brand}>SUBTRACK</Text>
+      <Text style={styles.brand}>SUBSLIP</Text>
       <Text style={styles.heading}>{t.receiptHeading}</Text>
       <Text style={styles.meta}>{new Date().toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
       <Divider />

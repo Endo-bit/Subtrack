@@ -1,4 +1,4 @@
-import { convertAmount, detectDeviceCurrency, ExchangeRates } from '../currency';
+import { convertAmount, detectDeviceCurrency, ExchangeRates, formatMoney, roundForCurrency } from '../currency';
 
 const rates: ExchangeRates = { EUR: 1, USD: 1.08, GBP: 0.86, JPY: 170 };
 
@@ -51,8 +51,17 @@ describe('detectDeviceCurrency', () => {
   test('falls back to EUR for the eurozone and anything unmapped', () => {
     withLocale('de-DE');
     expect(detectDeviceCurrency()).toBe('EUR');
-    withLocale('pt-BR');
+    withLocale('ru-RU');
     expect(detectDeviceCurrency()).toBe('EUR');
+  });
+
+  test('picks the local currency where the app supports it', () => {
+    withLocale('es-MX');
+    expect(detectDeviceCurrency()).toBe('MXN');
+    withLocale('pt-BR');
+    expect(detectDeviceCurrency()).toBe('BRL');
+    withLocale('ko-KR');
+    expect(detectDeviceCurrency()).toBe('KRW');
   });
 
   test('falls back to EUR when the locale carries no region at all', () => {
@@ -71,5 +80,23 @@ describe('detectDeviceCurrency', () => {
     expect(detectDeviceCurrency()).toBe('EUR');
     withLocale('en-Latn-US');
     expect(detectDeviceCurrency()).toBe('USD');
+  });
+});
+
+describe('formatMoney', () => {
+  test('groups thousands and drops minor units where the currency has none', () => {
+    expect(formatMoney(11429, 'JPY')).toBe('¥11,429');
+    expect(formatMoney(152000, 'KRW')).toBe('₩152,000');
+    expect(formatMoney(1234.5, 'USD')).toBe('$1,234.50');
+  });
+
+  test('puts Nordic, Polish and Czech symbols after the amount', () => {
+    expect(formatMoney(99, 'SEK')).toBe('99.00 kr');
+    expect(formatMoney(49.9, 'PLN')).toBe('49.90 zł');
+  });
+
+  test('rounds converted amounts to the currency', () => {
+    expect(roundForCurrency(1234.567, 'KRW')).toBe(1235);
+    expect(roundForCurrency(12.345, 'MXN')).toBeCloseTo(12.35);
   });
 });

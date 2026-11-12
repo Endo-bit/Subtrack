@@ -1,9 +1,9 @@
 Ne fizessen tovább olyan előfizetésekért, amelyekről megfeledkezett.
 
-A SubTrack egy helyen követi az összes előfizetését - streaming, szoftverek, edzőtermi bérletek és sok más - és pontosan megmutatja, mit érdemes megtartani.
+A Subslip egy helyen követi az összes előfizetését - streaming, szoftverek, edzőtermi bérletek és sok más - és pontosan megmutatja, mit érdemes megtartani.
 
 ELŐFIZETÉS-DIAGNÓZIS
-Végezzen gyors ellenőrzést bármelyik előfizetésén: milyen gyakran használja, van-e duplikátuma, megéri-e az árát. A SubTrack pontozza, és javasolja a megtartást, felülvizsgálatot vagy lemondást - majd nyomon követi, mennyit spórolt minden lemondással.
+Végezzen gyors ellenőrzést bármelyik előfizetésén: milyen gyakran használja, van-e duplikátuma, megéri-e az árát. A Subslip pontozza, és javasolja a megtartást, felülvizsgálatot vagy lemondást - majd nyomon követi, mennyit spórolt minden lemondással.
 
 SOHA NE MARADJON LE EGY TERHELÉSRŐL SEM
 Tekintse meg a közelgő fizetéseket egy naptárban, kapjon emlékeztetőt a terhelés előtt, és értesüljön időben, mielőtt egy ingyenes próbaidőszak fizetőssé válik.
@@ -12,7 +12,7 @@ KÖLTÉSELEMZÉS (Pro)
 Kategóriák szerinti bontás, kiadási trendek időben, és a legköltségesebb előfizetéseinek rangsora - így mindig tudja, hova megy a pénze.
 
 ADATVÉDELEMRE ÉPÍTVE
-A SubTrack mindent a készülékén tárol. Nincs fiók, nincs felhő, nincs regisztráció. Az előfizetési adatai soha nem hagyják el a telefont - 100%-ban helyben, eleve GDPR-barát felépítéssel.
+A Subslip mindent a készülékén tárol. Nincs fiók, nincs felhő, nincs regisztráció. Az előfizetési adatai soha nem hagyják el a telefont - 100%-ban helyben, eleve GDPR-barát felépítéssel.
 
 EURÓPÁRA SZABVA
 Tekintse meg az áfabontást Németországra és Franciaországra, kövesse előfizetéseit több pénznemben valós idejű árfolyamokkal (Pro), és készítsen biztonsági mentést bármikor.
@@ -24,9 +24,9 @@ Tekintse meg az áfabontást Németországra és Franciaországra, kövesse elő
 - A Pro korlátlan előfizetés-követést, korlátlan diagnózis-ellenőrzést, elemzéseket, valós idejű árfolyamokat, mentést és egyéni logókat old fel
 
 ADATVÉDELEM
-A SubTrack nem kér bejelentkezést, és nem szinkronizálja az előfizetési adatait semmilyen szerverrel - minden helyben, a készülékén tárolódik. Tekintse meg Adatvédelmi szabályzatunkat és Felhasználási feltételeinket:
+A Subslip nem kér bejelentkezést, és nem szinkronizálja az előfizetési adatait semmilyen szerverrel - minden helyben, a készülékén tárolódik. Tekintse meg Adatvédelmi szabályzatunkat és Felhasználási feltételeinket:
 Adatvédelmi szabályzat: https://legal-wheat-pi.vercel.app/privacy.html
 Felhasználási feltételek: https://legal-wheat-pi.vercel.app/terms.html
 
 VÉDJEGYEK
-Az alkalmazásban megjelenő szolgáltatásnevek és logók (pl. streaming-, zene- és szoftvermárkák) kizárólag azért szerepelnek, hogy segítsenek azonosítani saját előfizetéseit, és a megfelelő jogtulajdonosok tulajdonában maradnak. A SubTrack nem áll kapcsolatban ezekkel a vállalatokkal, és nem támogatják vagy szponzorálják őt. Ha ön jogtulajdonos, és szeretné, hogy egy nevet vagy logót eltávolítsunk, írjon nekünk a cutedogstoryai@gmail.com címre, és haladéktalanul intézkedünk.
+Az alkalmazásban megjelenő szolgáltatásnevek és logók (pl. streaming-, zene- és szoftvermárkák) kizárólag azért szerepelnek, hogy segítsenek azonosítani saját előfizetéseit, és a megfelelő jogtulajdonosok tulajdonában maradnak. A Subslip nem áll kapcsolatban ezekkel a vállalatokkal, és nem támogatják vagy szponzorálják őt. Ha ön jogtulajdonos, és szeretné, hogy egy nevet vagy logót eltávolítsunk, írjon nekünk a cutedogstoryai@gmail.com címre, és haladéktalanul intézkedünk.

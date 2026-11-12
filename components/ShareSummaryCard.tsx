@@ -38,7 +38,7 @@ export function ShareSummaryCard({
         end={{ x: 1, y: 1 }}
         style={styles.hero}
       >
-        <Text style={styles.brand}>SubTrack</Text>
+        <Text style={styles.brand}>Subslip</Text>
         <Text style={styles.heroLabel}>{t.shareTitle.toUpperCase()}</Text>
         <Text style={styles.heroValue}>{money(data.monthlyTotal)}</Text>
         <Text style={styles.heroCaption}>{t.thisMonth}</Text>

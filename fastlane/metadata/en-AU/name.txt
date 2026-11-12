@@ -1,1 +1,1 @@
-Cancel subscriptions: SubTrack
+Subslip: Subscription Tracker

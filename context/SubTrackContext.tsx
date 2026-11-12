@@ -7,7 +7,7 @@ import { PRESET_SERVICES } from '@/data/services';
 import { localeForLanguage, strings } from '@/i18n/strings';
 import { Language, LANGUAGES, LocalPrices, Subscription, VatMode } from '@/types/subscription';
 import { posthog, track } from '@/utils/analytics';
-import { convertAmount, CurrencyCode, detectDeviceCurrency, ExchangeRates } from '@/utils/currency';
+import { convertAmount, CurrencyCode, detectDeviceCurrency, ExchangeRates, roundForCurrency } from '@/utils/currency';
 import { exportBackupFile, exportCsvFile, pickBackupFile } from '@/utils/dataExport';
 import { DiagnosisRecord } from '@/utils/diagnosis';
 import { fetchExchangeRates, ratesAreStale } from '@/utils/exchangeRates';
@@ -520,7 +520,7 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
         subscriptions: prev.subscriptions.map((s) => {
           if (s.currency) return s;
           const converted = convertAmount(s.defaultPrice, from, code, rates);
-          const rounded = code === 'JPY' ? Math.round(converted) : Math.round(converted * 100) / 100;
+          const rounded = roundForCurrency(converted, code);
           return { ...s, defaultPrice: rounded };
         }),
       }));
@@ -556,7 +556,7 @@ export const [SubTrackProvider, useSubTrack] = createContextHook(() => {
       if (state.currency === 'EUR' || !rate) return { amount: eurAmount, currency: 'EUR', exact: true };
       const converted = convertAmount(eurAmount, 'EUR', state.currency, state.exchangeRates);
       // Currencies without minor units read as noise at two decimals.
-      const rounded = state.currency === 'JPY' ? Math.round(converted) : Math.round(converted * 100) / 100;
+      const rounded = roundForCurrency(converted, state.currency);
       return { amount: rounded, currency: state.currency, exact: false };
     },
     [state.currency, state.exchangeRates],

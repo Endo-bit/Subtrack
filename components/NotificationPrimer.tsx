@@ -33,7 +33,7 @@ export function NotificationPrimer() {
           </View>
           <Text style={[styles.title, dark && styles.textLight]}>{t.primerTitle}</Text>
           <Text style={styles.body}>
-            {t.primerBody.replace('{days}', String(reminderDays)).replace('{name}', example?.name ?? 'SubTrack')}
+            {t.primerBody.replace('{days}', String(reminderDays)).replace('{name}', example?.name ?? 'Subslip')}
           </Text>
           <Pressable style={styles.primary} onPress={() => answerNotificationPrimer(true)} accessibilityRole="button">
             <Text style={styles.primaryText}>{t.primerEnable}</Text>

@@ -1,1 +1,1 @@
-Track subscriptions: SubTrack
+Subslip: Subscription Tracker

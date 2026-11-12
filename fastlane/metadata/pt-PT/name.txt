@@ -1,1 +1,1 @@
-Gestor subscrições: SubTrack
+Subslip: Gestor subscrições
