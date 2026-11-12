@@ -128,7 +128,7 @@ private struct ChargeRow: View {
 }
 
 private struct SubTrackWidgetView: View {
-  @Environment(.widgetFamily) private var family
+  @Environment(\.widgetFamily) private var family
   let payload: WidgetPayload
 
   private var compact: Bool { family == .systemSmall }
