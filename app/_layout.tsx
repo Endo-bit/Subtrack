@@ -6,6 +6,7 @@ import { PostHogProvider } from 'posthog-react-native';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { LaunchOverlay } from '@/components/LaunchOverlay';
 import { SubTrackProvider } from '@/context/SubTrackContext';
 import { posthog, track } from '@/utils/analytics';
 import { ensureReminderRefreshRegistered } from '@/utils/backgroundReminders';
@@ -59,6 +60,7 @@ export default function RootLayout() {
           <SubTrackProvider>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <RootLayoutNav />
+              <LaunchOverlay />
             </GestureHandlerRootView>
           </SubTrackProvider>
         </QueryClientProvider>
